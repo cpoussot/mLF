@@ -1,12 +1,12 @@
-# Multivariate Loewner Framework - "mLF" MATLAB package 
+# Multivariate Loewner Framework
 
-## Overview
+### Overview
 
 The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I.V. Gosea and C. Poussot-Vassal in https://arxiv.org/abs/2405.00495. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real of complex valued). It is suited to approximate, from any $n$-dimensional tensor 
 - $n$-variables static functions
 - $n$-variables (parametric) dynamical systems
 
-## Contributions claim
+### Contributions claim
 
 We claim the following innovations:
 
@@ -16,7 +16,6 @@ We claim the following innovations:
 - We show that this decomposition achieves variables decoupling; thus connecting the Loewner framework for rational interpolation of multivariate functions and the ***Kolmogorov Superposition Theorem (KST)***, restricted to rational functions. The result is the formulation of KST for the special case of rational functions;
 - Connections with KAN neural nets follows (detailed in future work).
 
-## Reference and additional support material (presentations, reports, ...)
 
 ### Main reference
 
@@ -34,14 +33,14 @@ We claim the following innovations:
 }
 ```
 
-### Some presentations and reports
+### Additional support material (presentations, reports, ...)
 
 - A.C. Antoulas presentation at BANFF https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule
 - C. Poussot-Vassal presentation 
 - Benchmark result 
 
 
-# The mLF MATLAB package
+# The "mLF" MATLAB package 
 
 The code embedded in this GitHub page is given for open science perspectives. Please cite the reference above and do not hesitate to contact us in case of spotted bug.
 
