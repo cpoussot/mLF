@@ -66,6 +66,19 @@ ok = mlf.check(p_c,p_r)
 
 ### `mlf.make_tab`
 
+Function which constructs the $n$-dimensional tensor $\mathbf{tab}_n$, from the column `p_c` and row `p_r` interpolation point sets.. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolatoin points along each variables.
+
+#### Input
+
+- `p_c`: column interpolation points ($n$-dimneiosnl cell with double)
+- `p_r`: row interpolation points ($n$-dimneiosnl cell with double)
+
+#### Output
+
+- `ok`: tag assessing that interpolatoin points are disjoints (boolean)
+
+#### Syntax 
+
 ```Matlab
 tab = mlf.make_tab(H,p_c,p_r,true);
 ```
