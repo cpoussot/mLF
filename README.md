@@ -35,7 +35,7 @@ We claim the following innovations:
 
 ### Additional support material (presentations, reports, ...)
 
-- A.C. Antoulas presentation at BANFF https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule
+- A.C. Antoulas presentation at [BANFF](https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule)
 - C. Poussot-Vassal presentation at [GT Identification](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing) with [YouTube video](https://youtu.be/M2SX3C4VCt8)
 - Benchmark result 
 
@@ -107,8 +107,8 @@ fprintf('FLOPS\n')
 fprintf(' * recursive: %d\n',info_rec1.nflop)
 fprintf(' * full: %d\n',length(c_rec1)^3)
 fprintf('MEMORY\n')
-fprintf(' * recursive: %d MB\n',max(ord+1)/2^20)
-fprintf(' * full: %d MB\n',prod(ord+1)/2^20)
+fprintf(' * recursive: %d MB\n',max(ord+1)^2/2^20)
+fprintf(' * full: %d MB\n',prod(ord+1)^2/2^20)
 ```
 
 Evaluate simplified function and display results
