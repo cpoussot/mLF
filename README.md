@@ -79,7 +79,8 @@ Please refer to https://arxiv.org/abs/2405.00495  for notations and related equa
 %%% Define a multivariate handle function 
 n       = 3; % number of variables
 H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(2*s2)*tanh(5*(s2-pi)))/(s1^2+s3/10*cos(3*s1)+3)/(s2+10);
-tol_ord = 1e-8; 
+% /!\ The tolerence is an important parameter when the data are generated from an irrational function
+tol_ord = 1e-7; 
 % Interpolation points (IP) - separate columns and rows (as Section 3, eq. 13-15)
 for ii = 1:n
     p_c{ii} = linspace(-6,6,30);
