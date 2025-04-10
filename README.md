@@ -2,7 +2,7 @@
 
 ### Overview
 
-The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I.V. Gosea and C. Poussot-Vassal in https://arxiv.org/abs/2405.00495. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real of complex valued). It is suited to approximate, from any $n$-dimensional tensor 
+The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I.V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://arxiv.org/abs/2405.00495). It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real of complex valued). It is suited to approximate, from any $n$-dimensional tensor 
 - $n$-variables static functions
 - $n$-variables (parametric) dynamical systems
 
@@ -75,9 +75,19 @@ Here is a simple code that describes how to deploy the cascaded 1-D Loewner null
 Please refer to https://arxiv.org/abs/2405.00495  for notations and related equations.
 
 ```Matlab
-%%% Define a multivariate handle function 
-n = 2; % number of variables
-H = @(s1,s2) (s1+s2)/(cos(s1)^2+cos(s2)+3);
+%addpath("location_of_mlf") % Add the location of the +mlf package
+%%% Define a multivariate handle function (here toy case)
+n       = 3; % number of variables
+H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(3*s2)*tanh(5*(s2-pi)))/(s1^2+s3/10*cos(3*s1)+3)/(s2+10);
+% /!\ important tuning variable when data generated from irrational function 
+% used to set the approximation order 
+tol_ord = 1e-8; 
+% Interpolation points (IP) - separate columns and rows (as Section 3, eq. 13-15)
+for ii = 1:n
+    p_c{ii} = linspace(-10,10,30);
+    dx      = abs(p_c{ii}(2)-p_c{ii}(1))/2;
+    p_r{ii} = p_c{ii}+dx;
+end
 
 %%% Elementary ingredients
 % Check that column/row IP are disjoint (Section 3)
@@ -104,7 +114,6 @@ fprintf(' * full: %d MB\n',prod(ord+1)/2^20)
 Evaluate simplified function and display results
 
 ```Matlab
-%%
 %%% 3D plot 
 % Along first and second variables 
 % Other variables are randomly chosen betwwen bounds
