@@ -84,7 +84,7 @@ H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(2*s2)*tanh(5*(s2-pi)))/(s1^2
 tol_ord = 1e-7; 
 % Interpolation points (IP) - separate columns and rows (as Section 3, eq. 13-15)
 for ii = 1:n
-    p_c{ii} = linspace(-10,10,30);
+    p_c{ii} = linspace(-6,6,30);
     dx      = abs(p_c{ii}(2)-p_c{ii}(1))/2;
     p_r{ii} = p_c{ii}+dx;
 end
