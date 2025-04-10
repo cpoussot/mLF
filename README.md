@@ -1,4 +1,4 @@
-# Multivariate Loewner Framework - mLF 
+# Multivariate Loewner Framework - "mLF" MATLAB package 
 
 ## Overview
 
@@ -8,7 +8,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I.V. Gosea a
 
 ## Contributions claim
 
-We claim the following innovations
+We claim the following innovations:
 
 - We propose a ***generalized realization*** form for rational functions in n-variables (for any $n$), which are described in the Lagrange basis;
 - We show that the $n$-dimensional Loewner matrix can be written as the solution of a ***series of cascaded Sylvester equations***;
@@ -16,12 +16,9 @@ We claim the following innovations
 - We show that this decomposition achieves variables decoupling; thus connecting the Loewner framework for rational interpolation of multivariate functions and the ***Kolmogorov Superposition Theorem (KST)***, restricted to rational functions. The result is the formulation of KST for the special case of rational functions;
 - Connections with KAN neural nets follows (detailed in future work).
 
+## Reference and additional support material (presentations, reports, ...)
 
-# Citation and feedbacks
-
-The code below is given for open science perspectives. Please cite the reference below and do not hesitate to contact us in case of spotted bug.
-
-## Reference
+### Main reference
 
 ```
 @article{AGPV:2025,
@@ -37,12 +34,41 @@ The code below is given for open science perspectives. Please cite the reference
 }
 ```
 
-## Feedbacks
+### Some presentations and reports
 
-Please send any comment to [C. Poussot-Vassal](charles.poussot-vassal@onera.fr) if you report a bug or user experience issues.
+- A.C. Antoulas presentation at BANFF https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule
+- C. Poussot-Vassal presentation 
+- Benchmark result 
 
 
-# A simple MATLAB code
+# The mLF MATLAB package
+
+The code embedded in this GitHub page is given for open science perspectives. Please cite the reference above and do not hesitate to contact us in case of spotted bug.
+
+## mlf.check
+
+```Matlab
+ok = mlf.check(p_c,p_r)
+```
+
+## mlf.make_tab
+
+```Matlab
+tab = mlf.make_tab(H,p_c,p_r,true);
+```
+
+## mlf.compute_order
+
+```Matlab
+ord = mlf.compute_order(p_c,p_r,tab,1e-10,[],5,true);
+```
+## mlf.points_selection
+
+```Matlab
+[p_c,p_r,W,V,tab_red] = mlf.points_selection(p_c,p_r,tab,ord,true);
+```
+
+## A simple MATLAB code example
 
 Here is a simple code that describes how to deploy the cascaded 1-D Loewner null space construction.
 Please refer to https://arxiv.org/abs/2405.00495  for notations and related equations.
@@ -78,8 +104,11 @@ info_rec
 
 ```
 
-# Claim
+## Feedbacks
 
-This deposit consitutes a research code and is not aimed at 
+Please send any comment to [C. Poussot-Vassal](charles.poussot-vassal@onera.fr) if you report a bug or user experience issues.
 
+## Claim
+
+This deposit consitutes a research code and is not aimed to be included in any third party software without the consent of the authors. Authors decline responsabilities in case of problem when applying the code.
 
