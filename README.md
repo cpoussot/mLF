@@ -45,10 +45,17 @@ The code (`+mlf` folder)  provided in this GitHub page is given for open science
 
 ## A simple MATLAB code example
 
-Here is a simple code that describes how to deploy the cascaded 1-D Loewner null space construction. Refer to https://arxiv.org/abs/2405.00495 for notations and related equations. Code below is `demo.m`: 
+Here is a simple code that describes how to deploy the cascaded 1-D Loewner null space construction. Refer to https://arxiv.org/abs/2405.00495 for notations and related equations. Code below is `demo.m`.
+
+First add the path with the `+mlf` package.
 
 ```Matlab
 %addpath("location_of_mlf") % Add the location of the +mlf package
+```
+
+then compute the barycentic coefficients for a given function `H`.
+
+```Matlab
 %%% Define a multivariate handle function 
 n       = 3; % number of variables
 H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(2*s2)*tanh(5*(s2-pi)))/(s1^2+s3/10*cos(3*s1)+3)/(s2+10);
