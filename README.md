@@ -36,7 +36,7 @@ We claim the following innovations:
 ### Additional support material (presentations, reports, ...)
 
 - A.C. Antoulas presentation at BANFF https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule
-- C. Poussot-Vassal presentation 
+- C. Poussot-Vassal presentation at [GT Identification](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing) with [YouTube video](https://youtu.be/M2SX3C4VCt8)
 - Benchmark result 
 
 
