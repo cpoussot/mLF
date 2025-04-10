@@ -47,16 +47,16 @@ The code (`+mlf` folder)  provided in this GitHub page is given for open science
 
 ### `mlf.check`
 
-Function which checks that column `p_c` and row `p_r` interpolation point sets are discjoint. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolatoin points along each variables.
+Function which checks that column `p_c` ($P_c^{n}$) and row `p_r` ($P_r^{n}$) interpolation points sets are disjoints. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolatoin points along each variables.
 
 #### Input
 
-- `p_c`: column interpolation points ($n$-dimneiosnl cell with double)
-- `p_r`: row interpolation points ($n$-dimneiosnl cell with double)
+- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimneiosnl cell with double)
+- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimneiosnl cell with double)
 
 #### Output
 
-- `ok`: tag assessing that interpolatoin points are disjoints (boolean)
+- `ok`: tag assessing that interpolation points are disjoints (boolean)
 
 #### Syntax 
 
@@ -66,44 +66,114 @@ ok = mlf.check(p_c,p_r)
 
 ### `mlf.make_tab`
 
-Function which constructs the $n$-dimensional tensor $\mathbf{tab}_n$, from the column `p_c` and row `p_r` interpolation point sets.. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolatoin points along each variables.
+Function which constructs the $n$-dimensional tensor $\mathbf{tab}_n$, from the column `p_c` ($P_c^{n}$) and row `p_r` ($P_r^{n}$) interpolation point sets. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolation points along each variables.
 
 #### Input
 
-- `p_c`: column interpolation points ($n$-dimneiosnl cell with double)
-- `p_r`: row interpolation points ($n$-dimneiosnl cell with double)
+- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
+- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `show`: tag used to show the advancement of the tableau construction (boolean)
 
 #### Output
 
-- `ok`: tag assessing that interpolatoin points are disjoints (boolean)
+- `tab`: $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
 
 #### Syntax 
 
 ```Matlab
-tab = mlf.make_tab(H,p_c,p_r,true);
+tab = mlf.make_tab(H,p_c,p_r,show);
 ```
 
 ### `mlf.compute_order`
 
+Function which estimates the orders along each variables.
+
+#### Input
+
+- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
+- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `tab`: $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
+- `ord_tol`: normalized singular value threshild for order selection (positive real scalar)
+- `ord_obj`: maximal orders tolerated along each variables ($n\times 1$ integer)
+- `ord_n`: maximal single variable Loewner sincular value computation per variables (integer scalar)
+- `show`: tag used to show the advancement of the tableau construction (boolean)
+
+#### Output
+
+- `ord`: $n$-dimensional vector with order along each variables ($n\times 1$ double)
+
+#### Syntax 
+
 ```Matlab
-ord = mlf.compute_order(p_c,p_r,tab,1e-10,[],5,true);
+ord = mlf.compute_order(p_c,p_r,tab,ord_tol,ord_obj,ord_n,show);
 ```
 ### `mlf.points_selection`
 
+Function which selects a subset of interpolation points, accordingly to the order along each variables.
+
+#### Input
+
+- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
+- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `tab`: $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
+- `ord`: $n$-dimensional vector with order along each variables ($n\times 1$ double)
+- `square`: tag used to set wheather row interpolation points have the same dimension as columns or may be greather;  `true` leads to same number while `false` allows more row than columns (boolean)
+
+#### Output
+
+- `pc`: reduced column interpolation points $P_c^{n}$ ($n$-dimnensional cell with double)
+- `pr`: reduced row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `W`: tensor corresponding to $P_r^{n}$ evaluation ($n$-dimensional cell with double)
+- `V`: tensor corresponding to $P_c^{n}$ evaluation ($n$-dimensional cell with double)
+- `tab_red`: reduced $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
+
+#### Syntax 
+
 ```Matlab
-[p_c,p_r,W,V,tab_red] = mlf.points_selection(p_c,p_r,tab,ord,true);
+[pc,pr,W,V,tab_red] = mlf.points_selection(p_c,p_r,tab,ord,square);
 ```
 
 ### `mlf.loewner_null_rec`
 
+Function which construct the Loewner matrix null space (barycentric coefficients) using the recursive approach (without constructing the $N\times N$ Loewner matrix).
+
+#### Input
+
+- `pc`: reduced column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
+- `pr`: reduced row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `tab_red`: reduced $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
+- `method`: method used for null space computation (string); for the time being, we suggest to set this variable to `svd0`.
+
+#### Output
+
+- `c`: Loewner matrix null space, being the barycentric coefficients ($N \times 1$ double)
+- `info`: information related to the process (e.g. \texttt{flop} count)
+
+#### Syntax 
+
 ```Matlab
-[c_rec1,info_rec1]  = mlf.loewner_null_rec(pc,pr,tab_red,'svd0');
+[c,info]  = mlf.loewner_null_rec(pc,pr,tab_red,method);
 ```
 
 ### `mlf.eval_lagrangian`
 
+Function which evaluates the model in Lagrangian form.
+
+#### Input
+
+- `pc`: reduced column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
+- `w`: original vectorized data ealuated at $P_c^{n}$ ($n$-dimensional cell with double). In practice we have `w = mlf.mat2vec(W);`.
+- `c`: Loewner matrix null space, being the barycentric coefficients ($N \times 1$ double)
+- `param`: $n$-variable vector where the the model has to be evaluated ($n\times 1$ double)
+- `show`: tag used to show the advancement of the model evaluation (boolean)
+
+#### Output
+
+- `val`: value of the Lagrangian model (double)
+
+#### Syntax 
 ```Matlab
-val = mlf.eval_lagrangian(pc,w,c_rec1,param,false);
+val = mlf.eval_lagrangian(pc,w,c,param,false);
 ```
 
 
@@ -189,9 +259,10 @@ colorbar,
 
 ## Feedbacks
 
-Please send any comment to [C. Poussot-Vassal](charles.poussot-vassal@onera.fr) if you report a bug or user experience issues.
+Please send any comment to C. Poussot-Vassal (charles.poussot-vassal@onera.fr) if you report a bug or user experience issues.
 
-## Claim
+# Disclaimer
 
-This deposit consitutes a research code and is not aimed to be included in any third party software without the consent of the authors. Authors decline responsabilities in case of problem when applying the code.
+Once again, this deposit consitutes a research code that accompany the paper mentionned above. It is not aimed to be included in any third party software without the consent of the authors. Authors decline responsabilities in case of problem when applying the code.
 
+Notice also that pathological cases may appear. A more advanced code, to deal with practical and theoretical issues/limitations is currently under developpement by the authors.
