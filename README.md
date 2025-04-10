@@ -1,5 +1,20 @@
 # Multivariate Loewner Framework - mLF 
-Multivariate Loewner Framework 
+
+## Overview
+
+The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I.V. Gosea and C. Poussot-Vassal in https://arxiv.org/abs/2405.00495. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real of complex valued). It is suited to approximate, from any $n$-dimensional tensor 
+- $n$-variables static functions
+- $n$-variables (parametric) dynamical systems
+
+## Contributions claim
+
+We claim the following innovations
+
+- We propose a ***generalized realization*** form for rational functions in n-variables (for any $n$), which are described in the Lagrange basis;
+- We show that the $n$-dimensional Loewner matrix can be written as the solution of a ***series of cascaded Sylvester equations***;
+- We demonstrate that the required variables to be determined, i.e. the barycentric coefficients, can be computed using a sequence of small-scale 1-dimensional Loewner matrices instead of the large-scale ($N\times N$) $n$-dimensional one, therefore drastically ***taming the curse of dimensionality***, i.e. reducing the both computational effort and memory needs, and improving accuracy;
+- We show that this decomposition achieves variables decoupling; thus connecting the Loewner framework for rational interpolation of multivariate functions and the ***Kolmogorov Superposition Theorem (KST)***, restricted to rational functions. The result is the formulation of KST for the special case of rational functions;
+- Connections with KAN neural nets follows (detailed in future work).
 
 
 # Citation and feedbacks
@@ -24,7 +39,7 @@ The code below is given for open science perspectives. Please cite the reference
 
 ## Feedbacks
 
-Please send any comment to charles.poussot-vassal@onera.fr if you report a bug or user experience issue.
+Please send any comment to [C. Poussot-Vassal](charles.poussot-vassal@onera.fr) if you report a bug or user experience issues.
 
 
 # A simple MATLAB code
@@ -43,25 +58,23 @@ for ii = 1:n
     p_r{ii} = p_c{ii}+dx;
 end
 %%% Elementary ingredients
-ok                      = data.check(p_c,p_r);
-tab                     = data.make_tab(H,p_c,p_r,true);
-ord                     = data.compute_order(p_c,p_r,tab,1e-10,[],5,true);
-[p_c,p_r,W,V,tab_red]   = data.points_selection(p_c,p_r,tab,ord,true);
+ok                      = mlf.check(p_c,p_r);
+tab                     = mlf.make_tab(H,p_c,p_r,true);
+ord                     = mlf.compute_order(p_c,p_r,tab,1e-10,[],5,true);
+[p_c,p_r,W,V,tab_red]   = mlf.points_selection(p_c,p_r,tab,ord,true);
 
-%%% Full null-space span computation (tableau)
+%%% Recursive null-space computation (using tab_n)
 tic
-LL                  = data.loewnerMatrix(p_c,p_r,W,V);
-c_full              = data.null(LL,'svd0');
-toc 
-
-%%% Recursive null-space computation (tableau)
-tic
-[c_rec,info_rec]    = data.loewner_null_rec(p_c,p_r,tab_red,'svd0');
-%[c_rec,info_rec]    = data.loewner_null_recH(p_c,p_r,H,'svd0','optim');
-info_rec
+[c_rec,info_rec]    = mlf.loewner_null_rec(p_c,p_r,tab_red,'svd0');
 toc
+%%% Recursive null-space computation (using tab_n)
+%[c_rec,info_rec]    = mlf.loewner_null_recH(p_c,p_r,H,'svd0');
+info_rec
 
-[Var,Lag,Bary]  = data.decoupling(p_c,info_rec);
+%%% Evaluate the interpolated model vs. orginial
+
+%%% Decoupling features, toward rational KST
+[Var,Lag,Bary]  = mlf.decoupling(p_c,info_rec);
 
 ```
 
