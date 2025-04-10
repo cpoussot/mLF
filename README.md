@@ -76,12 +76,10 @@ Please refer to https://arxiv.org/abs/2405.00495  for notations and related equa
 
 ```Matlab
 %addpath("location_of_mlf") % Add the location of the +mlf package
-%%% Define a multivariate handle function (here toy case)
+%%% Define a multivariate handle function 
 n       = 3; % number of variables
 H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(2*s2)*tanh(5*(s2-pi)))/(s1^2+s3/10*cos(3*s1)+3)/(s2+10);
-% /!\ important tuning variable when data generated from irrational function 
-% used to set the approximation order 
-tol_ord = 1e-7; 
+tol_ord = 1e-8; 
 % Interpolation points (IP) - separate columns and rows (as Section 3, eq. 13-15)
 for ii = 1:n
     p_c{ii} = linspace(-6,6,30);
