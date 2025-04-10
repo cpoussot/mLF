@@ -2,13 +2,12 @@
 
 ### Overview
 
-The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I.V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://arxiv.org/abs/2405.00495). It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real of complex valued). It is suited to approximate, from any $n$-dimensional tensor 
+The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://arxiv.org/abs/2405.00495), to appear in SIAM Review. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
 - $n$-variables static functions
 - $n$-variables (parametric) dynamical systems
 
 ### Contributions claim
 
-We claim the following innovations:
 
 - We propose a ***generalized realization*** form for rational functions in n-variables (for any $n$), which are described in the Lagrange basis;
 - We show that the $n$-dimensional Loewner matrix can be written as the solution of a ***series of cascaded Sylvester equations***;
@@ -23,7 +22,7 @@ We claim the following innovations:
 @article{AGPV:2025,
 	Author = {A.C. Antoulas and I-V. Gosea and C. Poussot-Vassal},
 	Doi = {},
-	Journal = {SIAM Review},
+	Journal = {to appear in SIAM Review},
 	Number = {},
 	Pages = {},
 	Title = {On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality},
@@ -37,37 +36,63 @@ We claim the following innovations:
 
 - A.C. Antoulas presentation at [BANFF](https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule)
 - C. Poussot-Vassal presentation at [GT Identification](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing) with [YouTube video](https://youtu.be/M2SX3C4VCt8)
-- Benchmark result 
+- Benchmark results and comparison (to come)
 
 
 # The "mLF" MATLAB package 
 
-The code embedded in this GitHub page is given for open science perspectives. Please cite the reference above and do not hesitate to contact us in case of spotted bug.
+The code (`+mlf` folder)  provided in this GitHub page is given for open science purpose. Its principal objective is to accompany the [paper](https://arxiv.org/abs/2405.00495) by the authors, thus aims at being educative rather than industry-oriented. Evolutions (numerical improvements) may come with time. Please, cite the reference above if used in your work and do not hesitate to contact us in case of bug of problem when using it.
 
 ## Functions description
 
-### mlf.check
+### `mlf.check`
+
+Function which checks that column `p_c` and row `p_r` interpolation point sets are discjoint. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolatoin points along each variables.
+
+#### Input
+
+- `p_c`: column interpolation points ($n$-dimneiosnl cell with double)
+- `p_r`: row interpolation points ($n$-dimneiosnl cell with double)
+
+#### Output
+
+- `ok`: tag assessing that interpolatoin points are disjoints (boolean)
+
+#### Syntax 
 
 ```Matlab
 ok = mlf.check(p_c,p_r)
 ```
 
-### mlf.make_tab
+### `mlf.make_tab`
 
 ```Matlab
 tab = mlf.make_tab(H,p_c,p_r,true);
 ```
 
-### mlf.compute_order
+### `mlf.compute_order`
 
 ```Matlab
 ord = mlf.compute_order(p_c,p_r,tab,1e-10,[],5,true);
 ```
-### mlf.points_selection
+### `mlf.points_selection`
 
 ```Matlab
 [p_c,p_r,W,V,tab_red] = mlf.points_selection(p_c,p_r,tab,ord,true);
 ```
+
+### `mlf.loewner_null_rec`
+
+```Matlab
+[c_rec1,info_rec1]  = mlf.loewner_null_rec(pc,pr,tab_red,'svd0');
+```
+
+### `mlf.eval_lagrangian`
+
+```Matlab
+val = mlf.eval_lagrangian(pc,w,c_rec1,param,false);
+```
+
 
 ## A simple MATLAB code example
 
