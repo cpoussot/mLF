@@ -45,24 +45,26 @@ We claim the following innovations:
 
 The code embedded in this GitHub page is given for open science perspectives. Please cite the reference above and do not hesitate to contact us in case of spotted bug.
 
-## mlf.check
+## Functions description
+
+### mlf.check
 
 ```Matlab
 ok = mlf.check(p_c,p_r)
 ```
 
-## mlf.make_tab
+### mlf.make_tab
 
 ```Matlab
 tab = mlf.make_tab(H,p_c,p_r,true);
 ```
 
-## mlf.compute_order
+### mlf.compute_order
 
 ```Matlab
 ord = mlf.compute_order(p_c,p_r,tab,1e-10,[],5,true);
 ```
-## mlf.points_selection
+### mlf.points_selection
 
 ```Matlab
 [p_c,p_r,W,V,tab_red] = mlf.points_selection(p_c,p_r,tab,ord,true);
