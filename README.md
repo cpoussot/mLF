@@ -11,7 +11,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 - We propose a ***generalized realization*** form for rational functions in n-variables (for any $n$), which are described in the Lagrange basis;
 - We show that the $n$-dimensional Loewner matrix can be written as the solution of a ***series of cascaded Sylvester equations***;
-- We demonstrate that the required variables to be determined, i.e. the barycentric coefficients, can be computed using a sequence of small-scale 1-dimensional Loewner matrices instead of the large-scale ($Q\times K$, $Q\geq K$)  $n$-dimensional one, therefore drastically ***taming the curse of dimensionality***, i.e. reducing the both computational effort and memory needs, and improving accuracy;
+- We demonstrate that the required variables to be determined, i.e. the barycentric coefficients, can be computed using a sequence of small-scale 1-dimensional Loewner matrices instead of the large-scale ($Q\times K$, $Q\geq K$)  $n$-dimensional one, therefore drastically ***taming the curse of dimensionality***, i.e. reducing both the computational effort and the memory needs, and, in addition improving accuracy;
 - We show that this decomposition achieves variables decoupling; thus connecting the Loewner framework for rational interpolation of multivariate functions and the ***Kolmogorov Superposition Theorem (KST)***, restricted to rational functions. The result is the formulation of KST for the special case of rational functions;
 - Connections with KAN neural nets follows (detailed in future work).
 
@@ -28,7 +28,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 	Title = {On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality},
 	Volume = {},
 	Year = {},
-    	Note ={\url{https://arxiv.org/abs/2405.00495}}, 
+    	Note = {\url{https://arxiv.org/abs/2405.00495}}, 
 }
 ```
 
