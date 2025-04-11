@@ -96,7 +96,7 @@ Evaluate simplified function and display results
 ```Matlab
 %%% 3D plot 
 % Along first and second variables 
-% Other variables are randomly chosen betwwen bounds
+% Other variables are randomly chosen between bounds
 x1      = linspace(min(p_r{1}),max(p_r{1}),40)+rand(1)/10;
 x2      = linspace(min(p_r{1}),max(p_r{1}),41)+rand(1)/10;
 [X,Y]   = meshgrid(x1,x2);
