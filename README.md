@@ -20,15 +20,15 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 ```
 @article{AGPV:2025,
-	Author = {A.C. Antoulas and I-V. Gosea and C. Poussot-Vassal},
-	Doi = {},
+	Author	= {A.C. Antoulas and I-V. Gosea and C. Poussot-Vassal},
+	Doi 	= {},
 	Journal = {to appear in SIAM Review},
-	Number = {},
-	Pages = {},
-	Title = {On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality},
-	Volume = {},
-	Year = {},
-    	Note = {\url{https://arxiv.org/abs/2405.00495}}, 
+	Number 	= {},
+	Pages 	= {},
+	Title 	= {On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality},
+	Volume 	= {},
+	Year 	= {},
+    	Note 	= {\url{https://arxiv.org/abs/2405.00495}}, 
 }
 ```
 
