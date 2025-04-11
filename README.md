@@ -34,8 +34,8 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 ### Additional support material (presentations, reports, ...)
 
-- A.C. Antoulas presentation at [BANFF](https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule)
-- C. Poussot-Vassal presentation at [GT Identification](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing) with [YouTube video](https://youtu.be/M2SX3C4VCt8)
+- A.C. Antoulas presentation [BANFF Video]([https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule](https://www.birs.ca/events/2025/5-day-workshops/25w5376/videos/watch/202504090859-Antoulas.html))
+- C. Poussot-Vassal presentation [GT Identification video](https://youtu.be/M2SX3C4VCt8), [slides](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing)
 - Benchmark results and comparison (to come)
 
 
@@ -47,13 +47,13 @@ The code (`+mlf` folder)  provided in this GitHub page is given for open science
 
 Here is a simple code that describes how to deploy the cascaded 1-D Loewner null space construction. Refer to https://arxiv.org/abs/2405.00495 for notations and related equations. Code below is `demo.m`.
 
-First add the path with the `+mlf` package.
+First add the path where the `+mlf` package is.
 
 ```Matlab
 %addpath("location_of_mlf") % Add the location of the +mlf package
 ```
 
-then compute the barycentic coefficients for a given function `H`.
+Then compute the barycentic coefficients for a given function `H`.
 
 ```Matlab
 %%% Define a multivariate handle function 
