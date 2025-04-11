@@ -79,7 +79,7 @@ ord                 = mlf.compute_order(p_c,p_r,tab,tol_ord,[],5,true);
 [pc,pr,W,V,tab_red] = mlf.points_selection(p_c,p_r,tab,ord,false);
 w                   = mlf.mat2vec(W);
 
-%%% Recursive null-space computation (Section 5, Theorem 5.3)
+%%% Recursive null space computation (Section 5, Theorem 5.3)
 [c_rec1,info_rec1]  = mlf.loewner_null_rec(pc,pr,tab_red,'svd0');
 
 %%% Curse of dimensionality: flops & memory estimation (Section 5, Theorem 5.5 & Theorem 5.6)
@@ -107,10 +107,11 @@ for ii = 1:numel(x1)
         param                   = [x1(ii) x2(jj) rnd_p];
         paramStr                = regexprep(num2str(param,36),'\s*',',');
         eval(['tab_ref(jj,ii)   = H(' paramStr ');'] )
+	% Evaluate the model in Lagrangian form at values = param
         tab_app(jj,ii)          = mlf.eval_lagrangian(pc,w,c_rec1,param,false);
     end
 end
-%
+% Evaluation of the functions (original and reconstructed) 
 figure
 subplot(1,2,1); hold on, grid on
 surf(X,Y,tab_app,'EdgeColor','none'), hold on
@@ -119,7 +120,7 @@ xlabel('$x_1$','Interpreter','latex')
 ylabel('$x_2$','Interpreter','latex')
 title('Original vs. Approximation','Interpreter','latex')
 axis tight, zlim([min(tab_ref(:)) max(tab_ref(:))]), view(-30,40)
-%
+% Evaluation of the error
 subplot(1,2,2); hold on, grid on, axis tight
 imagesc(log10(abs(tab_ref-tab_app)/max(abs(tab_ref(:)))),'XData',x1,'YData',x2)
 xlim([min(x1) max(x1)])
