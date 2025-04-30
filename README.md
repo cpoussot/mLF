@@ -74,7 +74,8 @@ end
 ok                  = mlf.check(p_c,p_r);
 % Construct tab_n (Section 3)
 tab                 = mlf.make_tab(H,p_c,p_r,true);
-% Estimate order along each variables and select a subset of IP
+
+%%% Estimate order along each variables and select a subset of IP
 ord                 = mlf.compute_order(p_c,p_r,tab,tol_ord,[],5,true);
 [pc,pr,W,V,tab_red] = mlf.points_selection(p_c,p_r,tab,ord,false);
 w                   = mlf.mat2vec(W);
