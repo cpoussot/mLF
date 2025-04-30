@@ -115,6 +115,7 @@ if SHOW
     %title_str = ['$(' title_str_left{:} ')=(' title_str_right{:} ')$'];
     %title(sprintf(title_str,rank_s),'Interpreter','latex')
     %title_str = ['$(' title_str_left{:} ')=(' title_str_right{:} ') \\rightarrow (' title_str_right{:} ')$'];
+    set(gca,'TickLabelInterpreter','latex')
     title_str = ['$(' title_str_left{:} ')=(' title_str_right{:} ') \\rightarrow (' title_str_right{:} ') \\rightarrow N=%d$'];
     title(sprintf(title_str,rank_s,ord,prod(ord+1)),'Interpreter','latex')
     drawnow
