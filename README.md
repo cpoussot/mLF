@@ -3,8 +3,8 @@
 ### Overview
 
 The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://arxiv.org/abs/2405.00495), to appear in SIAM Review. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
-- $n$-variables static functions
-- $n$-variables (parametric) dynamical systems
+- $n$-variable static functions
+- $n$-variable (parametric) dynamical systems
 
 ### Contributions claim
 
