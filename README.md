@@ -34,7 +34,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 ### Additional support material (presentations, reports, ...)
 
-- A.C. Antoulas presentation [BANFF Video]([https://www.birs.ca/events/2025/5-day-workshops/25w5376/schedule](https://www.birs.ca/events/2025/5-day-workshops/25w5376/videos/watch/202504090859-Antoulas.html))
+- A.C. Antoulas presentation [BANFF Video](https://www.birs.ca/events/2025/5-day-workshops/25w5376/videos/watch/202504090859-Antoulas.html)
 - C. Poussot-Vassal presentation [GT Identification video](https://youtu.be/M2SX3C4VCt8), [slides](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing)
 - Benchmark results and comparison (to come)
 
