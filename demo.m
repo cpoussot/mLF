@@ -1,10 +1,14 @@
 clearvars, close all
-
+set(groot,'DefaultFigurePosition', [300 300 1000 400]);
+set(groot,'defaultlinelinewidth',2.5)
+set(groot,'defaultlinemarkersize',14)
+set(groot,'defaultaxesfontsize',18)
 %addpath("location_of_mlf") % Add the location of the +mlf package
+
 %%% Define a multivariate handle function 
 n       = 3; % number of variables
-H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(2*s2)*tanh(5*(s2-pi)))/(s1^2+s3/10*cos(3*s1)+3)/(s2+10);
-%H       = @(s1,s2,s3) s2/(s1-s3^2/2);
+%H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(2*s2)*tanh(5*(s2-pi)))/(s1^2+s3/10*cos(3*s1)+3)/(s2+10);
+H       = @(s1,s2,s3) s2^3/(s1^2+2*s1-s3/2+10);
 % /!\ The tolerence is an important parameter when the data are generated from an irrational function
 tol_ord = 1e-7; 
 % Interpolation points (IP) - separate columns and rows (as Section 3, eq. 13-15)
@@ -26,12 +30,12 @@ ord                 = mlf.compute_order(p_c,p_r,tab,tol_ord,[],5,true);
 w                   = mlf.mat2vec(W);
 
 %%% Recursive null-space computation (Section 5, Theorem 5.3)
-[c_rec1,info_rec1]  = mlf.loewner_null_rec(pc,pr,tab_red,'svd0');
+[c,info]            = mlf.loewner_null_rec(pc,pr,tab_red,'svd0');
 
 %%% Curse of dimensionality: flops & memory estimation (Section 5, Theorem 5.5 & Theorem 5.6)
 fprintf('FLOPS\n')
-fprintf(' * recursive: %d\n',info_rec1.nflop)
-fprintf(' * full: %d\n',length(c_rec1)^3)
+fprintf(' * recursive: %d\n',info.nflop)
+fprintf(' * full: %d\n',length(c)^3)
 fprintf('MEMORY\n')
 fprintf(' * recursive: %d MB\n',max(ord+1)^2/2^20)
 fprintf(' * full: %d MB\n',prod(ord+1)^2/2^20)
@@ -49,7 +53,7 @@ for ii = 1:numel(x1)
         param                   = [x1(ii) x2(jj) rnd_p];
         paramStr                = regexprep(num2str(param,36),'\s*',',');
         eval(['tab_ref(jj,ii)   = H(' paramStr ');'] )
-        tab_app(jj,ii)          = mlf.eval_lagrangian(pc,w,c_rec1,param,false);
+        tab_app(jj,ii)          = mlf.eval_lagrangian(pc,w,c,param,false);
     end
 end
 %
@@ -61,11 +65,8 @@ xlabel('$x_1$','Interpreter','latex')
 ylabel('$x_2$','Interpreter','latex')
 title('Original vs. Approximation','Interpreter','latex')
 axis tight, zlim([min(tab_ref(:)) max(tab_ref(:))]), view(-30,40)
-%
 subplot(1,2,2); hold on, grid on, axis tight
 imagesc(log10(abs(tab_ref-tab_app)/max(abs(tab_ref(:)))),'XData',x1,'YData',x2)
-xlim([min(x1) max(x1)])
-ylim([min(x2) max(x2)])
 xlabel('$x_1$','Interpreter','latex')
 ylabel('$x_2$','Interpreter','latex')
 title('{\bf log}(abs. err.)/max.','Interpreter','latex')
