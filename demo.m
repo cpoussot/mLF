@@ -35,10 +35,10 @@ w                   = mlf.mat2vec(W);
 %%% Curse of dimensionality: flops & memory estimation (Section 5, Theorem 5.5 & Theorem 5.6)
 fprintf('FLOPS\n')
 fprintf(' * recursive: %d\n',info.nflop)
-fprintf(' * full: %d\n',length(c)^3)
+fprintf(' * full     : %d\n',length(c)^3)
 fprintf('MEMORY\n')
 fprintf(' * recursive: %d MB\n',max(ord+1)^2/2^20)
-fprintf(' * full: %d MB\n',prod(ord+1)^2/2^20)
+fprintf(' * full     : %d MB\n',prod(ord+1)^2/2^20)
 
 %%% 3D plot 
 % Along first and second variables 
