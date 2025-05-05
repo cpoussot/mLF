@@ -1,4 +1,4 @@
-function [c,sig] = null(LL,METHOD)
+function [c,sig,km] = null(LL,METHOD)
 
     if nargin < 2
         METHOD = 'svd';
@@ -7,33 +7,33 @@ function [c,sig] = null(LL,METHOD)
     %warning('off','backtrace')
     c       = [];
     sig     = [];
-    if strcmp(METHOD(1:3),'svd')
-        [~,sig,V]   = svd(double(LL),'econ');
-        sig         = diag(sig);
-        sig         = sig/sig(1);
-        c           = V(:,end);
-        c           = normalize(c,str2double(METHOD(4:end)));
-    elseif strcmp(METHOD(1:2),'qr')
+    if strcmp(METHOD(1:2),'qr')
         [Q,~]       = qr(double(LL).');
         sig         = [];
         c           = Q(:,end);
         c           = normalize(c,str2double(METHOD(3:end)));
+    elseif strcmp(METHOD(1:3),'svd')
+        [~,sig,V]   = svd(double(LL),'econ');
+        sig         = diag(sig);
+        sig         = sig/sig(1);
+        c           = V(:,end);
+        [c,km]      = normalize(c,str2double(METHOD(4:end)));
     elseif strcmp(METHOD(1:4),'null')
         c           = null(LL);
         c           = c(:,end);
         sig         = [];
         c           = normalize(c,str2double(METHOD(5:end)));
-    elseif strcmp(METHOD(1:8),'null_sym')
-        LL          = sym(LL);
-        c           = null(LL);
-        c           = c(:,end);
-        c           = normalize(c,str2double(METHOD(9:end)));
     elseif strcmp(METHOD(1:4),'rsvd')
         [~,sig,V]   = svd_random(double(LL),[]);
         sig         = diag(sig);
         sig         = sig/sig(1);
         c           = V(:,end);
         c           = normalize(c,str2double(METHOD(5:end)));
+    elseif strcmp(METHOD(1:8),'null_sym')
+        LL          = sym(LL);
+        c           = null(LL);
+        c           = c(:,end);
+        c           = normalize(c,str2double(METHOD(9:end)));
     elseif strcmp(METHOD(1:8),'mldivide')
         c_div       = LL(:,1:end-1)\LL(:,end);
         c           = [-c_div; 1];
@@ -78,14 +78,16 @@ function [U,S,V] = svd_random(A,r)
     V        = V(:,1:r);
 end
 
-function cn = normalize(c,k)
+function [cn,km] = normalize(c,k)
     if k > 0
         cn      = c/c(k);
+        km      = k;
     elseif k == 0
         [~,km]  = max(abs(c));
         cn      = c/c(km);
     else
         cn      = c/c(end);
+        km      = size(c,1);
     end
 end
 
