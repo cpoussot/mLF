@@ -28,7 +28,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 	Title 	= {On the {Loewner} framework, the {Kolmogorov} superposition theorem, and the curse of dimensionality},
 	Volume 	= {},
 	Year 	= {},
-    Note    = {\url{https://arxiv.org/abs/2405.00495}}, 
+        Note    = {\url{https://arxiv.org/abs/2405.00495}}, 
 }
 ```
 
