@@ -20,6 +20,8 @@ if any(~isreal(p_c{1})) % /!\ here you should check complex conjugation also
 else
     c_p1 = null(LL_p1);
 end
+w_p1    = W(:);
+sca_p1  = W(end);
 nflop   = nflop + size(LL_p1,1)*size(LL_p1,2)^2;
 % % Check rank theorem
 % if (min(size(c_p1)) > 1) || (isempty(c_p1))
@@ -38,6 +40,10 @@ for p1 = 1:length(p_c{1})
     nflop   = nflop + size(LLp2,1)*size(LLp2,2)^2;
     % Null-space
     c       = [c; c_it(:,1)*c_p1(kk,1)];
+    %
+    cit(:,p1) = c_it;
+    wit(:,p1) = W(:);
+    sca(:,p1) = W(end);
     % % Check rank theorem
     % if (min(size(c_pn{kk})) > 1) || (isempty(c_pn{kk}))
     %     %warning(['rank(LL_p2{' num2str(kk) '}) < ' num2str(length(LLp2)-1) ' (c_p1{' num2str(kk) '} is certainly wrong)'])
@@ -48,5 +54,10 @@ for p1 = 1:length(p_c{1})
 end
 %
 info.nflop  = nflop;
-
+info.c2     = c_p1;
+info.w2     = w_p1;
+info.d2     = sca_p1;
+info.c1     = cit;
+info.w1     = wit;
+info.d1     = sca;
 %warning('on','backtrace')

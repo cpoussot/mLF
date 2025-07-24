@@ -1,4 +1,4 @@
-function [c_null,info] = loewner_null_recN(p_c,p_r,tab,METHOD,Nc)
+function [c_null,info] = loewner_null_recN_sym(p_c,p_r,tab,Nc);%nflop0)
 
 c_null  = [];
 nflop   = 0;
@@ -11,7 +11,7 @@ end
 p_comma = regexprep(num2str(p), '\s*', ',');
 eval(['W = tab(1:length(p_c{1}),' p_comma ');']);
 eval(['V = tab(1+length(p_c{1}):end,' p_comma ');']);
-LL_p1   = mlf.loewnerMatrix({p_c{1}},{p_r{1}},W,V);
+LL_p1   = mlf.loewnerMatrix_sym({p_c{1}},{p_r{1}},W,V);
 if any(~isreal(p_c{1})) && (sum(imag(p_c{1}))==0) % /!\ here you should check complex conjugation also
     warning('Enforce realness')
     J0  = sqrt(2)/2 * [1 -1i; 1 1i];
@@ -26,11 +26,11 @@ if any(~isreal(p_c{1})) && (sum(imag(p_c{1}))==0) % /!\ here you should check co
             ii = ii + 2;
         end
     end
-    c_p1 = T1*mlf.null(T1'*LL_p1*T1,METHOD);
+    c_p1 = T1*null(T1'*LL_p1*T1);
 else
-    c_p1 = mlf.null(LL_p1,METHOD);
+    c_p1 = null(LL_p1);
 end
-%c_p1    = mlf.null(LL_p1,METHOD);
+%c_p1    = null(LL_p1);
 nflop1  = size(LL_p1,1)*size(LL_p1,2)^2;
 nflop   = nflop + nflop1;
 % Check rank theorem
@@ -56,9 +56,9 @@ for p1 = 1:length(p_c{1})
     kk  = kk + 1;
     eval(['tab_p1 = reshape(tab(p1,' tab_str1 '),' tab_str2 ');'])
     if length(col) > 2 
-        [c_it,ii]   = mlf.loewner_null_recN(col,row,tab_p1,'svd',Nc);
+        [c_it,ii]   = mlf.loewner_null_recN_sym(col,row,tab_p1,Nc);
     else 
-        [c_it,ii]   = mlf.loewner_null_rec2(col,row,tab_p1,'svd');
+        [c_it,ii]   = mlf.loewner_null_rec2_sym(col,row,tab_p1);
     end
     nflop   = nflop + ii.nflop;
     c_null  = [c_null; c_it(:,1)*c_p1(kk,1)];

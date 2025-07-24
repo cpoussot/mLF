@@ -35,6 +35,9 @@ switch n
         c               = null(LL);
         info_rec.LL     = LL;
         info_rec.nflop  = size(LL,1)*size(LL,2)^2;
+        info_rec.c1     = c;
+        info_rec.w1     = W(:);
+        info_rec.d1     = 1;
     case 2
         [c,info_rec]    = mlf.loewner_null_rec2_sym(p_c,p_r,tab);
     otherwise
