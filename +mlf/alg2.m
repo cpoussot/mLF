@@ -4,35 +4,27 @@ if nargin < 4
     opt = struct();
 end
 
-%%% Maximal IP
-n       = length(p_c);
-tab_sz  = size(tab);
-for i = 1:n 
-    ip{i} = [p_c{i} p_r{i}];
-end
-
-%%% Tolerance
+%%% Option
+n   = length(p_c);
+% Tolerance
 if ~isfield(opt,'tol')
     tol = 1e-10;
 else
     tol = opt.tol;
 end
-
-%%% Method for null space computation
+% Method for null space computation
 if ~isfield(opt,'method')
     method = 'rec';
 else
     method = opt.method;
 end
-
-%%% Method for null space computation
+% Method for null space computation
 if ~isfield(opt,'method_null')
     method_null = 'svd0';
 else
     method_null = opt.method_null;
 end
-
-%%% "Estimate" if l-th variable is rational 
+% "Estimate" if l-th variable is rational 
 if ~isfield(opt,'max_itpl')
     tol1 = [1e-9 1e-12];
     for i = 1:numel(tol1)
@@ -47,17 +39,21 @@ if ~isfield(opt,'max_itpl')
     opt.max_itpl = ip_est;
 end
 
-%%% Initial interpolation partition (if any)
+% Initial interpolation partition (if any)
 if ~isfield(opt,'ip_keep')
     ip_col = cell(1,n);
 else
     ip_col = opt.ip_keep;
 end
-
+% Max iter
 if ~isfield(opt,'max_iter')
     opt.max_iter = prod(cellfun(@length,p_c))-1;
 end
 
+%%% Start
+for i = 1:n 
+    ip{i} = [p_c{i} p_r{i}];
+end
 max_samples         = max(abs(tab),[],'all');
 norm2_samples       = norm(tab(:))^2;
 err_mat             = abs(tab-mean(tab,'all'));
@@ -90,6 +86,7 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
             ip_col{i} = unique([ip_col{i},max_Idx{i}]);
         end
     end
+    %ip_col, pause
     
     %%% Set column and row interpolation points
     for i = 1:n
@@ -146,25 +143,26 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     nodes       = cellfun(@(sv, lp) sv(lp), ip, ip_col, 'UniformOutput', false);
     num_coefs   = c .* ip_tab(:);
     g           = BarycentricForm(nodes,num_coefs,c);
-    err_mat     = abs(tab-g.eval(ip));
+    %err_mat     = abs(tab-g.eval(ip));
 
-    % w       = mlf.mat2vec(W_it);
-    % comb    = mlf.combinations_dim(tab_sz);
-    % %comb    = mlf.combinations_dim(pr_sz);
-    % for i = 1:size(comb,1)
-    %     for j = 1:n
-    %         ipt(i,j) = ip{j}(comb(i,j));
-    %         %ipt(i,j) = pr{j}(comb(i,j));
-    %     end
-    % end
-    % N   = size(ipt,1);
-    % hr  = zeros(N,1);
-    % for i = 1:N
-    %     hr(i) = mlf.eval_lagrangian(pc,w,c,ipt(i,:),false);
-    % end
-    % tab_r   = mlf.vec2mat(hr,tab_sz);
-    % err_mat = abs(tab-tab_r);
-    % err_mat(isnan(err_mat)) = 0;
+    tab_sz  = size(tab);
+    w       = mlf.mat2vec(W_it);
+    comb    = mlf.combinations_dim(tab_sz);
+    %comb    = mlf.combinations_dim(pr_sz);
+    for i = 1:size(comb,1)
+        for j = 1:n
+            ipt(i,j) = ip{j}(comb(i,j));
+            %ipt(i,j) = pr{j}(comb(i,j));
+        end
+    end
+    N   = size(ipt,1);
+    hr  = zeros(N,1);
+    for i = 1:N
+        hr(i) = mlf.eval_lagrangian(pc,w,c,ipt(i,:),false);
+    end
+    tab_r   = mlf.vec2mat(hr,tab_sz);
+    err_mat = abs(tab-tab_r);
+    err_mat(isnan(err_mat)) = 0;
     
     %%% Model
     g = {pc w c};

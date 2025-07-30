@@ -61,6 +61,14 @@ switch CAS
         nam     = '$0.1x_1+\gamma x_2^p$';
         dom     = 'R';
         tag     = {'polynomial' '$C^\infty$'};
+    case 6
+        n       = 2;
+        H       = @(x) x(:,1)+x(:,2);
+        ref     = 'Personal communication';
+        cite    = '[none]';
+        nam     = '$x_1+x_2$';
+        dom     = 'R';
+        tag     = {'polynomial' '$C^\infty$'};
 end
 
 %%% Default "x"
