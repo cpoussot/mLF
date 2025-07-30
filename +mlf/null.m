@@ -7,58 +7,64 @@ function [c,sig,km] = null(LL,METHOD)
     %warning('off','backtrace')
     c   = [];
     sig = [];
-    if strcmp(METHOD(1:2),'qr')
-        [Q,~]       = qr(double(LL).');
-        sig         = [];
-        c           = Q(:,end);
-        c           = normalize(c,str2double(METHOD(3:end)));
-    elseif strcmp(METHOD(1:3),'svd')
-        [~,sig,V]   = svd(double(LL),'econ');
-        sig         = diag(sig);
-        sig         = sig/sig(1);
-        c           = V(:,end);
-        [c,km]      = normalize(c,str2double(METHOD(4:end)));
-    elseif strcmp(METHOD(1:4),'rsvd')
-        [~,sig,V]   = svd_random(double(LL),[]);
-        sig         = diag(sig);
-        sig         = sig/sig(1);
-        c           = V(:,end);
-        c           = normalize(c,str2double(METHOD(5:end)));
-    elseif strcmp(METHOD(1:9),'null_symr')
-        LL          = sym(LL);
-        c           = null(LL);
-        %c           = c(:,end);
-        %c           = normalize(c,str2double(METHOD(10:end)));
-    elseif strcmp(METHOD(1:8),'null_sym')
-        LL          = sym(LL);
-        c           = null(LL);
-        c           = c(:,end);
-        c           = normalize(c,str2double(METHOD(9:end)));
-    elseif strcmp(METHOD(1:4),'null')
-        c           = null(LL);
-        c           = c(:,end);
-        sig         = [];
-        c           = normalize(c,str2double(METHOD(5:end)));
-    elseif strcmp(METHOD(1:8),'mldivide')
-        c_div       = LL(:,1:end-1)\LL(:,end);
-        c           = [-c_div; 1];
-        c           = normalize(c,str2double(METHOD(9:end)));        
-    elseif isnumeric(METHOD)
-        [U,S,V]     = svd(double(LL),'econ');
-        sig         = diag(S);
-        sig         = sig/sig(1);
-        idx         = sig<METHOD;
-        sig(idx)    = 0;
-        sum(idx);
-        fprintf('%d normalized singular value(s) < %1.2g -> to 0\n',sum(idx),METHOD)
-        S           = diag(sig);
-        [~,S,V]     = svd(double(U*S*V'),'econ');
-        sig         = diag(S);
-        sig         = sig/sig(1);
-        k           = sum(sig>METHOD);
-        c_svd       = V(:,k);
-        c_svd       = c_svd/c_svd(end);
-        c           = c_svd;
+    METHOD_ = METHOD;
+    if str2double(METHOD(end)) >= 0
+        METHOD_ = METHOD(1:end-1);
+    end
+
+    switch lower(METHOD_)
+        case 'qr'
+            [Q,~]       = qr(double(LL).');
+            sig         = [];
+            c           = Q(:,end);
+            c           = normalize(c,str2double(METHOD(3:end)));
+        case 'svd'
+            [~,sig,V]   = svd(double(LL),'econ');
+            sig         = diag(sig);
+            sig         = sig/sig(1);
+            c           = V(:,end);
+            [c,km]      = normalize(c,str2double(METHOD(4:end)));
+        case 'rsvd'
+            [~,sig,V]   = svd_random(double(LL),[]);
+            sig         = diag(sig);
+            sig         = sig/sig(1);
+            c           = V(:,end);
+            c           = normalize(c,str2double(METHOD(5:end)));
+        case 'null_symr'
+            LL          = sym(LL);
+            c           = null(LL);
+            %c           = c(:,end);
+            %c           = normalize(c,str2double(METHOD(10:end)));
+        case 'null_sym'
+            LL          = sym(LL);
+            c           = null(LL);
+            c           = c(:,end);
+            c           = normalize(c,str2double(METHOD(9:end)));
+        case 'null'
+            c           = null(LL);
+            c           = c(:,end);
+            sig         = [];
+            c           = normalize(c,str2double(METHOD(5:end)));
+        case 'mldivide'
+            c_div       = LL(:,1:end-1)\LL(:,end);
+            c           = [-c_div; 1];
+            c           = normalize(c,str2double(METHOD(9:end)));        
+        otherwise %isnumeric(METHOD)
+            [U,S,V]     = svd(double(LL),'econ');
+            sig         = diag(S);
+            sig         = sig/sig(1);
+            idx         = sig<METHOD;
+            sig(idx)    = 0;
+            sum(idx);
+            fprintf('%d normalized singular value(s) < %1.2g -> to 0\n',sum(idx),METHOD)
+            S           = diag(sig);
+            [~,S,V]     = svd(double(U*S*V'),'econ');
+            sig         = diag(S);
+            sig         = sig/sig(1);
+            k           = sum(sig>METHOD);
+            c_svd       = V(:,k);
+            c_svd       = c_svd/c_svd(end);
+            c           = c_svd;
     end
     %warning('on','backtrace')
 end

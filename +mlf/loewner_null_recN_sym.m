@@ -30,7 +30,7 @@ if any(~isreal(p_c{1})) && (sum(imag(p_c{1}))==0) % /!\ here you should check co
 else
     c_p1 = null(LL_p1);
 end
-%c_p1    = null(LL_p1);
+c_p1    = c_p1(:,end);
 nflop1  = size(LL_p1,1)*size(LL_p1,2)^2;
 nflop   = nflop + nflop1;
 % Check rank theorem

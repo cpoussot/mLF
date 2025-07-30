@@ -12,7 +12,14 @@ METHOD_NULL = opt.method_null;
 %%% Order detection & Points selection
 n                   = length(p_c);
 ok                  = mlf.check(p_c,p_r);
-ord                 = mlf.compute_order(p_c,p_r,tab,ord_tol,ord_obj,ord_N,ord_show);
+if ord_tol == -1
+    for i = 1:n
+        dim(i)      = length(p_c{i});
+    end
+    ord             = dim-1;
+else
+    ord             = mlf.compute_order(p_c,p_r,tab,ord_tol,ord_obj,ord_N,ord_show);
+end
 [pc,pr,W,V,tabr]    = mlf.points_selection(p_c,p_r,tab,ord,min_data);
 w                   = mlf.mat2vec(W);
 
