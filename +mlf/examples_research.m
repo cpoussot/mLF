@@ -36,13 +36,29 @@ switch CAS
         cite    = '[none]';
         nam     = '$1+\gamma x_1^p$';
         dom     = 'R';
-        tag     = {'constant' '$C^\infty$'};
+        tag     = {'polynomial' '$C^\infty$'};
     case 3
-        n       = 2;
-        H       = @(x) x(:,1)+gamma.*x(:,2).^p;
+        n       = 1;
+        H       = @(x) 1./(1+gamma.*x(:,1).^p);
         ref     = 'Personal communication';
         cite    = '[none]';
-        nam     = '$x_1+\gamma x_2^p$';
+        nam     = '$\frac{1}{1+\gamma x_1^p}$';
+        dom     = 'R';
+        tag     = {'rational' '$C^\infty$'};
+    case 4
+        n       = 1;
+        H       = @(x) (1-x(:,1).^p)./(1+gamma.*x(:,1).^p);
+        ref     = 'Personal communication';
+        cite    = '[none]';
+        nam     = '$\frac{1-\gamma x_1^p}{1+\gamma x_1^p}$';
+        dom     = 'R';
+        tag     = {'rational' '$C^\infty$'};
+    case 5
+        n       = 2;
+        H       = @(x) 1e-1*x(:,1)+gamma.*x(:,2).^p;
+        ref     = 'Personal communication';
+        cite    = '[none]';
+        nam     = '$0.1x_1+\gamma x_2^p$';
         dom     = 'R';
         tag     = {'polynomial' '$C^\infty$'};
 end
@@ -87,3 +103,7 @@ info.bnd    = x_bnd;
 info.ip     = ip;
 info.dim    = dim;
 %
+info.tex    = nam;
+info.tag    = tab;
+info.ref    = ref;
+info.cite   = cite;

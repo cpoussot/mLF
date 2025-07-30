@@ -3,10 +3,10 @@ function [c,sig,km] = null(LL,METHOD)
     if nargin < 2
         METHOD = 'svd';
     end
-    %METHOD = strcat(METHOD,'_____________');
+    %METHOD = strcat(METHOD,'XXXXXXXXXXXXXXXX');
     %warning('off','backtrace')
-    c       = [];
-    sig     = [];
+    c   = [];
+    sig = [];
     if strcmp(METHOD(1:2),'qr')
         [Q,~]       = qr(double(LL).');
         sig         = [];
@@ -18,22 +18,27 @@ function [c,sig,km] = null(LL,METHOD)
         sig         = sig/sig(1);
         c           = V(:,end);
         [c,km]      = normalize(c,str2double(METHOD(4:end)));
-    elseif strcmp(METHOD(1:4),'null')
-        c           = null(LL);
-        c           = c(:,end);
-        sig         = [];
-        c           = normalize(c,str2double(METHOD(5:end)));
     elseif strcmp(METHOD(1:4),'rsvd')
         [~,sig,V]   = svd_random(double(LL),[]);
         sig         = diag(sig);
         sig         = sig/sig(1);
         c           = V(:,end);
         c           = normalize(c,str2double(METHOD(5:end)));
+    elseif strcmp(METHOD(1:9),'null_symr')
+        LL          = sym(LL);
+        c           = null(LL);
+        %c           = c(:,end);
+        %c           = normalize(c,str2double(METHOD(10:end)));
     elseif strcmp(METHOD(1:8),'null_sym')
         LL          = sym(LL);
         c           = null(LL);
         c           = c(:,end);
         c           = normalize(c,str2double(METHOD(9:end)));
+    elseif strcmp(METHOD(1:4),'null')
+        c           = null(LL);
+        c           = c(:,end);
+        sig         = [];
+        c           = normalize(c,str2double(METHOD(5:end)));
     elseif strcmp(METHOD(1:8),'mldivide')
         c_div       = LL(:,1:end-1)\LL(:,end);
         c           = [-c_div; 1];
