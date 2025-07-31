@@ -86,7 +86,6 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
             ip_col{i} = unique([ip_col{i},max_Idx{i}]);
         end
     end
-    %ip_col, pause
     
     %%% Set column and row interpolation points
     for i = 1:n
