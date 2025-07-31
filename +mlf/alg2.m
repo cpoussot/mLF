@@ -118,11 +118,6 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
 
     %%% Compute null space
     if strcmp(method,'full')
-        % size(W_it)
-        % size(V_it)
-        % pc
-        % pr
-        % pause
         LL      = mlf.loewnerMatrix(pc,pr,W_it,V_it);
         c       = mlf.null(LL,method_null);
         flop    = flop + size(LL,1)*size(LL,2)^2;
@@ -134,25 +129,24 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     end
     
     %%% Evaluate
-    w       = mlf.mat2vec(W_it);
-    ip_tab  = tab(ip_col{:});
-    if n > 1
-        ip_tab = permute(ip_tab,n:-1:1);
-    end
-    ip_tab      = ip_tab(:);
-    nodes       = cellfun(@(sv, lp) sv(lp), ip, ip_col, 'UniformOutput', false);
-    num_coefs   = c .* ip_tab(:);
-    g           = BarycentricForm(nodes,num_coefs,c);
-    %err_mat     = abs(tab-g.eval(ip));
-
+    % >> Tensor version
+    % w       = mlf.mat2vec(W_it);
+    % ip_tab  = tab(ip_col{:});
+    % if n > 1
+    %     ip_tab = permute(ip_tab,n:-1:1);
+    % end
+    % ip_tab      = ip_tab(:);
+    % nodes       = cellfun(@(sv, lp) sv(lp), ip, ip_col, 'UniformOutput', false);
+    % num_coefs   = c .* ip_tab(:);
+    % g           = BarycentricForm(nodes,num_coefs,c);
+    % err_mat     = abs(tab-g.eval(ip));
+    % >> mLF version
     tab_sz  = size(tab);
     w       = mlf.mat2vec(W_it);
     comb    = mlf.combinations_dim(tab_sz);
-    %comb    = mlf.combinations_dim(pr_sz);
     for i = 1:size(comb,1)
         for j = 1:n
             ipt(i,j) = ip{j}(comb(i,j));
-            %ipt(i,j) = pr{j}(comb(i,j));
         end
     end
     N   = size(ipt,1);
