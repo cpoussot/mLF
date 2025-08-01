@@ -52,7 +52,10 @@ end
 
 %%% Start
 for i = 1:n 
-    ip{i} = [p_c{i} p_r{i}];
+    % p_c
+    % p_r
+    % [p_c{i} p_r{i}]
+    ip{i} = [p_c{i}(:); p_r{i}(:)];
 end
 max_samples         = max(abs(tab),[],'all');
 norm2_samples       = norm(tab(:))^2;

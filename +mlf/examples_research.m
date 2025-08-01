@@ -21,7 +21,7 @@ if isa(param,'struct')
 end
 %
 switch CAS
-    case 1
+    case '1-1'
         n       = 1;
         H       = @(x) 1+0.*x;
         ref     = 'Personal communication';
@@ -29,7 +29,7 @@ switch CAS
         nam     = '$1$';
         dom     = 'R';
         tag     = {'constant' '$C^\infty$'};
-    case 2
+    case '1-2'
         n       = 1;
         H       = @(x) 1+gamma.*x(:,1).^p;
         ref     = 'Personal communication';
@@ -37,7 +37,7 @@ switch CAS
         nam     = '$1+\gamma x_1^p$';
         dom     = 'R';
         tag     = {'polynomial' '$C^\infty$'};
-    case 3
+    case '1-3'
         n       = 1;
         H       = @(x) 1./(1+gamma.*x(:,1).^p);
         ref     = 'Personal communication';
@@ -45,7 +45,7 @@ switch CAS
         nam     = '$\frac{1}{1+\gamma x_1^p}$';
         dom     = 'R';
         tag     = {'rational' '$C^\infty$'};
-    case 4
+    case '1-4'
         n       = 1;
         H       = @(x) (1-x(:,1).^p)./(1+gamma.*x(:,1).^p);
         ref     = 'Personal communication';
@@ -53,15 +53,23 @@ switch CAS
         nam     = '$\frac{1-\gamma x_1^p}{1+\gamma x_1^p}$';
         dom     = 'R';
         tag     = {'rational' '$C^\infty$'};
-    case 5
+    case '1-5'
+        n       = 1;
+        H       = @(x) x(:,1).^2 .* atan(1./x(:,1));
+        ref     = 'Salazar Celis PhD thesis';
+        cite    = '\cite{SalazarCelis:2008}';
+        nam     = '$x_1^2 \mathbf{atan}\frac{1}{x_1}$';
+        dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
+    case '2-1'
         n       = 2;
         H       = @(x) 1e-1*x(:,1)+gamma.*x(:,2).^p;
         ref     = 'Personal communication';
         cite    = '[none]';
-        nam     = '$0.1x_1+\gamma x_2^p$';
+        nam     = '$10^{-1}x_1+\gamma x_2^p$';
         dom     = 'R';
         tag     = {'polynomial' '$C^\infty$'};
-    case 6
+    case '2-2'
         n       = 2;
         H       = @(x) x(:,1)+x(:,2);
         ref     = 'Personal communication';

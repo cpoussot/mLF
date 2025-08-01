@@ -1,6 +1,6 @@
 function C = vec2mat(c,dim)
 
-if numel(dim)==2 & any(dim)==1
+if numel(dim)==2 & (sum(dim)==1>0)
     C = c(:);
 else
     %%% Compute combinations

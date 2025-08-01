@@ -1,6 +1,5 @@
 function g = eval_lagrangian(z,w,c,zi,VERBOSE)
 
-Ndigit = 32;
 % for ii = 1:length(z)
 %     z{ii}  = conj(z{ii});
 % end
@@ -41,4 +40,5 @@ for ii = 1:N
     g_num(ii) = w(ii)*g_den(ii);
 end
 g = sum(g_num)/sum(g_den);
+
 
