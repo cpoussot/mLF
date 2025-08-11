@@ -32,7 +32,7 @@ function [c,sig,km] = null(LL,METHOD)
             c           = normalize(c,str2double(METHOD(5:end)));
         case 'null_symr'
             LL          = sym(LL);
-            c           = null(LL);
+            c           = null(LL,'r');
             %c           = c(:,end);
             %c           = normalize(c,str2double(METHOD(10:end)));
         case 'null_sym'
