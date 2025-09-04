@@ -19,6 +19,7 @@ if any(~isreal(p_c{1})) % /!\ here you should check complex conjugation also
     c_p1 = T1*null(T1'*LL_p1*T1);
 else
     c_p1 = null(LL_p1);
+    %c_p1 = mlf.null(LL_p1,'null_sym1');
 end
 c_p1    = c_p1(:,end);
 w_p1    = W(:);
@@ -38,6 +39,7 @@ for p1 = 1:length(p_c{1})
     V       = tab(p1,1+length(p_c{2}):end);
     LLp2    = mlf.loewnerMatrix_sym({p_c{2}},{p_r{2}},W,V);
     c_it    = null(LLp2);
+    %c_it    = mlf.null(LLp2,'null_sym1');
     c_it    = c_it(:,end);
     nflop   = nflop + size(LLp2,1)*size(LLp2,2)^2;
     % Null-space

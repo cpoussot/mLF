@@ -39,7 +39,8 @@ function [c,sig,km] = null(LL,METHOD)
             LL          = sym(LL);
             c           = null(LL);
             c           = c(:,end);
-            c           = normalize(c,str2double(METHOD(9:end)));
+            %c           = normalize(c,str2double(METHOD(9:end)));
+            [c,km]      = normalize(c,str2double(METHOD(9:end)));
         case 'null'
             c           = null(LL);
             c           = c(:,end);
