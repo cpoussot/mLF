@@ -1,13 +1,12 @@
 # Multivariate Loewner Framework (mLF)
 
-### Overview
+## Overview
 
 The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://arxiv.org/abs/2405.00495), to appear in SIAM Review. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
 - $n$-variable static functions
 - $n$-variable (parametric) dynamical systems
 
-### Contributions claim
-
+## Contributions claim
 
 - We propose a ***generalized realization*** form for rational functions in n-variables (for any $n$), which are described in the Lagrange basis;
 - We show that the $n$-dimensional Loewner matrix can be written as the solution of a ***series of cascaded Sylvester equations***;
@@ -15,8 +14,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 - We show that this decomposition achieves variables decoupling; thus connecting the Loewner framework for rational interpolation of multivariate functions and the ***Kolmogorov Superposition Theorem (KST)***, restricted to rational functions. The result is the formulation of KST for the special case of rational functions;
 - Connections with KAN neural nets follows (detailed in future work).
 
-
-### Main reference
+## Main reference
 
 ```
 @article{AGPV:2025,
@@ -32,7 +30,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 }
 ```
 
-### Additional support material (presentations, reports, ...)
+## Additional support material (presentations, reports, ...)
 
 - A.C. Antoulas presentation: [BANFF video](https://www.birs.ca/events/2025/5-day-workshops/25w5376/videos/watch/202504090859-Antoulas.html)
 - C. Poussot-Vassal presentation: [GT Identification video](https://youtu.be/M2SX3C4VCt8), [slides](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing)
