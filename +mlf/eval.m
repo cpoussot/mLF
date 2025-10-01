@@ -1,7 +1,5 @@
 function tab = eval(H,Z,VERBOSE)
 
-Ndigit = 32;
-
 %%% Compute combinations
 n = numel(Z);
 for ii = 1:n
@@ -28,9 +26,6 @@ for ii = 1:N
     for jj = 1:n
         tmp_z(jj) = Z{jj}(tmp{jj});
     end
-    
-    %%%% HOW TO ELEGANTLY EVALUATE H AT THESE POINTS
-    tmp_z_comma = regexprep(num2str(tmp_z,Ndigit), '\s*', ',');
-    eval(['tab(tmp{:}) = H(' tmp_z_comma ');']);
-    %%%% HOW TO ELEGANTLY EVALUATE H AT THESE POINTS
+    input_tmp_z = num2cell(tmp_z);
+    tab(tmp{:}) = H(input_tmp_z{:});
 end
