@@ -1,14 +1,16 @@
-clearvars, close all
+clearvars, close all, clc
 set(groot,'DefaultFigurePosition', [300 300 1000 400]);
-set(groot,'defaultlinelinewidth',2.5)
+set(groot,'defaultlinelinewidth',2)
 set(groot,'defaultlinemarkersize',14)
 set(groot,'defaultaxesfontsize',18)
+list_factory = fieldnames(get(groot,'factory')); index_interpreter = find(contains(list_factory,'Interpreter')); for i = 1:length(index_interpreter); set(groot, strrep(list_factory{index_interpreter(i)},'factory','default'),'latex'); end
 %addpath("location_of_mlf") % Add the location of the +mlf package
 
 %%% Define a multivariate handle function 
 n       = 3; % number of variables
 %H       = @(s1,s2,s3) (s3/100-1)*(s2-pi/2)*(s1+atan(2*s2)*tanh(5*(s2-pi)))/(s1^2+s3/10*cos(3*s1)+3)/(s2+10);
-H       = @(s1,s2,s3) s2^3/(s1^2+2*s1-s3/2+10);
+H       = @(s1,s2,s3) s1*(s2/10)^2+s3;
+%H       = @(s1,s2,s3) s2^3/(s1^2+2*s1-s3/2+10);
 % /!\ The tolerence is an important parameter when the data are generated from an irrational function
 tol_ord = 1e-7; 
 % Interpolation points (IP) - separate columns and rows (as Section 3, eq. 13-15)
@@ -71,3 +73,7 @@ xlabel('$x_1$','Interpreter','latex')
 ylabel('$x_2$','Interpreter','latex')
 title('{\bf log}(abs. err.)/max.','Interpreter','latex')
 colorbar,
+
+%%% Decoupling features for KST
+[Var,Lag,Bary]      = mlf.decoupling(pc,info);
+%[Lag{1} Lag{2} Lag{3}]
