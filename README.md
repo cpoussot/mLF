@@ -8,7 +8,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 ## Contributions claim
 
-- We propose a ***generalized realization*** form for rational functions in n-variables (for any $n$), which are described in the Lagrange basis;
+- We propose a ***generalized realization*** form for rational functions in $n$-variables (for any $n$), which are described in the Lagrange basis;
 - We show that the $n$-dimensional Loewner matrix can be written as the solution of a ***series of cascaded Sylvester equations***;
 - We demonstrate that the required variables to be determined, i.e. the barycentric coefficients, can be computed using a sequence of small-scale 1-dimensional Loewner matrices instead of the large-scale ($Q\times K$, $Q\geq K$)  $n$-dimensional one, therefore drastically ***taming the curse of dimensionality***, i.e. reducing both the computational effort and the memory needs, and, in addition improving accuracy;
 - We show that this decomposition achieves variables decoupling; thus connecting the Loewner framework for rational interpolation of multivariate functions and the ***Kolmogorov Superposition Theorem (KST)***, restricted to rational functions. The result is the formulation of KST for the special case of rational functions;
@@ -43,7 +43,7 @@ The code (`+mlf` folder)  provided in this GitHub page is given for open science
 
 ## A simple MATLAB code example
 
-Here is a simple code that describes how to deploy the cascaded 1-D Loewner null space construction. Refer to https://arxiv.org/abs/2405.00495 for notations and related equations. Code below is `demo.m`.
+Here is a simple code that describes how to deploy the cascaded 1-D Loewner null space construction. Refer to https://arxiv.org/abs/2405.00495 for notations and related equations. Code below is `demo0.m`. Note that `demo1.m` also provides a sample where we use `mlf.alg1` and `mlf.alg2`, standing as implemntations of Algorithm 1 and 2 in the above referenced paper.
 
 First add the path where the `+mlf` package is.
 
@@ -96,7 +96,7 @@ Evaluate simplified function and display results
 % Along first and second variables 
 % Other variables are randomly chosen between bounds
 x1      = linspace(min(p_r{1}),max(p_r{1}),40)+rand(1)/10;
-x2      = linspace(min(p_r{1}),max(p_r{1}),41)+rand(1)/10;
+x2      = linspace(min(p_r{2}),max(p_r{2}),41)+rand(1)/10;
 [X,Y]   = meshgrid(x1,x2);
 rnd_p   = [];
 if n > 2; rnd_p = mlf.rand(n-2,p_r(3:end),false); end
@@ -129,12 +129,12 @@ colorbar,
 
 ### `mlf.check`
 
-Function which checks that column `p_c` ($P_c^{n}$) and row `p_r` ($P_r^{n}$) interpolation points sets are disjoints. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolatoin points along each variables.
+Function which checks that column `p_c` ($P_c^{(n)}$) and row `p_r` ($P_r^{(n)}$) interpolation points sets are disjoints. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolatoin points along each variables.
 
 #### Input
 
-- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimneiosnl cell with double)
-- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimneiosnl cell with double)
+- `p_c`: column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
+- `p_r`: row interpolation points $P_r^{(n)}$ ($n$-dimensional cell with double)
 
 #### Output
 
@@ -148,12 +148,12 @@ ok = mlf.check(p_c,p_r)
 
 ### `mlf.make_tab`
 
-Function which constructs the $n$-dimensional tensor $\mathbf{tab}_n$, from the column `p_c` ($P_c^{n}$) and row `p_r` ($P_r^{n}$) interpolation point sets. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolation points along each variables.
+Function which constructs the $n$-dimensional tensor $\mathbf{tab}_n$, from the column `p_c` ($P_c^{(n)}$) and row `p_r` ($P_r^{(n)}$) interpolation point sets. Note that both `p_c` and `p_r` are $n$-dimensional cells, where each `p_c{i}` (`i=1...n`) gathers the interpolation points along each variables.
 
 #### Input
 
-- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
-- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `p_c`: column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
+- `p_r`: row interpolation points $P_r^{(n)}$ ($n$-dimensional cell with double)
 - `show`: tag used to show the advancement of the tableau construction (boolean)
 
 #### Output
@@ -172,12 +172,12 @@ Function which estimates the orders along each variables.
 
 #### Input
 
-- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
-- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `p_c`: column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
+- `p_r`: row interpolation points $P_r^{(n)}$ ($n$-dimensional cell with double)
 - `tab`: $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
 - `ord_tol`: normalized singular value threshild for order selection (positive real scalar)
 - `ord_obj`: maximal orders tolerated along each variables ($n\times 1$ integer)
-- `ord_n`: maximal single variable Loewner sincular value computation per variables (integer scalar)
+- `ord_n`: maximal single variable Loewner singular value decompositions per variables (integer scalar)
 - `show`: tag used to show the advancement of the tableau construction (boolean)
 
 #### Output
@@ -195,18 +195,18 @@ Function which selects a subset of interpolation points, accordingly to the orde
 
 #### Input
 
-- `p_c`: column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
-- `p_r`: row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `p_c`: column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
+- `p_r`: row interpolation points $P_r^{(n)}$ ($n$-dimensional cell with double)
 - `tab`: $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
 - `ord`: $n$-dimensional vector with order along each variables ($n\times 1$ double)
 - `square`: tag used to set wheather row interpolation points have the same dimension as columns or may be greather;  `true` leads to same number while `false` allows more row than columns (boolean)
 
 #### Output
 
-- `pc`: reduced column interpolation points $P_c^{n}$ ($n$-dimnensional cell with double)
-- `pr`: reduced row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
-- `W`: tensor corresponding to $P_r^{n}$ evaluation ($n$-dimensional cell with double)
-- `V`: tensor corresponding to $P_c^{n}$ evaluation ($n$-dimensional cell with double)
+- `pc`: reduced column interpolation points $P_c^{(n)}$ ($n$-dimnensional cell with double)
+- `pr`: reduced row interpolation points $P_r^{(n)}$ ($n$-dimensional cell with double)
+- `W`: tensor corresponding to $P_r^{(n)}$ evaluation ($n$-dimensional cell with double)
+- `V`: tensor corresponding to $P_c^{(n)}$ evaluation ($n$-dimensional cell with double)
 - `tab_red`: reduced $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
 
 #### Syntax 
@@ -217,19 +217,19 @@ Function which selects a subset of interpolation points, accordingly to the orde
 
 ### `mlf.loewner_null_rec`
 
-Function which construct the Loewner matrix null space (barycentric coefficients) using the recursive approach (without constructing the $N\times N$ Loewner matrix).
+Function which construct the Loewner matrix null space (barycentric coefficients) using the recursive approach (without constructing the $N\times N$, or $Q\times K$ Loewner matrix).
 
 #### Input
 
-- `pc`: reduced column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
-- `pr`: reduced row interpolation points $P_r^{n}$ ($n$-dimensional cell with double)
+- `pc`: reduced column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
+- `pr`: reduced row interpolation points $P_r^{(n)}$ ($n$-dimensional cell with double)
 - `tab_red`: reduced $n$-dimensional tensor $\mathbf{tab}_n$ ($n$-dimensional double)
-- `method`: method used for null space computation (string); for the time being, we suggest to set this variable to `svd0`.
+- `method`: method used for null space computation (string); for the time being, we suggest to set this variable to `svd0`
 
 #### Output
 
 - `c`: Loewner matrix null space, being the barycentric coefficients ($N \times 1$ double)
-- `info`: information related to the process (e.g. \texttt{flop} count)
+- `info`: information related to the process (e.g. \mathbf{flop} count)
 
 #### Syntax 
 
@@ -243,8 +243,8 @@ Function which evaluates the model in Lagrangian form.
 
 #### Input
 
-- `pc`: reduced column interpolation points $P_c^{n}$ ($n$-dimensional cell with double)
-- `w`: original vectorized data ealuated at $P_c^{n}$ ($n$-dimensional cell with double). In practice we have `w = mlf.mat2vec(W);`.
+- `pc`: reduced column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
+- `w`: original vectorized data ealuated at $P_c^{(n)}$ ($n$-dimensional cell with double). In practice we have `w = mlf.mat2vec(W);`.
 - `c`: Loewner matrix null space, being the barycentric coefficients ($N \times 1$ double)
 - `param`: $n$-variable vector where the the model has to be evaluated ($n\times 1$ double)
 - `show`: tag used to show the advancement of the model evaluation (boolean)
@@ -257,6 +257,28 @@ Function which evaluates the model in Lagrangian form.
 ```Matlab
 val = mlf.eval_lagrangian(pc,w,c,param,false);
 ```
+
+
+### `mlf.decoupling`
+
+Function which computes the decoupling variables, linking the approach to the Kolmogorov Supperposition Theorem. See Theorem 5.4.
+
+#### Input
+
+- `pc`: reduced column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
+- `info`: information given as output of `mlf.loewner_null_rec`
+
+#### Output
+
+- `Var`: single variable weights of the KST $\mathbf{c}^{^1 s}$, $\mathbf{c}^{^2 s}$ ... ($n$-dimensional cell with double)
+- `Lag`: single variable Lagangian basis of the KST $\textbf{Lag}{{^1 s}}$, $\textbf{Lag}{{^2 s}}$ ... ($n$-dimensional cell with double)
+- `Bary`: Barycentric data information
+
+#### Syntax 
+```Matlab
+[Var,Lag,Bary] = mlf.decoupling(pc,info);
+```
+
 
 ## Feedbacks
 

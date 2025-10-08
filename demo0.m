@@ -46,7 +46,7 @@ fprintf(' * full     : %d MB\n',prod(ord+1)^2/2^20)
 % Along first and second variables 
 % Other variables are randomly chosen between bounds
 x1      = linspace(min(p_r{1}),max(p_r{1}),40)+rand(1)/10;
-x2      = linspace(min(p_r{1}),max(p_r{1}),41)+rand(1)/10;
+x2      = linspace(min(p_r{2}),max(p_r{2}),41)+rand(1)/10;
 [X,Y]   = meshgrid(x1,x2);
 rnd_p   = [];
 if n > 2; rnd_p = mlf.rand(n-2,p_r(3:end),false); end
