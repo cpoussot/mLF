@@ -270,9 +270,9 @@ Function which computes the decoupling variables, linking the approach to the Ko
 
 #### Output
 
-- `Var`: single variable weights of the KST $\mathbf{c}^{^1 s}$, $\mathbf{c}^{^2 s}$ ... ($n$-dimensional cell with double)
+- `Var`: single variable weights of the KST $\textbf{Bary}({^1 s})$, $\textbf{Bary}({^1 s})$... ($n$-dimensional cell with double)
 - `Lag`: single variable Lagangian basis of the KST $\textbf{Lag}{{^1 s}}$, $\textbf{Lag}{{^2 s}}$ ... ($n$-dimensional cell with double)
-- `Bary`: Barycentric data information
+- `Bary`: Barycentric data information, including $\mathbf{c}^{^1 s}$, $\mathbf{c}^{^2 s}$... and $\mathbf{w}^{^1 s}$, $\mathbf{w}^{^1 s}$...
 
 #### Syntax 
 ```Matlab
