@@ -37,7 +37,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 - Benchmark results and comparison: [Tensor-based multivariate function approximation: methods benchmarking and comparison](https://arxiv.org/abs/2506.04791) (arXiv:2506.04791)
 
 
-![mLF](doc/loewner.png "mLF in the approximation and system theory landmark")
+![mLF](doc/loewner_transparent.png "mLF in the approximation and system theory landmark")
 
 # The "mLF" MATLAB package 
 
