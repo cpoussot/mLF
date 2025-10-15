@@ -14,8 +14,8 @@ if numel(dim) == 1
     comb    = mlf.combinations(tab);
     comb    = comb(:,2);
 else
-    tab     = zeros(dim);
-    comb    = mlf.combinations(tab);
+    %tab     = zeros(dim);
+    comb    = mlf.combinations_dim(dim);
 end
 
 %%% Build tensor
