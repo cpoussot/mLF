@@ -249,7 +249,7 @@ Function which evaluates the model in Lagrangian form.
 - `pc`: reduced column interpolation points $P_c^{(n)}$ ($n$-dimensional cell with double)
 - `w`: original vectorized data ealuated at $P_c^{(n)}$ ($n$-dimensional cell with double). In practice we have `w = mlf.mat2vec(W);`.
 - `c`: Loewner matrix null space, being the barycentric coefficients ($N \times 1$ double)
-- `param`: $n$-variable vector where the the model has to be evaluated ($n\times 1$ double)
+- `param`: $n$-variable vector where the model has to be evaluated ($n\times 1$ double)
 - `show`: tag used to show the advancement of the model evaluation (boolean)
 
 #### Output
