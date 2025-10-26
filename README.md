@@ -34,6 +34,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 - A.C. Antoulas presentation: [BANFF video](https://www.birs.ca/events/2025/5-day-workshops/25w5376/videos/watch/202504090859-Antoulas.html)
 - C. Poussot-Vassal presentation: [GT Identification video](https://youtu.be/M2SX3C4VCt8), [slides](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing)
+- C. Poussot-Vassal presentation: [regularly updated slides](https://cpoussot.github.io/talks.html)
 - Benchmark results and comparison: [Tensor-based multivariate function approximation: methods benchmarking and comparison](https://arxiv.org/abs/2506.04791) (arXiv:2506.04791)
 
 
