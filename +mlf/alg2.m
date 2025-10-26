@@ -181,7 +181,7 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     % maximum error for greedy
     [~,max_idx] = max(err_mat_greedy,[],'all');
 
-    fprintf('Iteration %i rel max error %d, rel LS error %d, interpolation points [ ',jj,max_err/max_samples,rel_ls_err)
+    fprintf('Iteration %i rel max error %d, rel LS error %d, \n \t interpolation points [ ',jj,max_err/max_samples,rel_ls_err)
     fprintf('%g ', cellfun(@length,ip_col));
     if max_err < max_err_best
         max_err_best    = max_err;
