@@ -6,7 +6,8 @@ function figSavePDF(name,factorHeight)
     else
         H = L*.75;
     end
-    set(gcf,'PaperSize',[L H]*1.02,'PaperPosition',[0 0 L H])
+    set(gcf,'PaperSize',[L H]*1,'PaperPosition',[0 0 L H])
+    %set(gcf,'PaperSize',[L H]*1)
     % L = 35;
     % H = 20;
     %set(gcf,'PaperSize',[L H],'PaperPosition',[0 0 L H])
