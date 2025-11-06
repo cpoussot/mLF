@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://arxiv.org/abs/2405.00495), to appear in SIAM Review. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
+The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"] (https://doi.org/10.1137/24M1656657) [arXiv](https://arxiv.org/abs/2405.00495), in SIAM Review (Research Spotlight), Vol. 67(4), pp. 737-770, November 2025. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
 - $n$-variable static functions
 - $n$-variable (parametric) dynamical systems
 
@@ -19,14 +19,14 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 ```
 @article{AGPV:2025,
 	Author	= {A.C. Antoulas and I-V. Gosea and C. Poussot-Vassal},
-	Doi 	= {},
-	Journal = {to appear in SIAM Review},
-	Number 	= {},
-	Pages 	= {},
 	Title 	= {On the {Loewner} framework, the {Kolmogorov} superposition theorem, and the curse of dimensionality},
-	Volume 	= {},
-	Year 	= {},
-	Note    = {\url{https://arxiv.org/abs/2405.00495}}, 
+	Doi 	= {10.1137/24M1656657},
+	Journal = {SIAM Review},
+	Volume 	= {64},
+	Number 	= {4},
+	Pages 	= {737-770},
+	Year 	= {2025},
+	URL     = {https://doi.org/10.1137/24M1656657}, 
 }
 ```
 
