@@ -1,5 +1,6 @@
 function p_rnd = rand(n,lam,COMPLEX)
 
+p_rnd = [];
 %n = numel(lam);
 if ischar(COMPLEX)
     if strcmp(COMPLEX,'R')
