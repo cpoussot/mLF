@@ -47,6 +47,10 @@ The code (`+mlf` folder)  provided in this GitHub page is given for open science
 
 Moreover, for more numerically robust and involved implementation and features, we invite reader and users to refer to the [MDSPACK](https://mordigitalsystems.fr/static/mdspack_html/MDSpack-guide.html) library by [MOR Digital Systems](https://mordigitalsystems.fr).
 
+## Dependencies
+
+- MATLAB R2023b or later (tested on this version)
+- Toolboxes: symbolic_toolbox may be used for some functionalities
 
 ## A simple MATLAB code example
 
