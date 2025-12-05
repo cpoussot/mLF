@@ -658,6 +658,7 @@ end
 ord     = ones(1,n)*Nip;
 p_c     = cell(1,n);
 p_r     = cell(1,n);
+ip      = cell(1,n);
 xmin    = inf;
 xmax    = -inf;
 for ii = 1:n
@@ -666,6 +667,7 @@ for ii = 1:n
     p_c{ii} = linspace(xlim{ii}(1),xlim{ii}(2),ord(ii));
     dx      = abs(p_c{ii}(end)-p_c{ii}(end-1))/2;
     p_r{ii} = (1+rnd)*p_c{ii}+dx;
+    ip{ii}  = [p_c{ii}(:); p_r{ii}(:)];
 end
 
 %%% 
@@ -680,6 +682,7 @@ info.mpts   = mpts;
 info.bound  = xlim;
 info.xmin   = xmin;
 info.xmax   = xmax;
+info.ip     = ip;
 info.p_c    = p_c;
 info.p_r    = p_r;
 info.tab_MB = mlf.file_size(2*ord);
