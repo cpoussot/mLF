@@ -7,11 +7,13 @@ list_factory = fieldnames(get(groot,'factory')); index_interpreter = find(contai
 %addpath("location_of_mlf") % Add the location of the +mlf package
 %addpath('/Users/charles/Mon Drive/Research/Codes/')
 
-%%% Pick an exmaple from 1 to 40
-CAS         = 2% 33
+%%% Pick an example from 1 to 40
+CAS         = 1% 33
+
 %%% mlf parameters
 alg1_tol    = 1e-9; 
 alg2_tol    = 1e-9;
+
 %%% Chose model
 [H,infoCas] = mlf.examples(CAS)
 n           = infoCas.n;
@@ -41,6 +43,7 @@ tic
 % opt.tol         = alg2_tol;
 % opt.method_null = 'svd0';
 % opt.method      = 'rec';
+% opt.max_iter    = 25;
 [r_loe2r,i2_r]  = mlf.alg2(tab,p_c,p_r,opt);
 toc
 
@@ -67,7 +70,7 @@ surf(X,Y,tab_app1,'EdgeColor','none'), hold on
 surf(X,Y,tab_ref,'EdgeColor','k','FaceColor','none')
 xlabel('$x_1$','Interpreter','latex')
 ylabel('$x_2$','Interpreter','latex')
-title('Original vs. Approximation','Interpreter','latex')
+title('mLF alg. 1 (direct)','Interpreter','latex')
 axis tight, zlim([min(tab_ref(:)) max(tab_ref(:))]), view(-30,40)
 subplot(2,2,2); hold on, grid on, axis tight
 imagesc(log10(abs(tab_ref-tab_app1)/max(abs(tab_ref(:)))),'XData',x1,'YData',x2)
@@ -81,7 +84,7 @@ surf(X,Y,tab_app2,'EdgeColor','none'), hold on
 surf(X,Y,tab_ref,'EdgeColor','k','FaceColor','none')
 xlabel('$x_1$','Interpreter','latex')
 ylabel('$x_2$','Interpreter','latex')
-title('Original vs. Approximation','Interpreter','latex')
+title('mLF alg. 2 (iterative)','Interpreter','latex')
 axis tight, zlim([min(tab_ref(:)) max(tab_ref(:))]), view(-30,40)
 subplot(2,2,4); hold on, grid on, axis tight
 imagesc(log10(abs(tab_ref-tab_app2)/max(abs(tab_ref(:)))),'XData',x1,'YData',x2)
@@ -89,3 +92,6 @@ xlabel('$x_1$','Interpreter','latex')
 ylabel('$x_2$','Interpreter','latex')
 title('{\bf log}(abs. err.)/max.','Interpreter','latex')
 colorbar,
+%
+for i = 1:infoCas.n;  infoCas.name = strrep(infoCas.name,['\var{' num2str(i) '}'],['x_{' num2str(i) '}']); end
+sgtitle(infoCas.name,'Interpreter','latex')
