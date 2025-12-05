@@ -27,23 +27,23 @@ tab         = mlf.vec2mat(y,dim);
 %%% Alg. 1: direct pLoe [A/G/P-V, 2025]
 opt = [];
 tic;
-% opt.ord_tol     = alg1_tol;
+opt.ord_tol     = alg1_tol;
+opt.method_null = 'svd0';
+opt.method      = 'rec';
 % opt.ord_obj     = [];
 % opt.ord_N       = 10;
 % opt.ord_show    = false;
 % opt.data_min    = true;
-opt.method_null = 'svd0';
-opt.method      = 'rec';
 [r_loe1r,i1_r]  = mlf.alg1(tab,p_c,p_r,opt);
 toc
 
 %%% Alg. 2: iterative pLoe [A/G/P-V, 2025]
 opt = [];
 tic
-% opt.tol         = alg2_tol;
-% opt.method_null = 'svd0';
-% opt.method      = 'rec';
-% opt.max_iter    = 25;
+opt.tol         = alg2_tol;
+opt.method_null = 'svd0';
+opt.max_iter    = 25;
+opt.method      = 'rec';
 [r_loe2r,i2_r]  = mlf.alg2(tab,p_c,p_r,opt);
 toc
 
@@ -59,8 +59,8 @@ for ii = 1:numel(x1)
     for jj = 1:numel(x2)
         param           = [x1(ii) x2(jj) rnd_p];
         tab_ref(jj,ii)  = H(param);
-        tab_app1(jj,ii) = r_loe1r(param);%mlf.eval_lagrangian(pc1,w1,c1,param,false);
-        tab_app2(jj,ii) = r_loe2r(param);%mlf.eval_lagrangian(pc2,w2,c2,param,false);
+        tab_app1(jj,ii) = r_loe1r(param);
+        tab_app2(jj,ii) = r_loe2r(param);
     end
 end
 %
