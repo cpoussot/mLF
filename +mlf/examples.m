@@ -27,7 +27,7 @@ switch CAS
         cite    = '\cite{Liu:2025}';
         nam     = '$\mathrm{exp}\left(\sin(\var{1}) + \var{2}^2\right)$';
         dom     = 'R';
-        tag     = {'irrational' '$C^\inf$'};
+        tag     = {'irrational' '$C^\infty$'};
     case 3
         n       = 2;
         H       = @(x) x(:,1).*x(:,2);
@@ -35,7 +35,7 @@ switch CAS
         cite    = '\cite{Liu:2025}';
         nam     = '$\var{1}\cdot \var{2}$';
         dom     = 'R';
-        tag     = {'irrational' '$C^\inf$'};
+        tag     = {'irrational' '$C^\infty$'};
     case 4
         n       = 3;
         H       = @(x) 1/n*sum(sin(pi*x/2).^2,2);
@@ -43,6 +43,7 @@ switch CAS
         cite    = '\cite{Liu:2025}';
         nam     = '$\frac{1}{3} \sum_{i=1}^3 \sin(\pi x_i/2)^2$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
     case 5
         n       = 4;
         H       = @(x) exp(.5*(sin(pi*(x(:,1).^2+x(:,2).^2)) + ...
@@ -51,6 +52,7 @@ switch CAS
         cite    = '\cite{Liu:2025}';
         nam     = '$\mathrm{exp}\left(1/2 \left( \sin(\pi(\var{1}^2+\var{2}^2) + \sin(\pi(\var{3}^2+\var{4}^2) \right) \right)$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 20;%10;
     case 6
@@ -60,6 +62,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\mathrm{exp}\left(\var{1} \var{2}\right)}{(\var{1}^2-1.44)(\var{2}^2-1.44)}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
     case 7
         n       = 2;
         H       = @(x) log2(2.25-x(:,1).^2-x(:,2).^2);
@@ -67,6 +70,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\mathrm{log}(2.25-\var{1}^2-\var{2}^2)$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
     case 8
         n       = 2;
         H       = @(x) tanh(4*(x(:,1)-x(:,2)));
@@ -74,6 +78,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\mathrm{tanh}(4(\var{1}-\var{2}))$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 37;
     case 9
@@ -83,6 +88,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\mathrm{exp}(\frac{-(\var{1}^2+\var{2}^2)}{1000})$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
     case 10
         n       = 2;
         H       = @(x) (abs(x(:,1)-x(:,2))).^3;
@@ -90,6 +96,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$|\var{1}-\var{2}|^3$';
         dom     = 'R';
+        tag     = {'irrational' '$C^0$'};
         %
         Nip     = 41;
     case 11
@@ -99,6 +106,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}+\var{2}^3}{\var{1}\var{2}^2+2}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [1e-10 1];
     case 12
@@ -108,6 +116,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^2+\var{2}^2+\var{1}-\var{2}-1}{(\var{1}-1.1)(\var{2}-1.1)}$';
         dom     = 'R';
+        tag     = {'rational'};
     case 13
         n       = 2;
         H       = @(x) (x(:,1).^4+x(:,2).^4+x(:,1).^2.*x(:,2).^2+x(:,1).*x(:,2))./((x(:,1)-1.1).*(x(:,2)-1.1));
@@ -115,6 +124,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^4+\var{2}^4+\var{1}^2\var{2}^2+\var{1}\var{2}}{(\var{1}-1.1)(y_2-1.1)}$';
         dom     = 'R';
+        tag     = {'rational'};
     case 14
         n       = 4;
         H       = @(x) (x(:,1).^2+x(:,2).^2+x(:,1)-x(:,2)+1)./((x(:,3)-1.5).*(x(:,4)-1.5));
@@ -122,6 +132,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^2+\var{2}^2+\var{1}-\var{2}+1}{(\var{3}-1.5)(\var{4}-1.5)}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         Nip     = 10;
     case 15 
@@ -131,6 +142,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^2+\var{2}^2+\var{1}-\var{2}-1}{\var{1}^3+\var{2}^3+4}$';
         dom     = 'R';
+        tag     = {'rational'};
     case 16
         n       = 2;
         H       = @(x) (x(:,1).^3+x(:,2).^3)./(x(:,1).^2+x(:,2).^2+3);
@@ -138,6 +150,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^3+\var{2}^3}{\var{1}^2+\var{2}^2+3}$';
         dom     = 'R';
+        tag     = {'rational'};
     case 17
         n       = 2;
         H       = @(x) (x(:,1).^4+x(:,2).^4+x(:,1).^2.*x(:,2).^2+x(:,1).*x(:,2))./(x(:,1).^2.*x(:,2).^2-2.*x(:,1).^2-2.*x(:,2).^2+4);
@@ -145,6 +158,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^4+\var{2}^4+\var{1}^2\var{2}^2+\var{1}\var{2}}{\var{1}^2\var{2}^2-2\var{1}^2-2\var{2}^2+4}$';
         dom     = 'R';
+        tag     = {'rational'};
     case 18
         n       = 2;
         H       = @(x) (x(:,1).^3+x(:,2).^3)./(x(:,1).^2.*x(:,2).^2-2.*x(:,1).^2-2.*x(:,2).^2+4);
@@ -152,6 +166,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^3+\var{2}^3}{\var{1}^2\var{2}^2-2\var{1}^2-2\var{2}^2+4}$';
         dom     = 'R';
+        tag     = {'rational'};
     case 19
         n       = 2;
         H       = @(x) (x(:,1).^4+x(:,2).^4+x(:,1).^2.*x(:,2).^2+x(:,1).*x(:,2))./(x(:,1).^3+x(:,2).^3+4);
@@ -159,6 +174,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\var{1}^4+\var{2}^4+\var{1}^2\var{2}^2+\var{1}\var{2}}{\var{1}^3+\var{2}^3+4}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         %Nip     = 51;
     case 20 
@@ -170,6 +186,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = 'Breit Wigner function';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         e_val   = [80 100];
         g_val   = [5 10];
@@ -182,6 +199,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\sum_{i=1}^4\mathrm{atan}(x_i)}{\var{1}^2\var{2}^2-\var{1}^2-\var{2}^2+1}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 10;
         xbnd    = [-1 1]*.95;
@@ -192,6 +210,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\frac{\mathrm{exp}(\var{1}\var{2}\var{3}\var{4})}{\var{1}^2+\var{2}^2-\var{3}\var{4}+3}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 10;
     case 23
@@ -202,6 +221,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$10\prod_{i=1}^4\mathrm{sinc}(x_i)$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 11;
         xbnd    = [1e-6 4*pi];
@@ -213,6 +233,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$10\mathrm{sinc}(\var{1})\mathrm{sinc}(\var{2})$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 21;
         xbnd    = [1e-6 4*pi];
@@ -224,6 +245,7 @@ switch CAS
         cite    = '\cite{Austin:2021}';
         nam     = '$\var{1}^2+\var{2}^2+\var{1}\var{2}-\var{2}+1$';
         dom     = 'R';
+        tag     = {'polynomial'};
     case 26
         n       = 3;
         H       = @(x) (x(:,1)+x(:,2)+x(:,3)) ./ ( 2*3+cos(x(:,1))+cos(x(:,2))+cos(x(:,3)) );
@@ -232,6 +254,7 @@ switch CAS
         cite    = '\cite{Balicki:2025}';
         nam     = '$\frac{\var{1}+\var{2}+\var{3}}{6+\cos(\var{1})+\cos(\var{2})+\cos(\var{3})}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         Nip     = 30;
         xbnd    = [-1 1]*10;
@@ -243,6 +266,7 @@ switch CAS
         cite    = '\cite{Balicki:2025}';
         nam     = '$\frac{\var{1}+\var{2}+\var{3}+\var{4}+\var{5}}{10+\cos(\var{1})+\cos(\var{2})+\cos(\var{3})+\cos(\var{4})+\cos(\var{5})}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 13;
         xbnd    = [-1 1]*4;
@@ -254,6 +278,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\left(\frac{\var{1}}{\var{1}+1}\right)^4 (1+\mathrm{exp}(-\var{2}^2)) \left(1+\var{2} \cos(\var{2}) \mathrm{exp}\frac{(-\var{1}\var{2})}{\var{1}+1}\right)$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         xbnd    = [1e-10 10];
         Nip     = 31;
@@ -265,6 +290,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\min(10|\var{1}|,1)\mathrm{sign}(\var{1}) + \frac{\var{1}\var{2}^3}{10}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^0$'};
     case 30
         n       = 8;
         frac1   = @(Tu,Hu,Hl) 2 * pi .* Tu .* (Hu-Hl);
@@ -278,6 +304,7 @@ switch CAS
         cite    = '\url{sfu.ca/~ssurjano}';
         nam     = '$\begin{array}{c}\mathrm{f}(r_w,r,T_u,H_u,T_l,H_l,L,K_w) =\\ \frac{2\pi T_u(H_u-H_l)}{\ln\left(\frac{r}{r_w}\right) \left(1+\frac{2LT_u}{\ln(r/r_w)r_w^2K_w}\right) + \frac{T_u}{T_l}} \end{array}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         rw      = [0.05, 0.15]; %	radius of borehole (m)
         r       = [100, 50000]; %	radius of influence (m)
@@ -298,6 +325,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\var{1}^2 \var{2}^3 \var{3} \var{4} - \var{5}^2 + \var{6}$';
         dom     = 'R';
+        tag     = {'polynomial'};
         %
         Nip     = 8;
         xbnd    = [-2 2];
@@ -309,6 +337,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\texttt{atan}(\var{1}) + \var{2}^3$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         xbnd    = [-2 2];
     case 33
@@ -319,6 +348,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{1}+\var{2}}{\cos(\var{1})^2+\cos(\var{2}) + 3}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         Nip     = 30;
         xbnd    = [-10 10];
@@ -335,6 +365,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$Re(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         xbnd    = {[.45 .55] [1 50]}; 
         Nip     = 200;
@@ -352,6 +383,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$Im(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         xbnd    = {[.45 .55] [1 50]}; 
         Nip     = 200;
@@ -365,6 +397,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{2}}{3+1/3 \var{2}\var{1}-\var{3}^2}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [1/10 1];
         Nip     = 10;
@@ -376,6 +409,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\var{1}\var{4}^3+\sin(2\var{2})\var{3}$';
         dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
         %
         xbnd    = [1e-3 1];
         Nip     = 10;%7;
@@ -399,6 +433,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{1}^9 \var{2}^7 + \var{1}^3 + 5 \var{3}^2}{5 \var{1}^4 + 4 \var{1}^2 + \var{3}\var{2}^3 + 1}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [-1 1]*1.1;
         Nip     = 30;
@@ -410,6 +445,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{3}+\var{1}^4}{\var{1}^3+\var{2}^2+1}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [.1 10];
         Nip     = 20;
@@ -421,6 +457,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{3}\var{1}}{\var{1}^2+\var{2}+\var{3}^2+1}+\var{4}^3$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [1 4];
         Nip     = 20;
@@ -432,6 +469,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{5}^3\var{3}\var{1}+\var{3}^2}{\var{1}^3+\var{2}\var{3}+\var{4}}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [.1 1];
         Nip     = 5;
@@ -443,6 +481,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{1}+\var{3}-\sqrt{2}\var{6}^2}{\var{1}^4+\var{2}\var{3}+\var{4}^3+\var{5}^2+\var{6}}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [.1 1];
         Nip     = 5;
@@ -454,6 +493,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{\var{3}\var{2}^3+1}{\var{1}^4+\var{2}^2\var{3}+\var{4}^2+\var{5}+\var{6}^3+\var{7}}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [1 10];
         Nip     = 5;
@@ -465,6 +505,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{1}{\var{1}^4+\var{2}^2\var{3}+\var{4}^2+\var{5}+\var{6}+\var{7}+\var{8}}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [.1 20];
         Nip     = 5;
@@ -476,6 +517,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{1}{\var{1}^2+\var{2}^2\var{3}+\var{4}^2+\var{5}+\var{6}+\var{7}+\var{8}+\var{9}}$';
         dom     = 'R';
+        tag     = {'rational'};
         % 
         xbnd    = [1 5];
         Nip     = 3;
@@ -487,6 +529,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\frac{1}{\var{1}+\var{1}^2\var{2}\var{3}+\var{4}+\var{5}+\var{6}+\var{7}\var{8}+\var{9}^2+\var{10}}$';
         dom     = 'R';
+        tag     = {'rational'};
         %
         xbnd    = [1 5];
         Nip     = 3;
