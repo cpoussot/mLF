@@ -8,7 +8,7 @@ if mean(comb_lam(:,1)) == 1
     comb_mu  = comb_mu(:,2);
 end
 
-%%% Compute Loewner lmatrix
+%%% Compute Loewner matrix
 n   = numel(lam);
 LL  = zeros(size(comb_mu,1),size(comb_lam,1));
 for co = 1:size(LL,2)

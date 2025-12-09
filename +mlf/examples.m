@@ -10,6 +10,16 @@ mpts    = 1; % plot factor multiplier
 tag = {};
 %
 switch CAS
+    case 0 % test
+        n       = 3;
+        H       = @(x) x(:,1).^2 + 0*x(:,2) + x(:,3).^3;
+        ref     = 'Personal communication';
+        cite    = '[none]';
+        nam     = '$\var{1}^2 + 0\var{2} + \var{2}^3$';
+        dom     = 'R';
+        tag     = {'rational'};
+        %
+        Nip     = 20;
     case 1 % ReLU
         n       = 2;
         H       = @(x) 1/2*(x(:,1) + abs(x(:,1))) + 1/10*x(:,2);

@@ -38,7 +38,6 @@ if ~isfield(opt,'max_itpl')
     end
     opt.max_itpl = ip_est;
 end
-
 % Initial interpolation partition (if any)
 if ~isfield(opt,'ip_keep')
     ip_col = cell(1,n);
@@ -52,17 +51,15 @@ end
 
 %%% Start
 for i = 1:n 
-    % p_c
-    % p_r
-    % [p_c{i} p_r{i}]
     ip{i} = [p_c{i}(:); p_r{i}(:)];
 end
 max_samples         = max(abs(tab),[],'all');
 norm2_samples       = norm(tab(:))^2;
 err_mat             = abs(tab-mean(tab,'all'));
 [max_err,max_idx]   = max(err_mat,[],'all');
+%[max_err,sort_idx]   = sort(err_mat(:),'descend'); max_idx = sort_idx(1:2);
 rel_ls_err          = norm(err_mat(:))^2 / norm2_samples;
-fprintf('Initial rel max error %d, rel LS error %d \n',max_err/max_samples,rel_ls_err)
+fprintf('Initial rel max error %d, rel LS error %d \n',max_err(1)/max_samples,rel_ls_err)
 
 % do this such that at least one iteration is done
 max_err         = Inf;
@@ -76,12 +73,14 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     jj = jj + 1;
     % 
     [max_Idx{:}] = ind2sub(size(tab),max_idx);
+
     %%% Check if maximum order has been reached
     add_itpl = cellfun(@(ip,mi)length(ip)<mi,ip_col,num2cell(opt.max_itpl));
     if ~any(add_itpl)
         fprintf('Reached maximum number of interpolation points \n')
         break
     end
+
     %%% Add interpolation points
     for i = 1:n
         % make sure to keep at least one sample in LS partition
@@ -89,7 +88,7 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
             ip_col{i} = unique([ip_col{i},max_Idx{i}]);
         end
     end
-    
+
     %%% Set column and row interpolation points
     for i = 1:n
         ip_row{i}   = setdiff(1:numel(ip{i}),ip_col{i});
@@ -116,18 +115,18 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     idx_strV    = idx_strV(1:end-2);
     eval(['tab_it = tab(' idx_str ');']);
     eval(['W_it   = tab(' idx_strW ');']);
-    eval(['V_it   = tab(' idx_strV ');']);    
-
+    eval(['V_it   = tab(' idx_strV ');']);
+    
     %%% Compute null space
-    if strcmp(method,'full')
+    if strcmp(method,'full') && jj > 1
         LL      = mlf.loewnerMatrix(pc,pr,W_it,V_it);
         c       = mlf.null(LL,method_null);
         flop    = flop + size(LL,1)*size(LL,2)^2;
-    elseif strcmp(method,'rec')
+    else%if strcmp(method,'rec')
         [c,lag] = mlf.loewner_null_rec(pc,pr,tab_it,method_null,[]);
         flop    = flop + lag.nflop;
-    else
-        error('Unknown method')
+    % else
+    %     error('Unknown method')
     end
     
     %%% Evaluate
@@ -158,6 +157,7 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     end
     tab_r   = mlf.vec2mat(hr,tab_sz);
     err_mat = abs(tab-tab_r);
+    err_mat = abs(tab-tab_r)./abs(tab);
     err_mat(isnan(err_mat)) = 0;
     
     %%% Model
@@ -181,9 +181,9 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     % maximum error for greedy
     [~,max_idx] = max(err_mat_greedy,[],'all');
 
-    fprintf('Iteration %i rel max error %d, rel LS error %d, \n \t interpolation points [ ',jj,max_err/max_samples,rel_ls_err)
+    fprintf('#%i rel max error %d, rel LS error %d, \n \t interpolation points [ ',jj,max_err/max_samples,rel_ls_err)
     fprintf('%g ', cellfun(@length,ip_col));
-    if max_err < max_err_best
+    if (max_err < max_err_best) || (jj == 1)
         max_err_best    = max_err;
         g_best          = g;
         jj_best         = jj;

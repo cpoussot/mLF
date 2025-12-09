@@ -72,7 +72,6 @@ w                   = mlf.mat2vec(W);
 %%% Lagrange via Loewner
 if strcmp(method,'full')
     LL      = mlf.loewnerMatrix(pc,pr,W,V);
-    size(LL)
     c       = mlf.null(LL,method_null);
     flop    = size(LL,1)*size(LL,2)^2;
 elseif strcmp(method,'rec')
