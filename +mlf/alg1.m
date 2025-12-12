@@ -85,10 +85,15 @@ end
 r           = @(x) mlf.eval_lagrangian(pc,w,c,x,false);
 info.flop   = flop;
 info.method = method;
+info.tabr   = tabr;
+info.pr     = pr;
 info.pc     = pc;
 info.w      = w;
 info.c      = c;
 info.ord    = ord;
+if exist("lag","var")
+    info.lag = lag;
+end
 
 % %%% Basis and X canonical lagrangian basis
 % for ii = 1:length(p_c)
