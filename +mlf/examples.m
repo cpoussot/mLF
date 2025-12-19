@@ -554,7 +554,7 @@ switch CAS
         %
         ref     = 'G/al. 2025 (Ex 3.1)';
         cite    = '\cite{GHK:2025}';
-        nam     = '$(1 + 2\var{1})(-2 + \var{2})(-\var{3})(3 + \var{4})(2- 3\var{5}) + (-1 + \var{1})(2\var{2})(1 + 3\var{3})(-\var{4})(1 -\var{5})$';
+        nam     = '$\begin{array}{c}(1 + 2\var{1})(-2 + \var{2})(-\var{3})(3 + \var{4})(2- 3\var{5}) \\ + (-1 + \var{1})(2\var{2})(1 + 3\var{3})(-\var{4})(1 -\var{5})\end{array}$';
         dom     = 'R';
         tag     = {'polynomial'};
         %

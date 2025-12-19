@@ -7,7 +7,7 @@ end
 sumK    = sum(k);
 prodK   = prod(k);
 distY   = 2;
-distX   = 4;
+distX   = 5;
 
 %
 latexList   = [];
