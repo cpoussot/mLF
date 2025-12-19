@@ -23,7 +23,8 @@ if n == 1
         set(gca,'YScale','log'), drawnow
         xlabel('\# singular value','Interpreter','latex')
         ylabel('Normalized singular value','Interpreter','latex')
-        legend_str{1} = '$\mathstrut^1 s$';
+        %legend_str{1} = '$\mathstrut^1 s$';
+        legend_str{1} = '$x_1$';
         ylim([1e-17 1])
     end
 else
@@ -74,7 +75,7 @@ else
             if SHOW
                 h(kk)       = plot(sig_n,'-s','Color',col(kk,:));
                 %title(sprintf(['$s_' num2str(kk) '$']),'Interpreter','latex')
-                title(sprintf(['$^' num2str(kk) 's$']),'Interpreter','latex')
+                title(sprintf(['$x_{' num2str(kk) '}$']),'Interpreter','latex')
                 xlabel('\# singular value','Interpreter','latex')
                 ylabel('Normalized singular value','Interpreter','latex')
                 set(gca,'YScale','log'), drawnow
@@ -82,7 +83,8 @@ else
             end
         end
         if SHOW
-            legend_str{kk}  = ['$\mathstrut^' num2str(kk) 's$'];
+            %legend_str{kk}  = ['$\mathstrut^' num2str(kk) 's$'];
+            legend_str{kk}  = ['$x_{' num2str(kk) '}$'];
         end
         rank_s(kk)      = rank_si;
     end
