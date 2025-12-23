@@ -50,11 +50,20 @@ for jj = 1:n
 end
 DEN     = (S*c);
 NUM     = (S*(w.*c));
-den     = B*(S*c);
-num     = B*(S*(w.*c));
+%
+norm_max    = max(abs(DEN));
+NUM         = NUM/norm_max;
+DEN         = DEN/norm_max;
+DEN(abs(DEN)<1e-12) = 0;
+NUM(abs(NUM)<1e-12) = 0;
+%
+den     = B*DEN;%(S*c);
+num     = B*NUM;%(S*(w.*c));
 g       = num/den;
 
 %%% 
+info.Sj         = Sj;
+info.S          = S;
 info.basis      = B.';
 info.num        = num;
 info.den        = den;

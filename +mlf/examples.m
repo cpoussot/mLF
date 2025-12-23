@@ -11,15 +11,13 @@ tag = {};
 %
 switch CAS
     case 0 % test
-        n       = 3;
-        H       = @(x) x(:,1).^2 + 0*x(:,2) + x(:,3).^3;
+        n       = 2;
+        H       = @(x) x(:,1).*x(:,2).^2;
         ref     = 'Personal communication';
         cite    = '[none]';
-        nam     = '$\var{1}^2 + 0\var{2} + \var{2}^3$';
+        nam     = '$\var{1}\var{2}^2$';
         dom     = 'R';
         tag     = {'rational'};
-        %
-        Nip     = 20;
     case 1 % ReLU
         n       = 2;
         H       = @(x) 1/2*(x(:,1) + abs(x(:,1))) + 1/10*x(:,2);
@@ -311,7 +309,7 @@ switch CAS
         H       = @(x) H0(x(:,1),x(:,2),x(:,3),x(:,4),x(:,5),x(:,6),x(:,7),x(:,8));
         %
         ref     = 'Borehole function';
-        cite    = '\url{sfu.ca/~ssurjano}';
+        cite    = '\cite{Surjanovic}';
         nam     = '$\begin{array}{c}\mathrm{f}(r_w,r,T_u,H_u,T_l,H_l,L,K_w) =\\ \frac{2\pi T_u(H_u-H_l)}{\ln\left(\frac{r}{r_w}\right) \left(1+\frac{2LT_u}{\ln(r/r_w)r_w^2K_w}\right) + \frac{T_u}{T_l}} \end{array}$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
@@ -345,7 +343,7 @@ switch CAS
         %
         ref     = 'Personal communication';
         cite    = '[none]';
-        nam     = '$\texttt{atan}(\var{1}) + \var{2}^3$';
+        nam     = '$\mathrm{atan}(\var{1}) + \var{2}^3$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %
@@ -373,7 +371,7 @@ switch CAS
         %
         ref     = 'Riemann $\zeta$ function (real part)';
         cite    = '[none]';
-        nam     = '$Re(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
+        nam     = '$\mathrm{Re}(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %
@@ -391,7 +389,7 @@ switch CAS
         %
         ref     = 'Riemann $\zeta$ function (imaginary part)';
         cite    = '[none]';
-        nam     = '$Im(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
+        nam     = '$\mathrm{Im}(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %
@@ -572,6 +570,30 @@ switch CAS
         %
         xbnd    = [-1/2,1]; 
         Nip     = 6;
+    case 49
+        n       = 2;
+        H       = @(x) real(besselh(0,x(:,1)+1i*x(:,2)));
+        %
+        ref     = 'Hankel function';
+        cite    = '[none]';
+        nam     = '$\textrm{Re}(H_0^{(1)}(\var{1},\var{2}))$';
+        dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
+        %
+        xbnd    = {[1,10] [.1 1]}; 
+        Nip     = 40;
+    case 50
+        n       = 2;
+        H       = @(x) imag(besselh(0,x(:,1)+1i*x(:,2)));
+        %
+        ref     = 'Hankel function';
+        cite    = '[none]';
+        nam     = '$\textrm{Im}(H_0^{(1)}(\var{1},\var{2}))$';
+        dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
+        %
+        xbnd    = {[1,10] [.1 1]}; 
+        Nip     = 40;
     % case 11
     %     H           = @(s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11) s1/(s1^6+s2*s3+s4+s5+s6+s7*s8+s9+s10+s11);
     %     ord         = [6 1 1, 1 1 1, 1 1 1, 1 1];
@@ -725,3 +747,12 @@ info.ip     = ip;
 info.p_c    = p_c;
 info.p_r    = p_r;
 info.tab_MB = mlf.file_size(2*ord);
+%
+if info.tab_MB < 1;     tensor_size = num2str(info.tab_MB*2^10,3); unit = '\textbf{KB}'; end
+if info.tab_MB >= 1;    tensor_size = num2str(info.tab_MB,3);      unit = '\textbf{MB}'; end
+if info.tab_MB >= 2^10; tensor_size = num2str(info.tab_MB/2^10,3); unit = '\textbf{GB}'; end
+info.tensor_names    = ['$\mathbf{' tensor_size '}$ ' unit];
+info.cas_names       = ['$\mathbf{\#' num2str(CAS) '}$'];
+info.dim_names       = ['$\mathbf{n=' num2str(info.n) '}$'];
+
+

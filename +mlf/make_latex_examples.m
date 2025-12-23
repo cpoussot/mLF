@@ -1,4 +1,4 @@
-function latexList = make_latex_examples()
+function latexList = make_latex_examples(spaceCAS)
 
 %
 COUNT_POLY  = 0;
@@ -7,9 +7,9 @@ COUNT_IRRAT = 0;
 %
 latexList   = [];
 %latexList   = '\small ';
-latexList   = [latexList '\begin{center} \begin{longtable}{|c|l|l|} \hline '];
-latexList   = [latexList 'Case & Info. & Function \\ \hline\hline '];
-for CAS = 1:48
+latexList   = [latexList '\begin{center} \begin{longtable}{|c|l|l|l|} \hline '];
+latexList   = [latexList 'Case & Ref. & Information & Function \\ \hline\hline '];
+for CAS = spaceCAS
     COLOR       = '';
     [H,info]    = mlf.examples(CAS);
     for i = 1:numel(info.tag)
@@ -27,7 +27,8 @@ for CAS = 1:48
     end
     latexList = [latexList ...
                  COLOR '{\#' num2str(CAS) '} & ' ... 
-                 ' $\ord= ' num2str(info.n) '$, tensor size: ' num2str(info.tab_MB,3) ' MB & ' ... 
+                 info.cite ' & ' ...
+                 ' $\ord= ' num2str(info.n) '$, ' info.tensor_names ' & ' ... 
                  info.name ' \\' ];
 end
 latexList = [latexList '\hline \caption{List of examples. \blue{Polynomial: ' num2str(COUNT_POLY) '}, {rational: ' num2str(COUNT_RAT) '}, \orange{irrational: ' num2str(COUNT_IRRAT) '}.} \label{tab:examples} \end{longtable} \end{center}\normalsize' ];

@@ -160,10 +160,9 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
         hr(i) = mlf.eval_lagrangian(pc,w,c,ipt(i,:),false);
     end
     toc
-    %err_mat = abs(tab_vec-hr);
-    err_mat = abs(tab_vec-hr)./abs_tab_vec;
+    err_mat = abs(tab_vec-hr);
+    %err_mat = abs(tab_vec-hr)./abs_tab_vec;
     err_mat(isnan(err_mat)) = 0;
-    err_mat(isinf(err_mat)) = 0;
     %err_mat(isnan(err_mat)) = [];
     
     %%% Model
@@ -181,8 +180,10 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     % end
     % err_mat_greedy = err_mat;
     % err_mat_greedy(zero_idx{:}) = 0;
+    % 
     % % maximum error for information
     % [max_err,~] = max(err_mat,[],'all');
+    % 
     % % maximum error for greedy
     % [~,max_idx] = max(err_mat_greedy,[],'all');
 
