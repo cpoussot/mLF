@@ -155,36 +155,34 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     % end
     % N   = size(ipt,1);
     hr  = zeros(N,1);
-    tic
     for i = 1:N
         hr(i) = mlf.eval_lagrangian(pc,w,c,ipt(i,:),false);
     end
-    toc
-    %err_mat = abs(tab_vec-hr);
-    err_mat = abs(tab_vec-hr)./abs_tab_vec;
+    err_mat = abs(tab_vec-hr);
+    %err_mat = abs(tab_vec-hr)./abs_tab_vec;
     err_mat(isnan(err_mat)) = 0;
     err_mat(isinf(err_mat)) = 0;
     %err_mat(isnan(err_mat)) = [];
     
     %%% Model
     g = {pc w c};
-    [max_err,max_idx] = max(err_mat,[],'all');
+    %[max_err,max_idx] = max(err_mat,[],'all');
 
-    % % set errors to zero to avoid no interpolation points to be added
-    % zero_idx = cell(1,n);
-    % for i = 1:n
-    %     if length(ip_col{i}) >= opt.max_itpl(i)
-    %         zero_idx{i} = 1:size(tab,i);
-    %     else
-    %         zero_idx{i} = ip_col{i};
-    %     end
-    % end
-    % err_mat_greedy = err_mat;
-    % err_mat_greedy(zero_idx{:}) = 0;
-    % % maximum error for information
-    % [max_err,~] = max(err_mat,[],'all');
-    % % maximum error for greedy
-    % [~,max_idx] = max(err_mat_greedy,[],'all');
+    % set errors to zero to avoid no interpolation points to be added
+    zero_idx = cell(1,n);
+    for i = 1:n
+        if length(ip_col{i}) >= opt.max_itpl(i)
+            zero_idx{i} = 1:size(tab,i);
+        else
+            zero_idx{i} = ip_col{i};
+        end
+    end
+    err_mat_greedy = err_mat;
+    err_mat_greedy(zero_idx{:}) = 0;
+    % maximum error for information
+    [max_err,~] = max(err_mat,[],'all');
+    % maximum error for greedy
+    [~,max_idx] = max(err_mat_greedy,[],'all');
 
     fprintf('#%i rel max error %d, rel LS error %d, \n \t interpolation points [ ',jj,max_err/max_samples,rel_ls_err)
     fprintf('%g ', cellfun(@length,ip_col));
