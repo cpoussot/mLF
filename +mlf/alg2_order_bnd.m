@@ -1,10 +1,10 @@
 function ord = alg2_order_bnd(p_c,p_r,tab,tol,N)
 
-Ndigit  = 32;
-ord     = [];
+%Ndigit  = 32;
+%ord     = [];
 %%% Compute combinations
 n   = numel(p_c);
-col = parula(n+1);
+%col = parula(n+1);
 %%% Frozen Loewner matrices
 % Case 1D
 if n == 1
@@ -16,7 +16,7 @@ if n == 1
     sig_n       = diag(sig)/sig(1);
     rank_s(1)   = sum(sig_n>tol);
 else
-    comb_tab    = mlf.combinations(tab);
+    comb_tab    = mlf.combinations_dim(size(tab));
     for kk = 1:n
         lam_k   = p_c{kk};
         mu_k    = p_r{kk};

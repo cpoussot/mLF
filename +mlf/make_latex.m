@@ -63,7 +63,7 @@ latexList   = [latexList ['\noindent \textbf{Interpolation points}: $k_l=' latex
 if max(q_i) < 10
     latexList   = [latexList '$$ \begin{array}{rcl}'];
     for ii = 1:length(p_c)
-        latexList = [latexList ['\lan{' num2str(ii) '} &=& ' latex(FUN_SYM(sym(p_c{ii}))) '\\' ]];
+        latexList = [latexList ['\lan{' num2str(ii) '} &=& ' latex(FUN_SYM(sym(p_c{ii}))) ' \\' ]];
         latexList = [latexList ['\mun{' num2str(ii) '} &=& ' latex(FUN_SYM(sym(p_r{ii}))) '\\' ]];
     end
     latexList   = [latexList '\end{array} $$' ];
@@ -90,9 +90,10 @@ latexList   = [latexList [ '$$' latex(FUN_SYM(tmp_data)) '$$' ]];
 [num,den]   = numden(glag);
 latexList   = [latexList '\noindent \textbf{Lagrangian form} '];
 latexList   = [latexList '(basis, numerator coefficients and denominator coefficients):\\~~\\'];
-latexList   = [latexList '$$' latex(FUN_SYM([ilag.basis ilag.num_coeff ilag.den_coeff])) '$$ \\~~\\' ];
+latexList   = [latexList '$$\textbf{Lag}=' latex(FUN_SYM([ilag.basis ilag.num_coeff ilag.den_coeff])) '$$ \\~~\\' ];
 %
 latexList   = [latexList '\noindent \textbf{Corresponding numerator and denominator}: \\~~\\'];
+latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{lag}}' vars ' &=& \dfrac{\bn_{\textrm{lag}}' vars '}{\bd_{\textrm{lag}}' vars '}\\ &=& \dfrac{\sum \textbf{Lag}(:,1)^{-1}\odot \textbf{Lag}(:,2)}{\sum \textbf{Lag}(:,1)^{-1}\odot \textbf{Lag}(:,3)} \end{array}$$'];
 latexList   = [latexList '$\bn_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(num)) '$ \\~~\\'];
 latexList   = [latexList '$\bd_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(den)) '$ \\~~\\'];
 %
@@ -102,11 +103,11 @@ latexList   = [latexList '$\bd_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(den)) '$
 %%% Equivalent NN
 if length(ip_data.c) < 20
     %
-    latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent numerator representation):\\ '];
+    latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent numerator $\bn_{\textrm{lag}}$ representation):\\ '];
     latexNN     = mlf.make_latex_NN_lag(p_c,double(w.*c)); 
     latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{.7}{' latexNN '} \caption{Equivalent NN representation of the numerator $\bn_{\textrm{lag}}$.}\end{center}\end{figure}']];
     %
-    latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent denominator representation):\\ '];
+    latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent denominator $\bd_{\textrm{lag}}$ representation):\\ '];
     latexNN     = mlf.make_latex_NN_lag(p_c,double(c)); 
     latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{.7}{' latexNN '} \caption{Equivalent NN representation of the denominator $\bd_{\textrm{lag}}$.}\end{center}\end{figure}']];
 end
@@ -124,10 +125,11 @@ den         = imon.den_coeff;
 latexList   = [latexList '\noindent \textbf{Monomial form}'];
 latexList   = [latexList ' (basis, numerator coefficients and denominator coefficients - small entries removed):\\~~\\'];
 %latexList   = [latexList '$$' latex(fun([imon.basis imon.num_coeff imon.den_coeff ])) '$$ \\~~\\' ];
-latexList   = [latexList '$$' latex(FUN_SYM([imon.basis num den])) '$$ \\~~\\' ];
+latexList   = [latexList '$$\textbf{Mon}=' latex(FUN_SYM([imon.basis num den])) '$$ \\~~\\' ];
 latexList   = [latexList '\noindent \textbf{Corresponding numerator and denominator}:\\~~\\'];
 num         = sum(num.*imon.basis);
 den         = sum(den.*imon.basis);
+latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{mon}}' vars ' &=& \dfrac{\bn_{\textrm{mon}}' vars '}{\bd_{\textrm{mon}}' vars '}\\ &=& \dfrac{\sum \textbf{Mon}(:,1)^{-1}\odot \textbf{Mon}(:,2)}{\sum \textbf{Mon}(:,1)^{-1}\odot \textbf{Mon}(:,3)} \end{array}$$'];
 latexList   = [latexList '$\bn_{\textrm{mon}}' vars ' = ' latex(FUN_SYM(num)) '$ \\~~\\'];
 latexList   = [latexList '$\bd_{\textrm{mon}}' vars ' = ' latex(FUN_SYM(den)) '$ \\~~\\'];
 % latexList   = [latexList '\noindent \textbf{Equivalent simplified function $\bG_{\textrm{mon}}' vars '$}: \\~~\\ '];
@@ -141,34 +143,46 @@ if maxLength > 10
 end
 latexList = [latexList '\noindent \textbf{KST equivalent decoupling pattern}'];
 % si's
-latexList = [latexList '~\\ Barycentric weights: $$\begin{array}{rclll}'];
+latexList = [latexList '~\\ Barycentric weights: $$\begin{array}{rcll}'];
 str_k     = [];
 tmp_k     = [];
 for ii = numel(p_c):-1:1
     eval(['tmp = Cx.s' num2str(ii) ';']);
-    latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' '&' str_k '\\' ]];
+    if ii == numel(p_c)
+        latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+    else
+        latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+    end
     tmp_k       = [tmp_k ['k_{' num2str(ii) '}']];
     str_k       = ['\bone_{' tmp_k '}'];
 end
 latexList = [latexList ['\end{array}$$' ]];
 % w's
-latexList = [latexList ['~\\ Data weights: $$\begin{array}{rclll}']];
+latexList = [latexList ['~\\ Data weights: $$\begin{array}{rcll}']];
 str_k     = [];
 tmp_k     = [];
 for ii = numel(p_c):-1:1
     eval(['tmp = Cx.w' num2str(ii) ';']);
-    latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' '&' str_k '\\' ]];
+    if ii == numel(p_c)
+        latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+    else
+        latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+    end
     tmp_k       = [tmp_k ['k_{' num2str(ii) '}']];
     str_k       = ['\bone_{' tmp_k '}'];
 end
 latexList = [latexList '\end{array}$$' ];
 % scalings
-latexList = [latexList '~\\ Normalization scalings: $$\begin{array}{rclll}'];
+latexList = [latexList '~\\ Normalization scalings: $$\begin{array}{rcll}'];
 str_k     = [];
 tmp_k     = [];
 for ii = numel(p_c):-1:1
     eval(['tmp = Cx.d' num2str(ii) ';']);
-    latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' '&' str_k '\\' ]];
+    if ii == numel(p_c)
+        latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+    else
+        latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+    end
     tmp_k       = [tmp_k ['k_{' num2str(ii) '}']];
     str_k       = ['\bone_{' tmp_k '}'];
 end
@@ -193,8 +207,9 @@ end
 [tmp_den,~] = numden(simplifyFraction(sum(Den)));
 %
 latexList   = [latexList '\noindent \textbf{Corresponding numerator and denominator} (without support points): \\~\\ '];
-latexList   = [latexList ['$\bn_{\textrm{kst}}' vars ' = \sum_i \prod_j \textbf{Bary}_{i,j}=' latex(FUN_SYM(tmp_den)) '$ \\~\\']];
-latexList   = [latexList ['$\bd_{\textrm{kst}}' vars ' = \sum_i \bw\cdot \prod_j \textbf{Bary}_{i,j}=' latex(FUN_SYM(tmp_num)) '$ \\']];
+latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{kst}}' vars ' &=& \dfrac{\bn_{\textrm{kst}}' vars '}{\bd_{\textrm{kst}}' vars '}\\ &=& \dfrac{\sum_i \bw\cdot \prod_j \textbf{Bary}_{i,j}}{\sum_i \prod_j \textbf{Bary}_{i,j}} \end{array}$$'];
+latexList   = [latexList ['$\bn_{\textrm{kst}}' vars ' = ' latex(FUN_SYM(tmp_den)) '$ \\~\\']];
+latexList   = [latexList ['$\bd_{\textrm{kst}}' vars ' =' latex(FUN_SYM(tmp_num)) '$ \\']];
 % % KST num./den
 % latexList   = [latexList '~\\ \noindent \textbf{Equivalent simplified function $\bG_{\textrm{kst}}' vars '$}: \\~\\ '];
 % latexList   = [latexList ['$\bG_{\textrm{kst}}' vars '=' latex(FUN_SYM(simplify(tmp_num./tmp_den))) '$ \\']];

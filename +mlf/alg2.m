@@ -4,7 +4,7 @@ if nargin < 4
     opt = struct();
 end
 
-%%% Option
+%%% Options
 n   = length(p_c);
 % Tolerance
 if ~isfield(opt,'tol')
@@ -28,7 +28,7 @@ end
 if ~isfield(opt,'max_itpl')
     tol1 = [1e-9 1e-12];
     for i = 1:numel(tol1)
-        ord(i,:) = mlf.alg2_order_bnd(p_c,p_r,tab,tol1(i),5);
+        ord(i,:) = mlf.alg2_order_bnd(p_c,p_r,tab,tol1(i),2);
     end
     for i = 1:n
         ip_est(1,i) = length(p_c{i});
@@ -48,18 +48,21 @@ end
 if ~isfield(opt,'max_iter')
     opt.max_iter = prod(cellfun(@length,p_c))-1;
 end
+% Loewner as small or tall
+if ~isfield(opt,'data_min')
+    data_min = true;
+else
+    data_min = opt.data_min;
+end
 
 %%% Start
 for i = 1:n 
     ip{i} = [p_c{i}(:); p_r{i}(:)];
 end
 max_samples         = max(abs(tab),[],'all');
-norm2_samples       = norm(tab(:))^2;
 err_mat             = abs(tab-mean(tab,'all'));
 [max_err,max_idx]   = max(err_mat,[],'all');
-%[max_err,sort_idx]   = sort(err_mat(:),'descend'); max_idx = sort_idx(1:2);
-rel_ls_err          = norm(err_mat(:))^2 / norm2_samples;
-fprintf('Initial rel max error %d, rel LS error %d \n',max_err(1)/max_samples,rel_ls_err)
+fprintf('Initial rel max error %d\n',max_err(1)/max_samples)
 
 % do this such that at least one iteration is done
 max_err         = Inf;
@@ -70,7 +73,7 @@ flop            = 0;
 %
 tab_sz          = size(tab);
 tab_vec         = mlf.mat2vec(tab);
-abs_tab_vec     = abs(tab_vec);
+%abs_tab_vec     = abs(tab_vec);
 %
 comb    = mlf.combinations_dim(tab_sz);
 N       = size(comb,1);
@@ -78,7 +81,8 @@ ipt     = zeros(N,n);
 for ii = 1:n
     ipt(:,ii) = ip{ii}(comb(:,ii));
 end
-while (max_err > max_samples * tol) && (jj < opt.max_iter)
+no_improvement = 0; CONTINUE = true;
+while (max_err > max_samples * tol) && (jj < opt.max_iter) && CONTINUE
     %
     clear pc pr w c
     jj = jj + 1;
@@ -103,6 +107,10 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     %%% Set column and row interpolation points
     for i = 1:n
         ip_row{i}   = setdiff(1:numel(ip{i}),ip_col{i});
+        if data_min
+            tmp         = numel(ip_col{i});
+            ip_row{i}   = ip_row{i}(1:tmp);
+        end
         pc{i}       = ip{i}(ip_col{i});
         pr{i}       = ip{i}(ip_row{i});
         ip_all{i,1} = [pc{i}(:); pr{i}(:)];
@@ -140,29 +148,17 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     %     error('Unknown method')
     end
     
-    % >> mLF version
-    w       = mlf.mat2vec(W_it);
-    % comb    = mlf.combinations_dim(tab_sz);
-    % N       = size(comb,1);
-    % ipt     = zeros(N,n);
-    % for ii = 1:n
-    %     ipt(:,ii) = ip{ii}(comb(:,ii));
-    % end
-    % for i = 1:N
-    %     for j = 1:n
-    %         ipt(i,j) = ip{j}(comb(i,j));
-    %     end
-    % end
-    % N   = size(ipt,1);
+    %%% Compute error
+    w   = mlf.mat2vec(W_it);
     hr  = zeros(N,1);
     for i = 1:N
         hr(i) = mlf.eval_lagrangian(pc,w,c,ipt(i,:),false);
     end
-    err_mat = abs(tab_vec-hr);
+    err_mat = abs(tab_vec-hr);%/max(abs(tab_vec));
     %err_mat = abs(tab_vec-hr)./abs_tab_vec;
     err_mat(isnan(err_mat)) = 0;
     err_mat(isinf(err_mat)) = 0;
-    %err_mat(isnan(err_mat)) = [];
+    err_mat = mlf.vec2mat(err_mat,size(tab));
     
     %%% Model
     g = {pc w c};
@@ -184,7 +180,8 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
     % maximum error for greedy
     [~,max_idx] = max(err_mat_greedy,[],'all');
 
-    fprintf('#%i rel max error %d, rel LS error %d, \n \t interpolation points [ ',jj,max_err/max_samples,rel_ls_err)
+    %%% Plot
+    fprintf('#%i rel max error %d \n \t interpolation points [ ',jj,max_err/max_samples)
     fprintf('%g ', cellfun(@length,ip_col));
     if (max_err < max_err_best) || (jj == 1)
         max_err_best    = max_err;
@@ -194,10 +191,15 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter)
             orders(iii) = length(pc{iii})-1;
         end
         fprintf(']*\n');
+        no_improvement = 0;
     else
         fprintf(']\n');
+        no_improvement = no_improvement + 1;
     end
     info.error(jj) = max_err;
+    if no_improvement > floor(opt.max_iter/5)
+        CONTINUE = false;
+    end
 end
 
 %%% Output
