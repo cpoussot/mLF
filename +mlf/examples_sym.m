@@ -43,6 +43,17 @@ switch CAS
         %
         xbnd    = [-1/2,1]; 
         Nip     = 8;
+    case 4
+        n       = 2;
+        H       = s2+ sin(s1)^2;
+        ref     = 'Personal communication';
+        cite    = '[none]';
+        nam     = '$\var{2} +\sin(\var{1})^2$';
+        dom     = 'R';
+        tag     = {'irrational'};
+        %
+        Nip     = 40;
+        xbnd    = {[-1 1]*3 [-1 1]*4};
     % case  
     %     n       = 5;
     %     H       = 12*s3 + 24.*s1.*s3 - 6.*s2.*s3 + 4.*s3.*s4 + 2.*s2.*s4 - 18.*s3.*s5 ...

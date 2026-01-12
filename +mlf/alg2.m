@@ -197,19 +197,20 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter) && CONTINUE
         no_improvement = no_improvement + 1;
     end
     info.error(jj) = max_err;
-    if no_improvement > floor(opt.max_iter/5)
-        CONTINUE = false;
-    end
+    % if no_improvement > floor(opt.max_iter/5)
+    %     CONTINUE = false;
+    % end
 end
 
 %%% Output
-r           = @(x) mlf.eval_lagrangian(g_best{1},g_best{2},g_best{3},x,false);
-info.opt    = jj_best;
+r               = @(x) mlf.eval_lagrangian(g_best{1},g_best{2},g_best{3},x,false);
+info.opt        = jj_best;
+info.ord_est    = ip_est-1;
 %
-info.flop   = flop;
-info.method = method;
-info.pc     = g_best{1};
-info.w      = g_best{2};
-info.c      = g_best{3};
-info.ord    = orders;
+info.flop       = flop;
+info.method     = method;
+info.pc         = g_best{1};
+info.w          = g_best{2};
+info.c          = g_best{3};
+info.ord        = orders;
 

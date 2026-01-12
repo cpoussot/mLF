@@ -17,7 +17,7 @@ switch CAS
         cite    = '[none]';
         nam     = '$\var{1}\var{2}^2$';
         dom     = 'R';
-        tag     = {'rational'};
+        tag     = {'polynomial'};
     case 1 % ReLU
         n       = 2;
         H       = @(x) 1/2*(x(:,1) + abs(x(:,1))) + 1/10*x(:,2);
@@ -262,7 +262,7 @@ switch CAS
         cite    = '\cite{Balicki:2025}';
         nam     = '$\frac{\var{1}+\var{2}+\var{3}}{6+\cos(\var{1})+\cos(\var{2})+\cos(\var{3})}$';
         dom     = 'R';
-        tag     = {'rational'};
+        tag     = {'irrational'};
         %
         Nip     = 30;
         xbnd    = [-1 1]*10;
@@ -594,6 +594,32 @@ switch CAS
         %
         xbnd    = {[1,10] [.1 1]}; 
         Nip     = 40;
+    case 51
+        n       = 2;
+        H       = @(x) exp(sin(50.*x(:,1))) + sin(60*exp(x(:,2))) + sin(70*sin(x(:,1))) + sin(sin(80*x(:,2))) - sin(10*(x(:,1) + x(:,2))) + 1/4*(x(:,1).^2 + x(:,2).^2);
+        %
+        ref     = 'NLT Challenge';
+        cite    = '[none]';
+        nam     = 'NLT Challenge \#4';%'$exp...$';
+        dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
+        %
+        xbnd    = {[-1,1]*.5 [-1 1]*.5}; 
+        %xbnd    = {[-1,1]*.75 [-1 1]*.75}; 
+        %xbnd    = {[-1,1]*2 [-1 1]*2}; 
+        Nip     = 1000;
+    case 52
+        n       = 2;
+        H       = @(x) (x(:,2) + sin(x(:,1)).^2);
+        %
+        ref     = 'P. Vuillemin';
+        cite    = '[none]';
+        nam     = '$\var{2} + \sin(\var{1})^2$';
+        dom     = 'R';
+        tag     = {'irrational' '$C^\infty$'};
+        %
+        xbnd    = {[-1,1]*3 [-1 1]*4}; 
+        Nip     = 20;
     % case 11
     %     H           = @(s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11) s1/(s1^6+s2*s3+s4+s5+s6+s7*s8+s9+s10+s11);
     %     ord         = [6 1 1, 1 1 1, 1 1 1, 1 1];

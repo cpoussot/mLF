@@ -14,7 +14,7 @@ else
 end
 % 
 if ~isfield(opt,'ord_obj')
-    ord_obj = inf;
+    ord_obj = inf*ones(1,n);
 else
     ord_obj = opt.ord_obj;
 end
