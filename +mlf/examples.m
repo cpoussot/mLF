@@ -310,7 +310,7 @@ switch CAS
         %
         ref     = 'Borehole function';
         cite    = '\cite{Surjanovic}';
-        nam     = '$\begin{array}{c}\mathrm{f}(r_w,r,T_u,H_u,T_l,H_l,L,K_w) =\\ \frac{2\pi T_u(H_u-H_l)}{\ln\left(\frac{r}{r_w}\right) \left(1+\frac{2LT_u}{\ln(r/r_w)r_w^2K_w}\right) + \frac{T_u}{T_l}} \end{array}$';
+        nam     = 'Borehole function';%'$\begin{array}{c}\mathrm{f}(r_w,r,T_u,H_u,T_l,H_l,L,K_w) =\\ \frac{2\pi T_u(H_u-H_l)}{\ln\left(\frac{r}{r_w}\right) \left(1+\frac{2LT_u}{\ln(r/r_w)r_w^2K_w}\right) + \frac{T_u}{T_l}} \end{array}$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %
@@ -371,7 +371,7 @@ switch CAS
         %
         ref     = 'Riemann $\zeta$ function (real part)';
         cite    = '[none]';
-        nam     = '$\mathrm{Re}(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
+        nam     = 'Riemann $\zeta$ function (real part)';%'$\mathrm{Re}(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %
@@ -389,7 +389,7 @@ switch CAS
         %
         ref     = 'Riemann $\zeta$ function (imaginary part)';
         cite    = '[none]';
-        nam     = '$\mathrm{Im}(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
+        nam     = 'Riemann $\zeta$ function (imaginary part)';%'$\mathrm{Im}(\mathbf{\zeta}(\var{1}+\imath \var{2}))$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %
@@ -576,7 +576,7 @@ switch CAS
         %
         ref     = 'Hankel function';
         cite    = '[none]';
-        nam     = '$\textrm{Re}(H_0^{(1)}(\var{1},\var{2}))$';
+        nam     = 'Hankel function $H_0$ (real part)';%'$\textrm{Re}(H_0^{(1)}(\var{1},\var{2}))$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %
@@ -588,7 +588,7 @@ switch CAS
         %
         ref     = 'Hankel function';
         cite    = '[none]';
-        nam     = '$\textrm{Im}(H_0^{(1)}(\var{1},\var{2}))$';
+        nam     = 'Hankel function $H_0$ (imaginary part)';%'$\textrm{Im}(H_0^{(1)}(\var{1},\var{2}))$';
         dom     = 'R';
         tag     = {'irrational' '$C^\infty$'};
         %

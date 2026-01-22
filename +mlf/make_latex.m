@@ -1,4 +1,4 @@
-function latexList = make_latex(CAS,infoCas,tab,ip_data,opt)
+function latexList = make_latex(CAS,infoCas,ip_data,opt)
 
 FUN_SYM = @(x) vpa(x,3);
 TAG     = false;
@@ -9,12 +9,14 @@ if nargin > 4
         FUN_SYM = opt.fun_sym;
     end
 end
+Nmax = 75;
 
 %%% Generic stuff;
 p_c     = ip_data.pc;
 p_r     = ip_data.pr;
 c       = ip_data.c;
 w       = ip_data.w;
+lag     = ip_data.lag;
 n       = numel(p_c);
 N       = numel(c);
 %
@@ -28,7 +30,9 @@ for ii = 1:n
     k_i(ii) = length(p_c{ii});
     q_i(ii) = length(p_r{ii});
 end
-N_i     = size(tab);
+for ii = 1:n
+    N_i(ii) = length(infoCas.ip{ii});
+end
 vars    = [vars(1:end-1)   ')'];
 vars_z  = [vars_z(1:end-1) ')'];
 vars_y  = [vars_y(1:end-1) ')'];
@@ -59,9 +63,9 @@ latexList   = [latexList ['\noindent \textbf{Original tensor} $$\tableau{' num2s
 latexList   = [latexList ['\noindent \textbf{Order detection by single variable Loewner}: $$d_l=' latex(sym(ip_data.ord)) '$$' ]];
 latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{case_' num2str(CAS) '/svd} \caption{Normalized singular values in $' vars '$.} \end{figure}']];
 
-if N < 75
+if N < Nmax
     %%% Interpolation points
-    latexList   = [latexList ['\noindent \textbf{Interpolation points}: $k_l=' latex(sym(k_i)) '$' ]];
+    latexList   = [latexList '\noindent \textbf{Interpolation points} ($k_l=' latex(sym(k_i)) '$, $q_l=' latex(sym(q_i)) '$):'];
     if max(q_i) < 10
         latexList   = [latexList '$$ \begin{array}{rcl}'];
         for ii = 1:length(p_c)
@@ -88,19 +92,16 @@ if N < 75
     latexList   = [latexList [ '$$' latex(FUN_SYM(tmp_data)) '$$' ]];
     
     %%% Transfer function in Lagrangian
-    [glag,ilag] = mlf.tf_lagrangian(ip_data.pc,ip_data.w,ip_data.c,false);
+    [glag,ilag] = mlf.tf_lagrangian(p_c,w,c,false);
     [num,den]   = numden(glag);
     latexList   = [latexList '\noindent \textbf{Lagrangian form} '];
-    latexList   = [latexList '(basis, numerator coefficients and denominator coefficients):\\~~\\'];
-    latexList   = [latexList '$$\textbf{Lag}=' latex(FUN_SYM([ilag.basis ilag.num_coeff ilag.den_coeff])) '$$ \\~~\\' ];
-    %
-    latexList   = [latexList '\noindent \textbf{Corresponding numerator and denominator}: \\~~\\'];
-    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{lag}}' vars ' &=& \dfrac{\bn_{\textrm{lag}}' vars '}{\bd_{\textrm{lag}}' vars '}\\ &=& \dfrac{\sum \textbf{Lag}(:,1)^{-1}\odot \textbf{Lag}(:,2)}{\sum \textbf{Lag}(:,1)^{-1}\odot \textbf{Lag}(:,3)} \end{array}$$'];
+    latexList   = [latexList '(basis, numerator and denominator coefficients):'];
+    latexList   = [latexList '$$\left(\begin{array}{ccc}\mathcal{B}_\textrm{lag}' vars ' & \bN_\textrm{lag} &\bD_\textrm{lag}\end{array}\right) =$$ $$' latex(FUN_SYM([ilag.basis ilag.num_coeff ilag.den_coeff])) '.$$' ];
+    latexList   = [latexList '\noindent The corresponding function is:'];
+    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{lag}}' vars ' &=& \dfrac{\bn_{\textrm{lag}}' vars '}{\bd_{\textrm{lag}}' vars '}\\ && \\ &=& \dfrac{\sum_{\textrm{row}} \bN_\textrm{lag} \odot\mathcal{B}^{-1}_\textrm{lag}' vars '}{\sum_{\textrm{row}} \bD_\textrm{lag} \odot\mathcal{B}^{-1}_\textrm{lag}' vars '}, \end{array}$$'];
+    latexList   = [latexList '\noindent where,\\'];
     latexList   = [latexList '$\bn_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(num)) '$ \\~~\\'];
     latexList   = [latexList '$\bd_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(den)) '$ \\~~\\'];
-    %
-    % latexList   = [latexList ['\noindent \textbf{Equivalent simplified function $\bG_{\textrm{lag}}' vars '$}: \\~~\\ ']];
-    % latexList   = [latexList '$\bG_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(simplify(num/den))) '$ \\~~\\'];
     
     %%% Equivalent NN
     if length(ip_data.c) < 20
@@ -115,126 +116,100 @@ if N < 75
     end
     
     %%% Transfer function in Monomial
-    [gmon,imon] = mlf.tf_monomial(ip_data.pc,ip_data.w,ip_data.c,false);
-    %[num,den]   = numden(gmon);
+    [gmon,imon] = mlf.tf_monomial(p_c,w,c,false);
     num         = imon.num_coeff;
     den         = imon.den_coeff;
-    % norm_max    = max(abs(den));
-    % num         = num/norm_max;
-    % den         = den/norm_max;
-    % den(abs(den)<1e-12) = 0;
-    % num(abs(num)<1e-12) = 0;
     latexList   = [latexList '\noindent \textbf{Monomial form}'];
-    latexList   = [latexList ' (basis, numerator coefficients and denominator coefficients - small entries removed):\\~~\\'];
-    %latexList   = [latexList '$$' latex(fun([imon.basis imon.num_coeff imon.den_coeff ])) '$$ \\~~\\' ];
-    latexList   = [latexList '$$\textbf{Mon}=' latex(FUN_SYM([imon.basis num den])) '$$ \\~~\\' ];
-    latexList   = [latexList '\noindent \textbf{Corresponding numerator and denominator}:\\~~\\'];
+    latexList   = [latexList ' (basis, numerator and denominator coefficients - entries $<10^{-12}$ removed):'];
+    latexList   = [latexList '$$\left(\begin{array}{ccc}\mathcal{B}_\textrm{mon}' vars ' & \bN_\textrm{mon} &\bD_\textrm{mon}\end{array}\right) =$$ $$' latex(FUN_SYM([imon.basis imon.num_coeff imon.den_coeff])) '$$' ];
+    latexList   = [latexList '\noindent The corresponding function is:'];
     num         = sum(num.*imon.basis);
     den         = sum(den.*imon.basis);
-    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{mon}}' vars ' &=& \dfrac{\bn_{\textrm{mon}}' vars '}{\bd_{\textrm{mon}}' vars '}\\ &=& \dfrac{\sum \textbf{Mon}(:,1)^{-1}\odot \textbf{Mon}(:,2)}{\sum \textbf{Mon}(:,1)^{-1}\odot \textbf{Mon}(:,3)} \end{array}$$'];
+    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{mon}}' vars ' &=& \dfrac{\bn_{\textrm{mon}}' vars '}{\bd_{\textrm{mon}}' vars '}\\ && \\&=& \dfrac{\sum_{\textrm{row}} \bN_\textrm{mon} \odot \mathcal{B}_\textrm{mon}' vars '}{\sum_{\textrm{row}} \bD_\textrm{mon} \odot\mathcal{B}_\textrm{mon}' vars '},  \end{array}$$'];
+    latexList   = [latexList '\noindent where,\\'];
     latexList   = [latexList '$\bn_{\textrm{mon}}' vars ' = ' latex(FUN_SYM(num)) '$ \\~~\\'];
     latexList   = [latexList '$\bd_{\textrm{mon}}' vars ' = ' latex(FUN_SYM(den)) '$ \\~~\\'];
-    % latexList   = [latexList '\noindent \textbf{Equivalent simplified function $\bG_{\textrm{mon}}' vars '$}: \\~~\\ '];
-    % latexList   = [latexList '$\bG_{\textrm{mon}}' vars ' = ' latex(FUN_SYM(simplify(num/den))) '$ \\~~\\'];
     
     %%% KST decoupling
-    [Bary,Lag,Cx]  = mlf.decoupling(ip_data.pc,ip_data.lag);
+    [Bary,Lag,Cx]  = mlf.decoupling(p_c,lag);
     eval(['maxLength = length(Cx.d' num2str(n) ');'])
     if maxLength > 10
         latexList = [latexList '\begin{landscape} '];
     end
     latexList = [latexList '\noindent \textbf{KST equivalent decoupling pattern}'];
     % si's
-    latexList = [latexList '~\\ Barycentric weights: $$\begin{array}{rcll}'];
+    latexList = [latexList ' (Barycentric weights $\bc^{\var{l}}$): $$\begin{array}{rclll}'];
     str_k     = [];
     tmp_k     = [];
     for ii = numel(p_c):-1:1
         eval(['tmp = Cx.s' num2str(ii) ';']);
         if ii == numel(p_c)
-            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) & := \textbf{Bary}(\var{' num2str(ii) '}) \\' ]];
         else
-            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k ' & := \textbf{Bary}(\var{' num2str(ii) '}) \\' ]];
         end
-        tmp_k       = [tmp_k ['k_{' num2str(ii) '}']];
-        str_k       = ['\bone_{' tmp_k '}'];
+        tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
+        str_k   = ['\bone_{' tmp_k '}'];
     end
     latexList = [latexList ['\end{array}$$' ]];
-    % w's
-    latexList = [latexList ['~\\ Data weights: $$\begin{array}{rcll}']];
-    str_k     = [];
-    tmp_k     = [];
-    for ii = numel(p_c):-1:1
-        eval(['tmp = Cx.w' num2str(ii) ';']);
-        if ii == numel(p_c)
-            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
-        else
-            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
-        end
-        tmp_k       = [tmp_k ['k_{' num2str(ii) '}']];
-        str_k       = ['\bone_{' tmp_k '}'];
-    end
-    latexList = [latexList '\end{array}$$' ];
-    % scalings
-    latexList = [latexList '~\\ Normalization scalings: $$\begin{array}{rcll}'];
-    str_k     = [];
-    tmp_k     = [];
-    for ii = numel(p_c):-1:1
-        eval(['tmp = Cx.d' num2str(ii) ';']);
-        if ii == numel(p_c)
-            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
-        else
-            latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
-        end
-        tmp_k       = [tmp_k ['k_{' num2str(ii) '}']];
-        str_k       = ['\bone_{' tmp_k '}'];
-    end
-    latexList = [latexList '\end{array}$$' ];
+    % % w's
+    % latexList = [latexList ['~\\ Data weights $\bw^{\var{l}}$: $$\begin{array}{rcll}']];
+    % str_k     = [];
+    % tmp_k     = [];
+    % for ii = numel(p_c):-1:1
+    %     eval(['tmp = Cx.w' num2str(ii) ';']);
+    %     if ii == numel(p_c)
+    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+    %     else
+    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+    %     end
+    %     tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
+    %     str_k   = ['\bone_{' tmp_k '}'];
+    % end
+    % latexList = [latexList '\end{array}$$' ];
+    % % scalings
+    % latexList = [latexList '~\\ Normalization scalings $d^{\var{l}}$: $$\begin{array}{rcll}'];
+    % str_k     = [];
+    % tmp_k     = [];
+    % for ii = numel(p_c):-1:1
+    %     eval(['tmp = Cx.d' num2str(ii) ';']);
+    %     if ii == numel(p_c)
+    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+    %     else
+    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+    %     end
+    %     tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
+    %     str_k   = ['\bone_{' tmp_k '}'];
+    % end
+    % latexList = [latexList '\end{array}$$' ];
     if maxLength > 10
         latexList = [latexList '\end{landscape} '];
     end
-    
-    % KST den in matrix form
-    latexList = [latexList '\noindent Barycentric univariate vector-wise functions:'];
-    for ii = 1:length(p_c)
-        tmp_den(:,ii)   = [['bary' num2str(ii)]; simplify((Lag{ii}.*Bary{ii}))];
-    end
-    latexList   = [latexList [ '$$\textbf{Bary}=' latex(FUN_SYM(tmp_den)) '$$' ]];
-    tmp_den     = tmp_den(2:end,:);
-    % Equivalent num & den
-    Den = 1;
+    % 
+    latexList = [latexList '~\\ Then, with the above notations, one defines the following univariate vector functions:  $$ \left\{ \begin{array}{rcl}'];
     for ii = 1:n
-        Den = Den.*Lag{ii}.*Bary{ii}; % den
+        latexList = [latexList ['\bPhi_{' num2str(ii) '}(\var{' num2str(ii) '}) &:=& \textbf{Bary}(\var{' num2str(ii) '}) \odot \mathcal{B}_{\textrm{lag}}^{-1}(\var{' num2str(ii) '}) \\']];
     end
-    [tmp_num,~] = numden(simplifyFraction(sum(w.*Den)));
-    [tmp_den,~] = numden(simplifyFraction(sum(Den)));
-    %
-    latexList   = [latexList '\noindent \textbf{Corresponding numerator and denominator} (without support points): \\~\\ '];
-    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{kst}}' vars ' &=& \dfrac{\bn_{\textrm{kst}}' vars '}{\bd_{\textrm{kst}}' vars '}\\ &=& \dfrac{\sum_i \bw\cdot \prod_j \textbf{Bary}_{i,j}}{\sum_i \prod_j \textbf{Bary}_{i,j}} \end{array}$$'];
-    latexList   = [latexList ['$\bn_{\textrm{kst}}' vars ' = ' latex(FUN_SYM(tmp_den)) '$ \\~\\']];
-    latexList   = [latexList ['$\bd_{\textrm{kst}}' vars ' =' latex(FUN_SYM(tmp_num)) '$ \\']];
-    % % KST num./den
-    % latexList   = [latexList '~\\ \noindent \textbf{Equivalent simplified function $\bG_{\textrm{kst}}' vars '$}: \\~\\ '];
-    % latexList   = [latexList ['$\bG_{\textrm{kst}}' vars '=' latex(FUN_SYM(simplify(tmp_num./tmp_den))) '$ \\']];
-    
+    latexList = [latexList '\end{array} \right. $$'];
+
+    %%% Resulting KST
+    latexList   = [latexList '\noindent The corresponding function is:'];
+    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{kst}}' vars ' &=& \dfrac{\bn_{\textrm{kst}}' vars '}{\bd_{\textrm{kst}}' vars '}\\ &=& \dfrac{\sum_{\text{rows}} \bw \odot \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})}{\sum_{\text{rows}} \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})} . \end{array}$$'];
+
     %%% Eval figure plot
     latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{case_' num2str(CAS) '/eval} \caption{Evaluation of $\bG_{\textrm{lag}}$ / $\bG_{\textrm{mon}}$ / $\bG_{\textrm{kst}}$ vs. original function $\bH$.} \end{figure}']];
-    
+
     %%% KST univariate functions 
-    [gkst1,kst] = mlf.make_singleVarFun(ip_data.pc,ip_data.pr,Cx);
+    [gkst1,kst] = mlf.make_singleVarFun(p_c,p_r,Cx);
     gkst1       = kst.f;
-    latexList   = [latexList '~\\ \noindent \textbf{KST-like univariate functions} \\'];
-    latexList   = [latexList '~\\ \noindent Equivalent ' num2str(length(gkst1)) ' scaled univariate functions $\bphi_{1,\cdots,' num2str(length(gkst1)) '}$: \\ '];
+    latexList   = [latexList '~\\ \noindent \textbf{KST-like univariate functions} '];
+    latexList   = [latexList '(equivalent scaled univariate functions $\bphi_{1,\cdots,' num2str(length(gkst1)) '}$): '];
     latexListF  = '$$\left\{\begin{array}{rcrcl}';
     idx         = [];
     %inc         = 1;
     for ii = 1:length(gkst1)
-        eq_ii       = latex(FUN_SYM(gkst1{ii}));
-        % ZVAR        = ['& &'];
-        % if vars_1(ii) == inc
-        %     ZVAR    = ['z_{' num2str(vars_1(ii)) '}&=&'];
-        %     inc     = inc + 1;
-        % end
-        ZVAR  = ['z_{' num2str(ii) '} &=&'];
+        eq_ii   = latex(FUN_SYM(gkst1{ii}));
+        ZVAR    = ['z_{' num2str(ii) '} &=&'];
         if length(eq_ii) < 100
             %latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(vars_1(ii)) '}) &=& ' eq_ii '\\' ]];
             latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(ii) '}) &=& ' eq_ii '\\' ]];
@@ -247,7 +222,7 @@ if N < 75
             latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(ii) '}) &=& \frac{\bn_{' num2str(ii) '}}{\bd_{' num2str(ii) '}} \\' ]];
         end
     end
-    latexListF  = [latexListF '\end{array} \right.$$' ];
+    latexListF  = [latexListF '\end{array} \right. .$$' ];
     latexListF  = strrep(latexListF,'\frac','\cfrac');
     latexList   = [latexList latexListF];
     if ~isempty(idx)
