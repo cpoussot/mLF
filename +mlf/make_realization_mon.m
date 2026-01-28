@@ -1,5 +1,12 @@
 function [Hr,info_real] = make_realization_mon(p_c,W,C,opt)
 
+% n = numel(p_c);
+% for ii = 1:n
+%     ord(ii) = length(p_c{ii});
+% end
+% W = mlf.vec2mat(w,ord);
+% C = mlf.vec2mat(c,ord);
+%
 if nargin < 4
     opt         = [];
     MAKE_MIN    = true;
