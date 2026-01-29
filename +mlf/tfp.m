@@ -60,4 +60,5 @@ for ii = 1:N2
     DEN_ = DEN_ + tf(sum(d_n(range,:),1),d_d(range(1),:));
 end
 Hss = minreal(ss(NUM_/DEN_));
+%Hss = (ss(NUM_/DEN_));
 Htf = tf(Hss);
