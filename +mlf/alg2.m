@@ -209,6 +209,7 @@ info.ord_est    = ip_est-1;
 %
 info.flop       = flop;
 info.method     = method;
+info.pr         = pr;
 info.pc         = g_best{1};
 info.w          = g_best{2};
 info.c          = g_best{3};

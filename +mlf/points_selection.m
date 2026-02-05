@@ -2,6 +2,10 @@ function [P_c,P_r,W,V,tab] = points_selection(p_c,p_r,tab,ord,minimal,CONJUGATE)
 
 if nargin < 6
     CONJUGATE = false;
+    if abs(sum(imag(p_c{1})))<1e-14 && sum(abs(imag(p_c{1})))>0
+        CONJUGATE = true;
+        warning('1st var complex paired')
+    end
 end
 
 n       = length(p_c);
