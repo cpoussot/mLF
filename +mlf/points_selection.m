@@ -50,9 +50,6 @@ for ii = 1:n
     end
     p_c{ii} = p_c{ii}(idxp_c{ii});
     p_r{ii} = p_r{ii}(idxp_r{ii});
-    %p_c{1}.'
-    %p_r{1}.'
-    %pause
     % 
     ii_str  = num2str(ii);
     tab_str = [tab_str '[idxp_c{' ii_str  '} ni(' ii_str ')+idxp_r{' ii_str '}],'];

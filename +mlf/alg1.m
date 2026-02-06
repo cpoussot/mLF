@@ -69,10 +69,24 @@ end
 [pc,pr,W,V,tabr]    = mlf.points_selection(p_c,p_r,tab,ord,data_min);
 w                   = mlf.mat2vec(W);
 
+%%% 
+CONJUGATE = false;
+if abs(sum(imag(pc{1})))<1e-14 && sum(abs(imag(pc{1})))>0
+    CONJUGATE = true;
+    warning('1st var complex paired')
+end
+
 %%% Lagrange via Loewner
 if strcmp(method,'full')
     LL      = mlf.loewnerMatrix(pc,pr,W,V);
-    c       = mlf.null(LL,method_null);
+    %
+    if CONJUGATE
+        [TL,TR] = mlf.go_real(pc);
+        c       = mlf.null(TL*LL*TR,method_null);
+        c       = TR*c;
+    else
+        c       = mlf.null(LL,method_null);
+    end
     flop    = size(LL,1)*size(LL,2)^2;
 elseif strcmp(method,'rec')
     [c,lag] = mlf.loewner_null_rec(pc,pr,tabr,method_null);

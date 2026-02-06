@@ -130,7 +130,7 @@ switch CAS
         H       = @(x) (x(:,1).^4+x(:,2).^4+x(:,1).^2.*x(:,2).^2+x(:,1).*x(:,2))./((x(:,1)-1.1).*(x(:,2)-1.1));
         ref     = 'A/al. 2021 (A.5.8)';
         cite    = '\cite{Austin:2021}';
-        nam     = '$\frac{\var{1}^4+\var{2}^4+\var{1}^2\var{2}^2+\var{1}\var{2}}{(\var{1}-1.1)(y_2-1.1)}$';
+        nam     = '$\frac{\var{1}^4+\var{2}^4+\var{1}^2\var{2}^2+\var{1}\var{2}}{(\var{1}-1.1)(\var{2}-1.1)}$';
         dom     = 'R';
         tag     = {'rational'};
     case 14
