@@ -6,19 +6,19 @@ for ii = 1:n
 end
 sumK    = sum(k);
 prodK   = prod(k);
-distY   = 2;
+distY   = 2.5;
 distX   = 5;
 
 %
 latexList   = [];
 latexList   = [latexList '\begin{tikzpicture}[line width=0.4mm]'];
 latexList   = [latexList '\tikzstyle{place}=[circle, draw=black, minimum size = 8mm]'];
-latexList   = [latexList '\tikzstyle{placeInOut}=[circle, draw=orange, minimum size = 8mm]'];
+latexList   = [latexList '\tikzstyle{placeInOut}=[circle, draw=orange, minimum size = 12mm]'];
 % Input
 %kk = 0;
 for ii = 1:n
     %kk          = k(ii) + kk;
-    latexList   = [latexList ['\node at (0,' num2str(-distY*ii) ') [placeInOut] (first_' num2str(ii) '){$\var{' num2str(ii) '}$};']];
+    latexList   = [latexList ['\node at (0,' num2str(-prodK/2-distY*ii) ') [placeInOut] (first_' num2str(ii) '){$\var{' num2str(ii) '}$};']];
 end
 % Hidden 1
 kk = 0;

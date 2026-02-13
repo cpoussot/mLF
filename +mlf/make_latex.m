@@ -2,11 +2,18 @@ function latexList = make_latex(CAS,infoCas,ip_data,opt)
 
 FUN_SYM = @(x) vpa(x,3);
 TAG     = false;
-if nargin > 4
-    TAG             = true;
-    opt.ord_show    = false;
+if nargin > 3
+    TAG         = true;
+    ORD_SHOW    = false;
+    DETAILS     = false;
     if isfield(opt,'fun_sym')
-        FUN_SYM = opt.fun_sym;
+        FUN_SYM     = opt.fun_sym;
+    end
+    if isfield(opt,'ord_show')
+        ORD_SHOW    = opt.ord_show;
+    end
+    if isfield(opt,'details')
+        DETAILS     = opt.details;
     end
 end
 Nmax = 75;
@@ -105,14 +112,18 @@ if N < Nmax
     
     %%% Equivalent NN
     if length(ip_data.c) < 20
+        SCALING = .7;
+        if length(ip_data.c) > 15
+            SCALING = .5;
+        end
         %
         latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent numerator $\bn_{\textrm{lag}}$ representation):\\ '];
         latexNN     = mlf.make_latex_NN_lag(p_c,double(w.*c)); 
-        latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{.7}{' latexNN '} \caption{Equivalent NN representation of the numerator $\bn_{\textrm{lag}}$.}\end{center}\end{figure}']];
+        latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{' num2str(SCALING) '}{' latexNN '} \caption{Equivalent NN representation of the numerator $\bn_{\textrm{lag}}$.}\end{center}\end{figure}']];
         %
         latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent denominator $\bd_{\textrm{lag}}$ representation):\\ '];
         latexNN     = mlf.make_latex_NN_lag(p_c,double(c)); 
-        latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{.7}{' latexNN '} \caption{Equivalent NN representation of the denominator $\bd_{\textrm{lag}}$.}\end{center}\end{figure}']];
+        latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{' num2str(SCALING) '}{' latexNN '} \caption{Equivalent NN representation of the denominator $\bd_{\textrm{lag}}$.}\end{center}\end{figure}']];
     end
     
     %%% Transfer function in Monomial
@@ -152,36 +163,56 @@ if N < Nmax
         str_k   = ['\bone_{' tmp_k '}'];
     end
     latexList = [latexList ['\end{array}$$' ]];
-    % % w's
-    % latexList = [latexList ['~\\ Data weights $\bw^{\var{l}}$: $$\begin{array}{rcll}']];
-    % str_k     = [];
-    % tmp_k     = [];
-    % for ii = numel(p_c):-1:1
-    %     eval(['tmp = Cx.w' num2str(ii) ';']);
-    %     if ii == numel(p_c)
-    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
-    %     else
-    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
-    %     end
-    %     tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
-    %     str_k   = ['\bone_{' tmp_k '}'];
-    % end
-    % latexList = [latexList '\end{array}$$' ];
-    % % scalings
-    % latexList = [latexList '~\\ Normalization scalings $d^{\var{l}}$: $$\begin{array}{rcll}'];
-    % str_k     = [];
-    % tmp_k     = [];
-    % for ii = numel(p_c):-1:1
-    %     eval(['tmp = Cx.d' num2str(ii) ';']);
-    %     if ii == numel(p_c)
-    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
-    %     else
-    %         latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
-    %     end
-    %     tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
-    %     str_k   = ['\bone_{' tmp_k '}'];
-    % end
-    % latexList = [latexList '\end{array}$$' ];
+    if DETAILS
+        % B_lag's
+        latexList = [latexList ' Lagrangian basis $\mathcal B_{\textbf{lag}}(\var{l})$: $$\begin{array}{rclll}'];
+        str_k     = [];
+        tmp_k     = [];
+        for ii = numel(p_c):-1:1
+            eval(['slack = Cx.s' num2str(ii) ';']);
+            [~,tmp] = numden(Lag{ii});
+            tmp     = unique(tmp);
+            tmp     = repmat(tmp,1,size(slack,2));
+            if ii == numel(p_c)
+                latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) & := \mathcal B_{\textbf{lag}}(\var{' num2str(ii) '}) \\' ]];
+            else
+                latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k ' & := \mathcal B_{\textbf{lag}}(\var{' num2str(ii) '}) \\' ]];
+            end
+            tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
+            str_k   = ['\bone_{' tmp_k '}'];
+        end
+        latexList = [latexList ['\end{array}$$' ]];
+        % w's
+        latexList = [latexList ['~\\ Data weights $\bw^{\var{l}}$: $$\begin{array}{rcll}']];
+        str_k     = [];
+        tmp_k     = [];
+        for ii = numel(p_c):-1:1
+            eval(['tmp = Cx.w' num2str(ii) ';']);
+            if ii == numel(p_c)
+                latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+            else
+                latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+            end
+            tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
+            str_k   = ['\bone_{' tmp_k '}'];
+        end
+        latexList = [latexList '\end{array}$$' ];
+        % scaling
+        latexList = [latexList '~\\ Normalization scaling $d^{\var{l}}$: $$\begin{array}{rcll}'];
+        str_k     = [];
+        tmp_k     = [];
+        for ii = numel(p_c):-1:1
+            eval(['tmp = Cx.d' num2str(ii) ';']);
+            if ii == numel(p_c)
+                latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \\' ]];
+            else
+                latexList   = [latexList ['\var{' num2str(ii) '}&: & ' latex(FUN_SYM(tmp)) '& \textrm{vec}(.) \otimes ' str_k '\\' ]];
+            end
+            tmp_k   = [tmp_k ['k_{' num2str(ii) '}']];
+            str_k   = ['\bone_{' tmp_k '}'];
+        end
+        latexList = [latexList '\end{array}$$' ];
+    end
     if maxLength > 10
         latexList = [latexList '\end{landscape} '];
     end
@@ -235,6 +266,7 @@ if N < Nmax
     
     %%% Lifted interpolation points
     if TAG
+        opt.ord_show    = ORD_SHOW;
         [Var,Lag,Cx]    = mlf.decoupling(ip_data.pc,ip_data.lag);
         [gkst1,ikst]    = mlf.make_singleVarFun(ip_data.pc,ip_data.pr,Cx);
         ok              = mlf.check(ikst.pc,ikst.pr);

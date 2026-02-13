@@ -13,19 +13,19 @@ switch CAS
         H       = s1*s2^2;
         ref     = 'Personal communication';
         cite    = '[none]';
-        nam     = '$\var{1} \var{2}^2$';
+        nam     = ['$' latex(H) '$'];
         dom     = 'R';
         tag     = {'polynomial'};
         %
-        Nip     = 10;
-        xbnd    = [-1 1];
+        Nip     = 6;
+        xbnd    = [1 6];
     case 2
         n       = 3;
         H       = s1*s2+s1*s3+s2*s3;
         %
         ref     = 'G. P\''olya and G.Szeg\"o';
         cite    = '\cite{Polya:1925}';
-        nam     = '$\var{1}\var{2}+\var{1}\var{3}+\var{2}\var{3}$';
+        nam     = ['$' latex(H) '$'];
         dom     = 'R';
         tag     = {'polynomial'};
         %
@@ -37,7 +37,7 @@ switch CAS
         %
         ref     = 'A.C. Antoulas';
         cite    = '[Personnal communication]';
-        nam     = '$\var{1}$';
+        nam     = ['$' latex(H) '$'];
         dom     = 'R';
         tag     = {'polynomial'};
         %
@@ -48,12 +48,23 @@ switch CAS
         H       = s2+ sin(s1)^2;
         ref     = 'Personal communication';
         cite    = '[none]';
-        nam     = '$\var{2} +\sin(\var{1})^2$';
+        nam     = ['$' latex(H) '$'];
         dom     = 'R';
         tag     = {'irrational'};
         %
         Nip     = 40;
         xbnd    = {[-1 1]*3 [-1 1]*4};
+    case 5
+        n       = 4;
+        H       = (s1+s2+s3*s4-1)/(s2+s4+s1*s3+1);
+        ref     = 'Exchange with Thanos';
+        cite    = '[none]';
+        nam     = ['$' latex(H) '$'];%'$(\var{1}+\var{2}+\var{3}*\var{4}+2/5)/(\var{2}+\var{4}+\var{1}*\var{3}-5/2)$';
+        dom     = 'R';
+        tag     = {'irrational'};
+        %
+        Nip     = 4;
+        xbnd    = {[1 4] [1 4] [1 4] [1 4]};
     % case  
     %     n       = 5;
     %     H       = 12*s3 + 24.*s1.*s3 - 6.*s2.*s3 + 4.*s3.*s4 + 2.*s2.*s4 - 18.*s3.*s5 ...
