@@ -1,19 +1,21 @@
 function latexList = make_latex(CAS,infoCas,ip_data,opt)
 
-FUN_SYM = @(x) vpa(x,3);
-TAG     = false;
+FUN_SYM     = @(x) vpa(x,3);
+UNIVAR      = false;
+DETAILS     = false;
+ORD_SHOW    = false;
 if nargin > 3
-    TAG         = true;
-    ORD_SHOW    = false;
-    DETAILS     = false;
     if isfield(opt,'fun_sym')
         FUN_SYM     = opt.fun_sym;
     end
-    if isfield(opt,'ord_show')
-        ORD_SHOW    = opt.ord_show;
+    if isfield(opt,'univar')
+        UNIVAR      = opt.univar;
     end
     if isfield(opt,'details')
         DETAILS     = opt.details;
+    end
+    if isfield(opt,'ord_show')
+        ORD_SHOW    = opt.ord_show;
     end
 end
 Nmax = 75;
@@ -39,6 +41,7 @@ for ii = 1:n
 end
 for ii = 1:n
     N_i(ii) = length(infoCas.ip{ii});
+    dim(ii) = length(p_c{ii});
 end
 vars    = [vars(1:end-1)   ')'];
 vars_z  = [vars_z(1:end-1) ')'];
@@ -68,11 +71,11 @@ latexList   = [latexList ['\noindent \textbf{Original tensor} $$\tableau{' num2s
 
 %%% Order detection
 latexList   = [latexList ['\noindent \textbf{Order detection by single variable Loewner}: $$d_l=' latex(sym(ip_data.ord)) '$$' ]];
-latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{case_' num2str(CAS) '/svd} \caption{Normalized singular values in $' vars '$.} \end{figure}']];
+latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{figures/case_' num2str(CAS) '/svd} \caption{Normalized singular values in $' vars '$.} \end{figure}']];
 
 if N < Nmax
     %%% Interpolation points
-    latexList   = [latexList '\noindent \textbf{Interpolation points} ($k_l=' latex(sym(k_i)) '$, $q_l=' latex(sym(q_i)) '$):'];
+    latexList   = [latexList '\noindent \textbf{Interpolation points} ($k_l=' latex(sym(k_i)) '$, $q_l=' latex(sym(q_i)) '$, where $l=1,\cdots,\ord$):'];
     if max(q_i) < 10
         latexList   = [latexList '$$ \begin{array}{rcl}'];
         for ii = 1:length(p_c)
@@ -109,7 +112,29 @@ if N < Nmax
     latexList   = [latexList '\noindent where,\\'];
     latexList   = [latexList '$\bn_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(num)) '$ \\~~\\'];
     latexList   = [latexList '$\bd_{\textrm{lag}}' vars ' = ' latex(FUN_SYM(den)) '$ \\~~\\'];
-    
+    if DETAILS
+        NUM = sym(mlf.vec2mat(ilag.num_coeff,dim));
+        DEN = sym(mlf.vec2mat(ilag.den_coeff,dim));
+        BAS = sym(mlf.vec2mat(ilag.basis,dim));
+        if n == 2
+            latexList   = [latexList '\noindent Tensor form:\\'];
+            latexList   = [latexList '$$\mathbf N_{\textrm{lag}}^\otimes=' latex(FUN_SYM(NUM)) '$$'];
+            latexList   = [latexList '$$\mathbf D_{\textrm{lag}}^\otimes=' latex(FUN_SYM(DEN)) '$$'];
+            latexList   = [latexList '$$(\mathcal B_{\textrm{lag}}^\otimes)^{-1}=' latex(FUN_SYM(BAS)) '$$\\'];
+        elseif n == 3
+            latexList   = [latexList '\noindent Tensor form:\\'];
+            for iii = 1:dim(3)
+                latexList   = [latexList '$$\mathbf N_{\textrm{lag}}^\otimes(:,:,' num2str(iii) ')=' latex(FUN_SYM(NUM(:,:,iii))) '$$'];
+            end
+            for iii = 1:dim(3)
+                latexList   = [latexList '$$\mathbf D_{\textrm{lag}}^\otimes(:,:,' num2str(iii) ')=' latex(FUN_SYM(DEN(:,:,iii))) '$$'];
+            end
+            for iii = 1:dim(3)
+                latexList   = [latexList '$$\mathcal B_{\textrm{lag}}^\otimes(:,:,' num2str(iii) ')=' latex(FUN_SYM(BAS(:,:,iii))) '$$\\'];
+            end
+        end
+    end
+
     %%% Equivalent NN
     if length(ip_data.c) < 20
         SCALING = .7;
@@ -120,10 +145,10 @@ if N < Nmax
         latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent numerator $\bn_{\textrm{lag}}$ representation):\\ '];
         latexNN     = mlf.make_latex_NN_lag(p_c,double(w.*c)); 
         latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{' num2str(SCALING) '}{' latexNN '} \caption{Equivalent NN representation of the numerator $\bn_{\textrm{lag}}$.}\end{center}\end{figure}']];
-        %
-        latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent denominator $\bd_{\textrm{lag}}$ representation):\\ '];
-        latexNN     = mlf.make_latex_NN_lag(p_c,double(c)); 
-        latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{' num2str(SCALING) '}{' latexNN '} \caption{Equivalent NN representation of the denominator $\bd_{\textrm{lag}}$.}\end{center}\end{figure}']];
+        % %
+        % latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent denominator $\bd_{\textrm{lag}}$ representation):\\ '];
+        % latexNN     = mlf.make_latex_NN_lag(p_c,double(c)); 
+        % latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{' num2str(SCALING) '}{' latexNN '} \caption{Equivalent NN representation of the denominator $\bd_{\textrm{lag}}$.}\end{center}\end{figure}']];
     end
     
     %%% Transfer function in Monomial
@@ -140,7 +165,29 @@ if N < Nmax
     latexList   = [latexList '\noindent where,\\'];
     latexList   = [latexList '$\bn_{\textrm{mon}}' vars ' = ' latex(FUN_SYM(num)) '$ \\~~\\'];
     latexList   = [latexList '$\bd_{\textrm{mon}}' vars ' = ' latex(FUN_SYM(den)) '$ \\~~\\'];
-    
+    if DETAILS
+        NUM = sym(mlf.vec2mat(imon.num_coeff,dim));
+        DEN = sym(mlf.vec2mat(imon.den_coeff,dim));
+        BAS = sym(mlf.vec2mat(imon.basis,dim));
+        if n == 2
+            latexList   = [latexList '\noindent Tensor form:\\'];
+            latexList   = [latexList '$$\mathbf N_{\textrm{mon}}^\otimes=' latex(FUN_SYM(NUM)) '$$'];
+            latexList   = [latexList '$$\mathbf D_{\textrm{mon}}^\otimes=' latex(FUN_SYM(DEN)) '$$'];
+            latexList   = [latexList '$$\mathcal B_{\textrm{mon}}^\otimes=' latex(FUN_SYM(BAS)) '$$\\'];
+        elseif n == 3
+            latexList   = [latexList '\noindent Tensor form:\\'];
+            for iii = 1:dim(3)
+                latexList   = [latexList '$$\mathbf N_{\textrm{mon}}^\otimes(:,:,' num2str(iii) ')=' latex(FUN_SYM(NUM(:,:,iii))) '$$'];
+            end
+            for iii = 1:dim(3)
+                latexList   = [latexList '$$\mathbf D_{\textrm{mon}}^\otimes(:,:,' num2str(iii) ')=' latex(FUN_SYM(DEN(:,:,iii))) '$$'];
+            end
+            for iii = 1:dim(3)
+                latexList   = [latexList '$$\mathcal B_{\textrm{mon}}^\otimes(:,:,' num2str(iii) ')=' latex(FUN_SYM(BAS(:,:,iii))) '$$\\'];
+            end
+        end
+    end
+
     %%% KST decoupling
     [Bary,Lag,Cx]  = mlf.decoupling(p_c,lag);
     eval(['maxLength = length(Cx.d' num2str(n) ');'])
@@ -225,10 +272,10 @@ if N < Nmax
 
     %%% Resulting KST
     latexList   = [latexList '\noindent The corresponding function is:'];
-    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{kst}}' vars ' &=& \dfrac{\bn_{\textrm{kst}}' vars '}{\bd_{\textrm{kst}}' vars '}\\ &=& \dfrac{\sum_{\text{rows}} \bw \odot \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})}{\sum_{\text{rows}} \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})} . \end{array}$$'];
+    latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{kst}}' vars ' &=& \dfrac{\bn_{\textrm{kst}}' vars '}{\bd_{\textrm{kst}}' vars '}\\ &&\\ &=& \dfrac{\sum_{\text{rows}} \bw \odot \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})}{\sum_{\text{rows}} \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})} . \end{array}$$'];
 
     %%% Eval figure plot
-    latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{case_' num2str(CAS) '/eval} \caption{Evaluation of $\bG_{\textrm{lag}}$ / $\bG_{\textrm{mon}}$ / $\bG_{\textrm{kst}}$ vs. original function $\bH$.} \end{figure}']];
+    latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{figures/case_' num2str(CAS) '/eval} \caption{Evaluation of $\bG_{\textrm{lag}}$ / $\bG_{\textrm{mon}}$ / $\bG_{\textrm{kst}}$ vs. original function $\bH$.} \end{figure}']];
 
     %%% KST univariate functions 
     [gkst1,kst] = mlf.make_singleVarFun(p_c,p_r,Cx);
@@ -265,7 +312,7 @@ if N < Nmax
     end
     
     %%% Lifted interpolation points
-    if TAG
+    if UNIVAR
         opt.ord_show    = ORD_SHOW;
         [Var,Lag,Cx]    = mlf.decoupling(ip_data.pc,ip_data.lag);
         [gkst1,ikst]    = mlf.make_singleVarFun(ip_data.pc,ip_data.pr,Cx);
@@ -297,13 +344,13 @@ if N < Nmax
     end
 else
     %%% Eval figure plot
-    latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{case_' num2str(CAS) '/eval} \caption{Evaluation of $\bG_{\textrm{lag}}$ / $\bG_{\textrm{mon}}$ / $\bG_{\textrm{kst}}$ vs. original function $\bH$.} \end{figure}']];
+    latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{figures/case_' num2str(CAS) '/eval} \caption{Evaluation of $\bG_{\textrm{lag}}$ / $\bG_{\textrm{mon}}$ / $\bG_{\textrm{kst}}$ vs. original function $\bH$.} \end{figure}']];
 end
 
 %%% Some minor text-style
 latexList = strrep(latexList,'\mathrm{rc}','\bc');
 latexList = strrep(latexList,'\mathrm{rw}','\bw');
-latexList = strrep(latexList,'\mathrm{rcw}','\bc\cdot\bw');
+latexList = strrep(latexList,'\mathrm{rcw}','\bc\odot\bw');
 % Replace bary with \bc 
 for ii = 1:numel(p_c)
     latexList = strrep(latexList,['\mathrm{bary}_{' num2str(ii) '}'],['\bc^{\var{' num2str(ii) '}} \mathbf{Lag}(\var{' num2str(ii) '})']);

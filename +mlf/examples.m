@@ -437,7 +437,7 @@ switch CAS
         H       = @(x) (x(:,1).^9.*x(:,2).^7 + x(:,1).^3 + 5*x(:,3).^2 ) ./ ...
                        (5*x(:,1).^4 + 4*x(:,1).^2 + x(:,3).*x(:,2).^3 + 1);
         %
-        ref     = 'A.C. Antoulas presentation';
+        ref     = 'A.C. Antoulas (presentation)';
         cite    = '[none]';
         nam     = '$\frac{\var{1}^9 \var{2}^7 + \var{1}^3 + 5 \var{3}^2}{5 \var{1}^4 + 4 \var{1}^2 + \var{3}\var{2}^3 + 1}$';
         dom     = 'R';
@@ -550,7 +550,7 @@ switch CAS
         %H       = @(x) (1 + 2*x(:,1)).*(-2 + x(:,2)).*(-x(:,3)).*(3 + x(:,4)).*(2 - 3*x(:,5)) + ... 
         %               (-1 + x(:,1)).*(2*x(:,2)).*(1 + 3*x(:,3)).*(-x(:,4)).*(1 - x(:,5));
         %
-        ref     = 'G/al. 2025 (Ex 3.1)';
+        ref     = '(Ex 3.1)';
         cite    = '\cite{GHK:2025}';
         nam     = '$\begin{array}{c}(1 + 2\var{1})(-2 + \var{2})(-\var{3})(3 + \var{4})(2- 3\var{5}) \\ + (-1 + \var{1})(2\var{2})(1 + 3\var{3})(-\var{4})(1 -\var{5})\end{array}$';
         dom     = 'R';
@@ -574,7 +574,7 @@ switch CAS
         n       = 2;
         H       = @(x) real(besselh(0,x(:,1)+1i*x(:,2)));
         %
-        ref     = 'Hankel function';
+        ref     = 'Hankel function (\texttt{besselh} Matlab function)';
         cite    = '[none]';
         nam     = 'Hankel function $H_0$ (real part)';%'$\textrm{Re}(H_0^{(1)}(\var{1},\var{2}))$';
         dom     = 'R';
@@ -586,7 +586,7 @@ switch CAS
         n       = 2;
         H       = @(x) imag(besselh(0,x(:,1)+1i*x(:,2)));
         %
-        ref     = 'Hankel function';
+        ref     = 'Hankel function (\texttt{besselh} Matlab function)';
         cite    = '[none]';
         nam     = 'Hankel function $H_0$ (imaginary part)';%'$\textrm{Im}(H_0^{(1)}(\var{1},\var{2}))$';
         dom     = 'R';
@@ -598,7 +598,7 @@ switch CAS
         n       = 2;
         H       = @(x) exp(sin(50.*x(:,1))) + sin(60*exp(x(:,2))) + sin(70*sin(x(:,1))) + sin(sin(80*x(:,2))) - sin(10*(x(:,1) + x(:,2))) + 1/4*(x(:,1).^2 + x(:,2).^2);
         %
-        ref     = 'NLT Challenge';
+        ref     = 'Trefethen (challenge document)';
         cite    = '[none]';
         nam     = 'NLT Challenge \#4';%'$exp...$';
         dom     = 'R';
@@ -612,7 +612,7 @@ switch CAS
         n       = 2;
         H       = @(x) (x(:,2) + sin(x(:,1)).^2);
         %
-        ref     = 'P. Vuillemin';
+        ref     = 'P. Vuillemin (discussion)';
         cite    = '[none]';
         nam     = '$\var{2} + \sin(\var{1})^2$';
         dom     = 'R';
@@ -620,6 +620,78 @@ switch CAS
         %
         xbnd    = {[-1,1]*3 [-1 1]*4}; 
         Nip     = 20;
+    case 53
+        n       = 2;
+        H       = @(x) (2-x(:,1)).*(1-2*x(:,2))+x(:,1).*(5+x(:,2).^2);
+        %
+        ref     = 'L. Balada Gaggioli (discussion)';
+        cite    = '[none]';
+        nam     = '$(2-\var{1})(1-2\var{2})+\var{1}(5+\var{2}^2)$';
+        dom     = 'R';
+        tag     = {'polynomial'};
+        %
+        xbnd    = {[-1,1] [-1 1]}; 
+        Nip     = 10;
+    case 54
+        n       = 2;
+        H       = @(x) x(:,1).^4.*x(:,2).^2 + x(:,1).^2.*x(:,2).^4 - 3*x(:,1).^2.*x(:,2).^2 + 1;
+        %
+        ref     = 'V. Magron (presentation)';
+        cite    = '[Motzkin problem]';
+        nam     = '$\var{1}^4\var{2}^2+\var{1}^2\var{2}^4-3\var{1}^2\var{1}^2+1$';
+        dom     = 'R';
+        tag     = {'polynomial'};
+        %
+        xbnd    = [-1,1]*1.1;%{[-1,1]*1.1 [-1 1]*1.1}; 
+        Nip     = 20;
+    case 55
+        n       = 2;
+        H       = @(x) (x(:,1).^2+2*x(:,2).^2)./(x(:,1).^2+x(:,2).^2);
+        %
+        ref     = 'D. Henrion (discussion)';
+        cite    = '[none]';
+        nam     = '$\frac{\var{1}^2+2\var{2}^2}{\var{1}^2+\var{2}^2}$';
+        dom     = 'R';
+        tag     = {'rational'};
+        %
+        xbnd    = [-1,1];%{[-1,1]*1.1 [-1 1]*1.1}; 
+        Nip     = 20;
+    case 56
+        n       = 2;
+        H       = @(x) (x(:,1).^2)./(x(:,1).^2+x(:,2).^2);
+        %
+        ref     = 'D. Henrion (discussion)';
+        cite    = '[none]';
+        nam     = '$\frac{\var{1}^2}{\var{1}^2+\var{2}^2}$';
+        dom     = 'R';
+        tag     = {'rational'};
+        %
+        xbnd    = [-1,1];%{[-1,1]*1.1 [-1 1]*1.1}; 
+        Nip     = 20;
+    case 57
+        n       = 2;
+        H       = @(x) (x(:,1).*x(:,2).^2);
+        %
+        ref     = 'A.C. Antoulas (discussion)';
+        cite    = '[none]';
+        nam     = '$\var{1} \var{2}^2$';
+        dom     = 'R';
+        tag     = {'rational'};
+        %
+        xbnd    = [-1 1]*1.1;
+        Nip     = 10;
+    case 58
+        n       = 4;
+        H       = @(x) (x(:,1).*x(:,2)+x(:,3)-x(:,4)+10)./((x(:,1)+2*x(:,2)+x(:,3)+3*x(:,4)+20));
+        %
+        ref     = 'A.C. Antoulas ("brouillon")';
+        cite    = '[none]';
+        nam     = '$Brouillon$';
+        dom     = 'R';
+        tag     = {'rational'};
+        %
+        xbnd    = [-2 2];
+        Nip     = 2;
     % case 11
     %     H           = @(s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11) s1/(s1^6+s2*s3+s4+s5+s6+s7*s8+s9+s10+s11);
     %     ord         = [6 1 1, 1 1 1, 1 1 1, 1 1];
