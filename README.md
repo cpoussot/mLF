@@ -1,8 +1,8 @@
-# Multivariate Loewner Framework (mLF)
+# Introduction
 
 ## Overview
 
-The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://doi.org/10.1137/24M1656657) (or [arXiv](https://arxiv.org/abs/2405.00495) version), in SIAM Review (Research Spotlight), Vol. 67(4), pp. 737-770, November 2025. It allows constructing a $n$-variate rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
+The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://doi.org/10.1137/24M1656657) (or [arXiv](https://arxiv.org/abs/2405.00495) version), in SIAM Review (Research Spotlight), Vol. 67(4), pp. 737-770, November 2025. It allows constructing a $n$-variable rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
 - $n$-variable static functions
 - $n$-variable (parametric) dynamical systems
 
@@ -50,7 +50,7 @@ Moreover, for more numerically robust and involved implementation and features, 
 ## Dependencies
 
 - MATLAB R2023b or later (tested on this version)
-- Toolboxes: symbolic_toolbox may be used for some functionalities
+- Toolboxes: "Symbolic Math Toolbox" may be used for some functionalities
 
 ## A simple MATLAB code example
 
@@ -59,7 +59,7 @@ We provide two examples to test the approach. Refer to [SIAM Review paper](https
 First add the path where the `+mlf` package is.
 
 ```Matlab
-%addpath("location_of_mlf") % Add the location of the +mlf package
+addpath("location_of_mlf") % Add the location of the +mlf package
 ```
 
 ### Quick example
@@ -353,6 +353,6 @@ Please send any comment to C. Poussot-Vassal (charles.poussot-vassal@onera.fr) i
 
 ## Disclaimer
 
-Once again, this deposit consitutes a research code that accompany the paper mentionned above. It is not aimed to be included in any third party software without the consent of the authors. Authors decline responsabilities in case of problem when applying the code.
+This deposit consitutes a research code that accompany the paper mentionned above. It is not aimed to be included in any third party software without the consent of the authors. Authors decline responsabilities in case of problem when applying the code.
 
-Notice also that pathological cases may appear. A more advanced code, to deal with practical and theoretical issues/limitations is currently under developpement by the authors.
+Notice also that pathological cases may appear. A more advanced and professional code, to deal with practical and theoretical issues/limitations is currently under development by the authors.
