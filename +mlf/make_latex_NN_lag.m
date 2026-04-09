@@ -1,4 +1,4 @@
-function latexList = make_latex_NN_lag(p_c,c)
+function latexList = make_latex_NN_lag(p_c,c,FUN_SYM)
 
 n = length(p_c);
 for ii = 1:n
@@ -12,8 +12,9 @@ distX   = 5;
 %
 latexList   = [];
 latexList   = [latexList '\begin{tikzpicture}[line width=0.4mm]'];
-latexList   = [latexList '\tikzstyle{place}=[circle, draw=black, minimum size = 15mm]'];
-latexList   = [latexList '\tikzstyle{placeInOut}=[circle, draw=orange, minimum size = 15mm,line width=2pt]'];
+latexList   = [latexList '\tikzstyle{place}=[circle, draw=black, minimum size = 20mm]'];
+latexList   = [latexList '\tikzstyle{placeProd}=[circle, draw=black, minimum size = 10mm]'];
+latexList   = [latexList '\tikzstyle{placeInOut}=[circle, draw=orange, minimum size = 10mm,line width=2pt]'];
 % Input
 %kk = 0;
 for ii = 1:n
@@ -26,21 +27,33 @@ for ii = 1:n
     for jj = 1:k(ii)
         kk = kk + 1;
         %latexList   = [latexList ['\node at (' num2str(distX) ',' num2str(-kk*distY) ') [place] (secondL' num2str(ii) '_' num2str(jj) '){$\frac{1}{\var{' num2str(ii) '}-\lani{' num2str(ii) '}{' num2str(jj) '}}$};']];
-        var_ij = p_c{ii}(jj);
-        if var_ij > 0 
-            var_ij_str = ['-' num2str(abs(var_ij),3)];
-        elseif var_ij < 0 
-            var_ij_str = ['+' num2str(abs(var_ij),3)];
-        else
-            var_ij_str = '';
-        end
-        latexList   = [latexList ['\node at (' num2str(distX) ',' num2str(-kk*distY) ') [place] (secondL' num2str(ii) '_' num2str(jj) '){$\frac{1}{\var{' num2str(ii) '}' var_ij_str '}$};']];
+        % if isa(p_c{ii}(jj),'sym')
+        %     var_ij_ltx = latex(p_c{ii}(jj));
+        %     var_ij_sgn = sign(double(p_c{ii}(jj)));
+        %     if var_ij_sgn > 0 
+        %         var_ij_str = ['-' var_ij_ltx];
+        %     elseif var_ij_sgn < 0 
+        %         var_ij_str = ['+' var_ij_ltx];
+        %     else
+        %         var_ij_str = '';
+        %     end
+        % else
+            var_ij = (p_c{ii}(jj));
+            if var_ij > 0 
+                var_ij_str = ['-' latex(FUN_SYM(abs(var_ij)))];
+            elseif var_ij < 0 
+                var_ij_str = ['+' latex(FUN_SYM(abs(var_ij)))];
+            else
+                var_ij_str = '';
+            end
+        % end
+        latexList   = [latexList ['\node at (' num2str(distX) ',' num2str(-kk*distY) ') [place] (secondL' num2str(ii) '_' num2str(jj) '){\Large{$\frac{1}{\var{' num2str(ii) '}' var_ij_str '}$}};']];
     end
 end
 % Hidden 2
 for ii = 1:prodK
     if c(ii) ~= 0
-        latexList   = [latexList ['\node at (' num2str(2*distX) ',' num2str(-ii*distY) ') [place] (third_' num2str(ii) '){$\prod$};']];
+        latexList   = [latexList ['\node at (' num2str(2*distX) ',' num2str(-ii*distY) ') [placeProd] (third_' num2str(ii) '){$\prod$};']];
     end
 end
 % Output
@@ -68,7 +81,8 @@ end
 % Hidden 2 -> Out
 for ii = 1:prodK
     if c(ii) ~= 0
-        latexList   = [latexList ['\draw[->] (third_' num2str(ii) ')--(output) node[above,sloped,pos=0.25] {' num2str(c(ii)) '};']];
+        %latex(FUN_SYM(c(ii)))
+        latexList   = [latexList ['\draw[->] (third_' num2str(ii) ')--(output) node[above,sloped,pos=0.25] {\Large{$' latex(FUN_SYM(c(ii))) '$}};']];
     end
 end
 %

@@ -39,9 +39,13 @@ for ii = 1:n
     k_i(ii) = length(p_c{ii});
     q_i(ii) = length(p_r{ii});
 end
+vars_1 = [];
+produit = 1;
 for ii = 1:n
     N_i(ii) = length(infoCas.ip{ii});
     dim(ii) = length(p_c{ii});
+    vars_1  = [vars_1 ii*ones(1,produit)];
+    produit = prod(dim(1:ii));
 end
 vars    = [vars(1:end-1)   ')'];
 vars_z  = [vars_z(1:end-1) ')'];
@@ -143,7 +147,7 @@ if N < Nmax
         end
         %
         latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent numerator $\bn_{\textrm{lag}}$ representation):\\ '];
-        latexNN     = mlf.make_latex_NN_lag(p_c,double(w.*c)); 
+        latexNN     = mlf.make_latex_NN_lag(p_c,w.*c,FUN_SYM); 
         latexList   = [latexList ['\begin{figure}[H]\begin{center} \scalebox{' num2str(SCALING) '}{' latexNN '} \caption{Equivalent NN representation of the numerator $\bn_{\textrm{lag}}$.}\end{center}\end{figure}']];
         % %
         % latexList   = [latexList '\noindent \textbf{Connection with Neural Networks} (equivalent denominator $\bd_{\textrm{lag}}$ representation):\\ '];
@@ -266,20 +270,36 @@ if N < Nmax
     % 
     latexList = [latexList '~\\ Then, with the above notations, one defines the following univariate vector functions:  $$ \left\{ \begin{array}{rcl}'];
     for ii = 1:n
-        latexList = [latexList ['\bPhi_{' num2str(ii) '}(\var{' num2str(ii) '}) &:=& \textbf{Bary}(\var{' num2str(ii) '}) \odot \mathcal{B}_{\textrm{lag}}^{-1}(\var{' num2str(ii) '}) \\']];
+        latexList = [latexList ['\bPhi_{' num2str(ii) '}(\var{' num2str(ii) '}) &:=& \textbf{Bary}(\var{' num2str(ii) '}) \odot \mathcal{B}_{\textrm{lag}}^{-1}(\var{' num2str(ii) '})\\']];
+        %latexList = [latexList [' &=&' latex(Bary{ii}.*Lag{ii})  '\\']];
     end
     latexList = [latexList '\end{array} \right. $$'];
 
     %%% Resulting KST
     latexList   = [latexList '\noindent The corresponding function is:'];
     latexList   = [latexList '$$\begin{array}{rcl}\bG_{\textrm{kst}}' vars ' &=& \dfrac{\bn_{\textrm{kst}}' vars '}{\bd_{\textrm{kst}}' vars '}\\ &&\\ &=& \dfrac{\sum_{\text{rows}} \bw \odot \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})}{\sum_{\text{rows}} \bPhi_{1}(\var{1}) \odot \cdots \odot\bPhi_{' num2str(n) '}(\var{' num2str(n) '})} . \end{array}$$'];
+    %
+    NUM = w;
+    DEN = 1;
+    for ii = 1:n
+        Phi{ii} = Bary{ii}.*Lag{ii};
+        NUM     = NUM.*Phi{ii};
+        DEN     = DEN.*Phi{ii};
+    end
+    [NUM_num,NUM_den] = numden(simplify(sum(NUM)));
+    [DEN_num,DEN_den] = numden(simplify(sum(DEN)));
+    latexList   = [latexList '\noindent where factorized numerator and denominators are (appart from IP):'];
+    latexList   = [latexList '$$\bn_{\textrm{kst}}' vars '= ' latex(factor(NUM_num.')) ' $$'];
+    latexList   = [latexList '$$\bd_{\textrm{kst}}' vars '= ' latex(factor(DEN_num.')) ' $$'];
+    latexList   = [latexList '\noindent Interpolation points (IP):'];
+    latexList   = [latexList '$$ ' latex((factor(DEN_den)).') '$$'];
 
     %%% Eval figure plot
     latexList   = [latexList ['\begin{figure}[H] \centering \includegraphics[width=\textwidth]{figures/case_' num2str(CAS) '/eval} \caption{Evaluation of $\bG_{\textrm{lag}}$ / $\bG_{\textrm{mon}}$ / $\bG_{\textrm{kst}}$ vs. original function $\bH$.} \end{figure}']];
 
     %%% KST univariate functions 
     [gkst1,kst] = mlf.make_singleVarFun(p_c,p_r,Cx);
-    gkst1       = kst.f;
+    %gkst1       = kst.f;
     latexList   = [latexList '~\\ \noindent \textbf{KST-like univariate functions} '];
     latexList   = [latexList '(equivalent scaled univariate functions $\bphi_{1,\cdots,' num2str(length(gkst1)) '}$): '];
     latexListF  = '$$\left\{\begin{array}{rcrcl}';
@@ -288,9 +308,10 @@ if N < Nmax
     for ii = 1:length(gkst1)
         eq_ii   = latex(FUN_SYM(gkst1{ii}));
         ZVAR    = ['z_{' num2str(ii) '} &=&'];
+        vars_1
         if length(eq_ii) < 100
-            %latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(vars_1(ii)) '}) &=& ' eq_ii '\\' ]];
-            latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(ii) '}) &=& ' eq_ii '\\' ]];
+            latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(vars_1(ii)) '}) &=& ' eq_ii '\\' ]];
+            %latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(ii) '}) &=& ' eq_ii '\\' ]];
         else
             idx         = [idx ii];
             [Num,Den]   = numden(gkst1{ii});

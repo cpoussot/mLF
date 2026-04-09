@@ -19,18 +19,6 @@ switch CAS
         %
         Nip     = 6;
         xbnd    = [1 6];
-    case 2
-        n       = 3;
-        H       = s1*s2+s1*s3+s2*s3;
-        %
-        ref     = 'G. P\''olya and G.Szeg\"o';
-        cite    = '\cite{Polya:1925}';
-        nam     = ['$' latex(H) '$'];
-        dom     = 'R';
-        tag     = {'polynomial'};
-        %
-        xbnd    = [-1/2,1]; 
-        Nip     = 6;
     case 3
         n       = 2;
         H       = (s1^3*s2^2-s1^2*s2^2+s1^2+1)/(s1+s2+s1^2*s2+s1^2+2*s1^3);
@@ -65,6 +53,18 @@ switch CAS
         %
         Nip     = 4;
         xbnd    = {[1 4] [1 4] [1 4] [1 4]};
+    case 48
+        n       = 3;
+        H       = s1*s2+s1*s3+s2*s3;
+        %
+        ref     = 'G. P\''olya and G.Szeg\"o';
+        cite    = '\cite{Polya:1925}';
+        nam     = ['$' latex(H) '$'];
+        dom     = 'R';
+        tag     = {'polynomial'};
+        %
+        xbnd    = [-1/2,1]; 
+        Nip     = 2;
     % case  
     %     n       = 5;
     %     H       = 12*s3 + 24.*s1.*s3 - 6.*s2.*s3 + 4.*s3.*s4 + 2.*s2.*s4 - 18.*s3.*s5 ...
@@ -95,11 +95,22 @@ end
 p_c     = cell(1,n);
 p_r     = cell(1,n);
 ip      = cell(1,n);
+xmin    = inf;
+xmax    = -inf;
 for ii = 1:n
-    ip{ii}  = sym(linspace(xlim{ii}(1),xlim{ii}(2),Nip));
-    p_c{ii} = ip{ii}(2:2:end);
-    p_r{ii} = ip{ii}(1:2:end);
+    xmin    = min(xmin,xlim{ii}(1));
+    xmax    = max(xmax,xlim{ii}(2));
+    p_c{ii} = linspace(xlim{ii}(1),xlim{ii}(2),Nip);
+    dx      = abs(p_c{ii}(end)-p_c{ii}(end-1))/2;
+    p_r{ii} = p_c{ii}+dx;
+    ip{ii}  = [p_c{ii}(:); p_r{ii}(:)];
 end
+
+% for ii = 1:n
+%     ip{ii}  = sym(linspace(xlim{ii}(1),xlim{ii}(2),Nip));
+%     p_c{ii} = ip{ii}(2:2:end);
+%     p_r{ii} = ip{ii}(1:2:end);
+% end
 
 %%% 
 info.n      = n;

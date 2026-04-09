@@ -14,6 +14,7 @@ for ii = 1:n
         tmp         = mlf.tf_lagrangian({p_c{ii}},ww(:,jj),cc(:,jj),false);
         tmp         = subs(tmp,'s1',['s' num2str(ii)]);
         %tmp         = subs(tmp,'s1',['s' num2str(n+1-ii)]);
+        g0{kk,1}    = tmp;
         g{kk,1}     = simplify(tmp);
         gs{kk,1}    = 1/dd(jj) * g{kk,1};
         % if (jj == jj_obj) && (g{kk,1} ~= 0)
@@ -32,3 +33,4 @@ for ii = 1:n
     end
 end
 info.gs = gs;
+info.g0 = g0;
