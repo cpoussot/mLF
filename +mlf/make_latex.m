@@ -308,7 +308,6 @@ if N < Nmax
     for ii = 1:length(gkst1)
         eq_ii   = latex(FUN_SYM(gkst1{ii}));
         ZVAR    = ['z_{' num2str(ii) '} &=&'];
-        vars_1
         if length(eq_ii) < 100
             latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(vars_1(ii)) '}) &=& ' eq_ii '\\' ]];
             %latexListF  = [latexListF [ZVAR '\bphi_{' num2str(ii) '}(s_{' num2str(ii) '}) &=& ' eq_ii '\\' ]];

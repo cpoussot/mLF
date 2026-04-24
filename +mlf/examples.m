@@ -562,7 +562,7 @@ switch CAS
         n       = 3;
         H       = @(x) x(:,1).*x(:,2)+x(:,1).*x(:,3)+x(:,2).*x(:,3);
         %
-        ref     = 'G. P\''olya and G.Szeg\"o';
+        ref     = 'G. P\''olya and G. Szeg\"o';
         cite    = '\cite{Polya:1925}';
         nam     = '$\var{1}\var{2}+\var{1}\var{3}+\var{2}\var{3}$';
         dom     = 'R';
@@ -692,6 +692,20 @@ switch CAS
         %
         xbnd    = [-2 2];
         Nip     = 2;
+    case 59
+        n       = 2;
+        H       = @(x) (x(:,2).^2+1)./(x(:,2)+sqrt(x(:,1)).*sinh(sqrt(x(:,1))));
+        %H       = @(x) (x(:,2).^2 - 1.5)./(1+sqrt(x(:,1)).*sinh(sqrt(x(:,1))));
+        %H       = @(x) x(:,2)./(1+x(:,1)+x(:,1).^2);
+        %
+        ref     = 'S. Marx (personnal communication)';
+        cite    = '[none]';
+        nam     = '$\frac{\var{2}^2+1}{\var{2}+\sqrt{\var{1}}sinh(\sqrt{\var{1}})}$';
+        dom     = 'R';
+        tag     = {'rational'};
+        %
+        xbnd    = {1i*[1e-3 10] [0 2]};
+        Nip     = 30;
     % case 11
     %     H           = @(s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11) s1/(s1^6+s2*s3+s4+s5+s6+s7*s8+s9+s10+s11);
     %     ord         = [6 1 1, 1 1 1, 1 1 1, 1 1];
