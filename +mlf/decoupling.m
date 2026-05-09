@@ -1,5 +1,7 @@
-function [Var,Lag,Bary] = decoupling(p_c,info_rec)
+function [Var,Lag,Bary] = decoupling(info)
 
+p_c         = info.pc;
+info_rec    = info.lag;
 n = length(p_c);
 
 %%% Symbolic
