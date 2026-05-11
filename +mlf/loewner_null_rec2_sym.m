@@ -9,14 +9,29 @@ p2      = length(p_c{2});
 W       = tab(1:length(p_c{1}),p2);
 V       = tab(1+length(p_c{1}):end,p2);
 LL_p1   = mlf.loewnerMatrix_sym({p_c{1}},{p_r{1}},W,V);
-if any(~isreal(p_c{1})) % /!\ here you should check complex conjugation also
-    warning('Enforce realness')
+if any(~isreal(p_c{1})) && (sum(imag(p_c{1}))==0) % /!\ here you should check complex conjugation also
+    warning('Enforce realness'), 
     J0  = sqrt(2)/2 * [1 -1i; 1 1i];
     T1  = [];
-    for ii = 1:length(p_c{1})/2
-        T1 = blkdiag(T1,J0);
+    ii  = 1;
+    while ii <= length(p_c{1})
+        if isreal(p_c{1}(ii))
+            T1 = blkdiag(T1,1);
+            ii = ii + 1;
+        else
+            T1 = blkdiag(T1,J0);
+            ii = ii + 2;
+        end
     end
     c_p1 = T1*null(T1'*LL_p1*T1);
+% if any(~isreal(p_c{1})) % /!\ here you should check complex conjugation also
+%     warning('Enforce realness')
+%     J0  = sqrt(2)/2 * [1 -1i; 1 1i];
+%     T1  = [];
+%     for ii = 1:length(p_c{1})/2
+%         T1 = blkdiag(T1,J0);
+%     end
+%     c_p1 = T1*null(T1'*LL_p1*T1);
 else
     c_p1 = null(LL_p1);
     %c_p1 = mlf.null(LL_p1,'null_sym1');

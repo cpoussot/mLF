@@ -69,7 +69,7 @@ end
 [pc,pr,W,V,tabr]    = mlf.points_selection(p_c,p_r,tab,ord,data_min);
 w                   = mlf.mat2vec(W);
 
-%%% 
+%%%
 CONJUGATE = false;
 if abs(sum(imag(pc{1})))<1e-14 && sum(abs(imag(pc{1})))>0
     CONJUGATE = true;
@@ -78,7 +78,7 @@ end
 
 %%% Lagrange via Loewner
 if strcmp(method,'full')
-    LL      = mlf.loewnerMatrix(pc,pr,W,V);
+    LL  = mlf.loewnerMatrix(pc,pr,W,V);
     %
     if CONJUGATE
         [TL,TR] = mlf.go_real(pc);

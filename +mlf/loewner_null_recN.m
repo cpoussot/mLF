@@ -27,6 +27,17 @@ if any(~isreal(p_c{1})) && (sum(imag(p_c{1}))==0) % /!\ here you should check co
         end
     end
     c_p1 = T1*mlf.null(T1'*LL_p1*T1,METHOD);
+    % Enforce complex conjugate
+    N           = length(c_p1);
+    id_zer      = find(abs(imag(c_p1))<1e-14);
+    id_pos      = find(imag(c_p1)>0);
+    id_pos      = setdiff(id_pos,id_zer);
+    id_neg      = setdiff((1:N)',[id_zer(:); id_pos(:)]);
+    c_          = zeros(N,1);
+    c_(id_zer)  = real(c_p1(id_zer));
+    c_(id_pos)  = c_p1(id_pos);
+    c_(id_neg)  = conj(c_p1(id_pos));
+    c_p1        = c_;
 else
     c_p1 = mlf.null(LL_p1,METHOD);
 end

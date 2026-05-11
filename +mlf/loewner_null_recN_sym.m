@@ -13,7 +13,7 @@ eval(['W = tab(1:length(p_c{1}),' p_comma ');']);
 eval(['V = tab(1+length(p_c{1}):end,' p_comma ');']);
 LL_p1   = mlf.loewnerMatrix_sym({p_c{1}},{p_r{1}},W,V);
 if any(~isreal(p_c{1})) && (sum(imag(p_c{1}))==0) % /!\ here you should check complex conjugation also
-    warning('Enforce realness')
+    warning('Enforce realness'), 
     J0  = sqrt(2)/2 * [1 -1i; 1 1i];
     T1  = [];
     ii  = 1;
