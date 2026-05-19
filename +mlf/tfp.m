@@ -61,4 +61,4 @@ for ii = 1:N2
 end
 Hss = minreal(ss(NUM_/DEN_));
 %Hss = (ss(NUM_/DEN_));
-Htf = tf(Hss);
+Htf = Hss;%tf(Hss);

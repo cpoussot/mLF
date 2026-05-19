@@ -191,7 +191,7 @@ title('{\bf log}(abs. err.)/max.','Interpreter','latex')
 colorbar,
 ```
 
-
+<!-- 
 ## Functions description
 
 ### `mlf.check`
@@ -345,7 +345,7 @@ Function which computes the decoupling variables, linking the approach to the Ko
 ```Matlab
 [Var,Lag,Bary] = mlf.decoupling(pc,info);
 ```
-
+-->
 
 ## Feedbacks
 
