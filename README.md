@@ -46,7 +46,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 # The "mLF" MATLAB package 
 
-The code (`+mlf` folder)  provided in this GitHub page is given for open science purpose. Its principal objective is to accompany the [SIAM Review paper](https://doi.org/10.1137/24M1656657) / [arXiv paper](https://arxiv.org/abs/2405.00495) / [mLF webpage] (https://cpoussot.github.io/mlf/index.html) by the authors, thus aims at being educative rather than industry-oriented. Evolutions (numerical improvements) may come with time. Please, cite the reference above if used in your work and do not hesitate to contact us in case of bug of problem when using it. Below we present an example of use, then functions list are given.
+The code (`+mlf` folder)  provided in this GitHub page is given for open science purpose. Its principal objective is to accompany the [SIAM Review paper](https://doi.org/10.1137/24M1656657) / [arXiv paper](https://arxiv.org/abs/2405.00495) / [mLF webpage](https://cpoussot.github.io/mlf/index.html) by the authors, thus aims at being educative rather than industry-oriented. Evolutions (numerical improvements) may come with time. Please, cite the reference above if used in your work and do not hesitate to contact us in case of bug of problem when using it. Below we present an example of use, then functions list are given.
 
 Moreover, for more numerically robust and involved implementation and features, we invite reader and users to refer to the [MDSPACK](https://mordigitalsystems.fr/static/mdspack_html/MDSpack-guide.html) library by [MOR Digital Systems](https://mordigitalsystems.fr).
 
@@ -92,15 +92,11 @@ tic;
 opt.ord_tol     = alg1_tol; % SVD tolerance
 opt.method_null = 'svd0'; % null space method
 opt.method      = 'rec'; % full or recursuve method
-% opt.ord_obj     = [];
-% opt.ord_N       = 10;
-% opt.ord_show    = false;
-% opt.data_min    = true;
 [r_loe1r,i1_r]  = mlf.alg1(tab,p_c,p_r,opt);
 toc
 ```
 
-Then, one can use Algorithm 2 (iterative).
+Then, one can use Algorithm 2 (iterative - under experimentation).
 
 ```Matlab
 %%% Alg. 2: iterative pLoe [A/G/P-V, 2025]
