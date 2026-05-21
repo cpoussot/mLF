@@ -1,5 +1,7 @@
 # Introduction
 
+## Offical webpage: https://cpoussot.github.io/mlf/index.html
+
 ## Overview
 
 The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea and C. Poussot-Vassal in ["On the Loewner framework, the Kolmogorov superposition theorem, and the curse of dimensionality"](https://doi.org/10.1137/24M1656657) (or [arXiv](https://arxiv.org/abs/2405.00495) version), in SIAM Review (Research Spotlight), Vol. 67(4), pp. 737-770, November 2025. It allows constructing a $n$-variable rational function approximating a $n$-dimensional tensor (either real or complex valued). It is suited to approximate, from any $n$-dimensional tensor 
