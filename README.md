@@ -34,6 +34,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 ## Additional support material (presentations, reports, ...)
 
+- [mLF webpage](https://cpoussot.github.io/mlf/index.html)
 - A.C. Antoulas presentation: [BANFF video](https://www.birs.ca/events/2025/5-day-workshops/25w5376/videos/watch/202504090859-Antoulas.html)
 - C. Poussot-Vassal presentation: [GT Identification video](https://youtu.be/M2SX3C4VCt8), [slides](https://drive.google.com/file/d/1qEirwD7c5h56h1gRTPJmmyJNQY2qa4B1/view?usp=sharing)
 - C. Poussot-Vassal presentation: [regularly updated slides](https://cpoussot.github.io/talks.html)
@@ -45,7 +46,7 @@ The Multivariate Loewner Framework is introduced  by A.C. Antoulas, I-V. Gosea a
 
 # The "mLF" MATLAB package 
 
-The code (`+mlf` folder)  provided in this GitHub page is given for open science purpose. Its principal objective is to accompany the [SIAM Review paper](https://doi.org/10.1137/24M1656657) / [arXiv paper](https://arxiv.org/abs/2405.00495) by the authors, thus aims at being educative rather than industry-oriented. Evolutions (numerical improvements) may come with time. Please, cite the reference above if used in your work and do not hesitate to contact us in case of bug of problem when using it. Below we present an example of use, then functions list are given.
+The code (`+mlf` folder)  provided in this GitHub page is given for open science purpose. Its principal objective is to accompany the [SIAM Review paper](https://doi.org/10.1137/24M1656657) / [arXiv paper](https://arxiv.org/abs/2405.00495) / [mLF webpage] (https://cpoussot.github.io/mlf/index.html) by the authors, thus aims at being educative rather than industry-oriented. Evolutions (numerical improvements) may come with time. Please, cite the reference above if used in your work and do not hesitate to contact us in case of bug of problem when using it. Below we present an example of use, then functions list are given.
 
 Moreover, for more numerically robust and involved implementation and features, we invite reader and users to refer to the [MDSPACK](https://mordigitalsystems.fr/static/mdspack_html/MDSpack-guide.html) library by [MOR Digital Systems](https://mordigitalsystems.fr).
 
@@ -64,12 +65,10 @@ First add the path where the `+mlf` package is.
 addpath("location_of_mlf") % Add the location of the +mlf package
 ```
 
-### Quick example
-
 The code `demo1.m` provides a sample where we use `mlf.alg1` and `mlf.alg2`, standing as implementations of Algorithm 1 and 2 in the above referenced paper. We start by chosing a model in the suggested collection, and construct the tensor along interpolation points.
 
 ```Matlab
-%%% Pick an example from 1 to 40
+%%% Pick an example from 1 to 50
 CAS         = 1
 %%% mlf parameters
 alg1_tol    = 1e-9; 
@@ -115,6 +114,7 @@ opt.method      = 'rec'; % full or recursuve method
 toc
 ```
 
+<!-- 
 ### Detailed example
 
 Here is a code that describes the detailed steps on how to deploy the cascaded 1-D Loewner null space construction. Code below is `demo0.m`.
@@ -192,6 +192,7 @@ ylabel('$x_2$','Interpreter','latex')
 title('{\bf log}(abs. err.)/max.','Interpreter','latex')
 colorbar,
 ```
+-->
 
 <!-- 
 ## Functions description
