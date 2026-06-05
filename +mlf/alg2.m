@@ -161,7 +161,7 @@ while (max_err > max_samples * tol) && (jj < opt.max_iter) && CONTINUE
     err_mat = mlf.vec2mat(err_mat,size(tab));
     
     %%% Model
-    g = {pc w c};
+    g = {pc w c pr};
     %[max_err,max_idx] = max(err_mat,[],'all');
 
     % set errors to zero to avoid no interpolation points to be added
@@ -209,9 +209,9 @@ info.ord_est    = ip_est-1;
 %
 info.flop       = flop;
 info.method     = method;
-info.pr         = pr;
 info.pc         = g_best{1};
 info.w          = g_best{2};
 info.c          = g_best{3};
+info.pr         = g_best{4};
 info.ord        = orders;
 

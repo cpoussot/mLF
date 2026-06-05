@@ -3,6 +3,8 @@ function LL = loewnerMatrix(lam,mu,w,v)
 %%% Compute combinations
 comb_lam    = mlf.combinations(w);
 comb_mu     = mlf.combinations(v);
+%comb_lam    = mlf.combinations_dim(size(w));
+%comb_mu     = mlf.combinations_dim(size(v));
 if mean(comb_lam(:,1)) == 1
     comb_lam = comb_lam(:,2);
     comb_mu  = comb_mu(:,2);
