@@ -1,12 +1,11 @@
-function [Hr,info_real] = make_realization_mon(p_c,W,C,opt)
+function [Hr,info_real] = make_realization_mon(p_c,w,c,opt)
 
-% n = numel(p_c);
-% for ii = 1:n
-%     ord(ii) = length(p_c{ii});
-% end
-% W = mlf.vec2mat(w,ord);
-% C = mlf.vec2mat(c,ord);
 %
+[~,info]    = mlf.tf_monomial(p_c,w,c,false);
+C           = info.C;
+W           = info.W;
+%
+MAKE_MIN = true;
 if nargin < 4
     opt         = [];
     MAKE_MIN    = true;
@@ -42,3 +41,4 @@ end
 %%% Add informations
 info_real.S     = S;
 info_real.basis = B;
+

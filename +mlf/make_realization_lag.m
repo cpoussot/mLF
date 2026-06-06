@@ -7,6 +7,7 @@ end
 W = mlf.vec2mat(w,ord);
 C = mlf.vec2mat(c,ord);
 %
+MAKE_MIN = true;
 if nargin < 4
     opt         = [];
     MAKE_MIN    = true;
