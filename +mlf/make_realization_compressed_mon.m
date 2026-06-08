@@ -11,7 +11,11 @@ for ii = 1:n
 end
 
 %%% Compression for monomial form
-N       = length(itmp0.S{1});
+N       = length(itmp0.S{opt.s_gam(1)});
+% for i = 1:numel(opt.s_gam)
+%     N(i) = length(itmp0.S{opt.s_gam(i)});
+% end
+% N       = sum(N);
 Phi_s   = itmp.Phi_s;
 B       = itmp.Gr;
 C       = itmp.Wr_s;
@@ -39,8 +43,13 @@ eval(['Hr = @(' tmp ') double(Wr_f(' tmp '))*(double(Phi_f(' tmp '))\Gr);']);
 %
 info_real.Phi   = Phi_f;
 info_real.Wr    = Wr_f;
-
+%
 info_real.Phi_s = Phi_s;
 info_real.Wr_s  = Wr;
 info_real.Gr    = Gr;
+%
+info_real.A11   = A11;
+info_real.A12   = A12;
+info_real.A21   = A21;
+info_real.A22   = A22;
 
