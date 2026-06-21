@@ -56,6 +56,8 @@ NUM         = NUM/norm_max;
 DEN         = DEN/norm_max;
 DEN(abs(DEN)<1e-12) = 0;
 NUM(abs(NUM)<1e-12) = 0;
+DEN(abs(DEN)<1e-10) = 0;
+NUM(abs(NUM)<1e-10) = 0;
 %
 den     = B*DEN;%(S*c);
 num     = B*NUM;%(S*(w.*c));
