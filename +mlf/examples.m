@@ -706,6 +706,18 @@ switch CAS
         %
         xbnd    = {1i*[1e-3 100] [1e-3 20]};
         Nip     = 30;
+    case 60
+        n       = 4;
+        H       = @(x) x(:,1).^7 + x(:,2).*x(:,1).^3 + x(:,3).*x(:,1).^2 + x(:,4).*x(:,1) + 1
+        %
+        ref     = 'Hibert 13th problem';
+        cite    = '[Hilbert, 1900]';
+        nam     = '$\var{1}^7 + \var{2}\var{1}^3 + \var{3}^7\var{1}^2 + \var{4}\var{1} + 1$';
+        dom     = 'R';
+        tag     = {'polynomial'};
+        %
+        xbnd    = [-1 1];
+        Nip     = 8;
     % case 11
     %     H           = @(s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11) s1/(s1^6+s2*s3+s4+s5+s6+s7*s8+s9+s10+s11);
     %     ord         = [6 1 1, 1 1 1, 1 1 1, 1 1];
