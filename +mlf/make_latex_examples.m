@@ -6,11 +6,12 @@ COUNT_RAT   = 0;
 COUNT_IRRAT = 0;
 %
 latexList   = [];
-%latexList   = '\small ';
-latexList   = [latexList '\begin{center} \begin{longtable}{|c|l|l|l|} \hline '];
-latexList   = [latexList 'Case & Ref. & Information & Function \\ \hline\hline '];
+latexList   = [latexList '\small '];
+latexList   = [latexList '\begin{center} \begin{longtable}{|c|l|l|l|l|} \hline '];
+latexList   = [latexList 'Case & Ref. & Information & Property & Function \\ \hline\hline '];
 for CAS = spaceCAS
     COLOR       = '';
+    PROP        = [];
     [H,info]    = mlf.examples(CAS);
     for i = 1:numel(info.tag)
         if strcmp(info.tag{i},'polynomial')
@@ -24,11 +25,17 @@ for CAS = spaceCAS
             COUNT_IRRAT = COUNT_IRRAT+1;
             COLOR       = '\orange';
         end
+        if i >= 2
+            PROP = [PROP info.tag{i} ', ' ];
+        end
     end
     latexList = [latexList ...
                  COLOR '{\#' num2str(CAS) '} & ' ... 
                  info.cite ' & ' ...
                  ' $\ord= ' num2str(info.n) '$, ' info.tensor_names ' & ' ... 
+                 PROP(1:end-2) ' & ' ...
                  info.name ' \\' ];
 end
-latexList = [latexList '\hline \caption{List of examples. \blue{Polynomial: ' num2str(COUNT_POLY) '}, {rational: ' num2str(COUNT_RAT) '}, \orange{irrational: ' num2str(COUNT_IRRAT) '}.} \label{tab:examples} \end{longtable} \end{center}\normalsize' ];
+latexList = [latexList '\hline \caption{List of examples. \blue{Polynomial: ' num2str(COUNT_POLY) '}, {rational: ' num2str(COUNT_RAT) '}, \orange{irrational: ' num2str(COUNT_IRRAT) '}. "S" is for symmetric and $C^\bullet$ is the differentiability.} \label{tab:examples}'] 
+latexList = [latexList '\end{longtable} \end{center}\normalsize' ];
+%latexList = [latexList '\end{table} \end{center}\normalsize' ];
