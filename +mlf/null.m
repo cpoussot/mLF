@@ -35,6 +35,13 @@ function [c,sig,km] = null(LL,METHOD)
             sig         = sig/sig(1);
             c           = V(:,end);
             c           = normalize(c,str2double(METHOD(5:end)));
+        % case 'resvd'
+        %     [~,sig,V]   = svd(double(LL),'econ');
+        %     %V           = rref(V);
+        %     sig         = diag(sig);
+        %     sig         = sig/sig(1);
+        %     c           = V(:,end);
+        %     [c,km]      = normalize(c,str2double(METHOD(6:end)));
         case 'null_symr'
             LL          = sym(LL);
             c           = null(LL,'r');
@@ -51,6 +58,11 @@ function [c,sig,km] = null(LL,METHOD)
             c           = c(:,end);
             sig         = [];
             c           = normalize(c,str2double(METHOD(5:end)));
+        case 'nullr'
+            c           = null(LL,'rational');
+            c           = c(:,end);
+            sig         = [];
+            c           = normalize(c,str2double(METHOD(6:end)));
         case 'mldivide'
             c_div       = LL(:,1:end-1)\LL(:,end);
             c           = [-c_div; 1];

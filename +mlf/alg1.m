@@ -75,7 +75,9 @@ if abs(sum(imag(pc{1})))<1e-14 && sum(abs(imag(pc{1})))>0
     CONJUGATE = true;
     warning('1st var complex paired')
 end
-
+%pc{1}
+%CONJUGATE
+%pause
 %%% Lagrange via Loewner
 if strcmp(method,'full')
     LL  = mlf.loewnerMatrix(pc,pr,W,V);
@@ -88,9 +90,11 @@ if strcmp(method,'full')
         c       = mlf.null(LL,method_null);
     end
     flop    = size(LL,1)*size(LL,2)^2;
+    MB      = numel(LL)*8/2^20;
 elseif strcmp(method,'rec')
     [c,lag] = mlf.loewner_null_rec(pc,pr,tabr,method_null);
     flop    = lag.nflop;
+    MB      = (max(ord)+1)*8/2^20;
 else
     error('Unknown method')
 end
@@ -98,6 +102,7 @@ end
 %%% Output
 r           = @(x) mlf.eval_lagrangian(pc,w,c,x,false);
 info.flop   = flop;
+info.MB     = MB;
 info.method = method;
 info.tabr   = tabr;
 info.pr     = pr;
